@@ -1,0 +1,89 @@
+<%- include('../../partials/header.ejs') %>
+<%- include('../../partials/navbar.ejs') %>
+<%- include('../../partials/sidebar.ejs') %>
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1>Lowongan Magang</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+            <li class="breadcrumb-item"><a href="/biro">Lowongan Magang</a></li>
+            <li class="breadcrumb-item active">Tambah lowongan magang</li>
+          </ol>
+        </div>
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <!-- left column -->
+        <div class="col-md-12">
+          <!-- general form elements -->
+          <div class="card card-primary">
+            <div class="card-header">
+              <h3 class="card-title">Form Tambah Lowongan Magang</h3>
+            </div>
+            <!-- /.card-header -->
+            <!-- form start -->
+            <form action="/vacancy/create" method="POST">
+              <div class="card-body">
+                <div class="form-group">
+                  <label for="position">Posisi Magang</label>
+                  <input type="text" class="form-control" name="position" id="position" placeholder="Isi posisi kerja yang ditawarkan..." required>
+                </div>
+                <div class="form-group">
+                  <label for="job_desc">Deskripsi Pekerjaan</label>
+                  <textarea class="form-control" name="job_desc" id="job_desc" rows="4" placeholder="Isi deskripsi pekerjaan" required></textarea>
+                </div>
+                <div class="form-group">
+                  <label for="requirement">Persyaratan Kandidat</label>
+                  <textarea class="form-control" name="requirement" id="requirement" rows="6" placeholder="Persyaratan kandidat.." required></textarea>
+                  <small id="emailHelp" class="form-text text-muted">Catatan: pisahkan satu persyaratan dengan persyaratan yang lain dengan titik-koma (;)</small>
+                </div>
+                <div class="form-group">
+                  <label for="duration">Durasi Magang</label>
+                  <input type="text" class="form-control" name="duration" id="duration" placeholder="cth: 1 bulan" required>
+                </div>
+                <div class="form-group">
+                  <label for="start_an_intern">Tanggal Mulai Magang</label>
+                    <div class="input-group date" id="reservationdate" data-target-input="nearest">
+                      <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
+                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                      </div>
+                      <input type="text" class="form-control datetimepicker-input" name="start_an_intern" id="start_an_intern" data-target="#reservationdate"/>
+                    </div>
+                </div>
+              </div>
+              <!-- /.card-body -->
+              <div class="card-footer">
+                <a href="/vacancy" class="btn btn-default mr-1">
+                  Kembali
+                </a>
+                <button type="submit" class="btn btn-primary">Simpan</button>
+              </div>
+            </form>
+          </div>
+          <!-- /.card -->
+        </div>
+        <!--/.col (left) -->
+      </div>
+      <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+  </section>
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+<%- include('../../partials/footer.ejs') %>
+<%- include('../../partials/js.ejs') %>
