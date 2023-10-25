@@ -18,8 +18,8 @@ let vacancySchema = mongoose.Schema({
     require: [true, 'Durasi magang harus diisi']
   },
   start_an_intern: {
-    type: Date,
-    default: Date.now()
+    type: Number,
+    default: 0
   }
 }, { timestamps: true });
 

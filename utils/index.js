@@ -1,8 +1,14 @@
 const moment = require('moment');
 
 const dateFormat = (value) => {
-  let tgl = moment(value).format("D MMM YYYY");
+  // const date = new Date(value)
+  const tgl = moment(value).format("ll");
   return tgl
 }
 
-module.exports = { dateFormat }
+const dateForm = value => {
+  const tgl = moment(value).format('ll')
+  return tgl
+}
+
+module.exports = { dateFormat, dateForm }

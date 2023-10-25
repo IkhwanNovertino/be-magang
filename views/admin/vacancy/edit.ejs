@@ -9,13 +9,13 @@
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1>Bidang Kegiatan</h1>
+          <h1>Lowongan Magang</h1>
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
-            <li class="breadcrumb-item"><a href="/biro">Bidang kegiatan</a></li>
-            <li class="breadcrumb-item active">Ubah bidang kegiatan</li>
+            <li class="breadcrumb-item"><a href="/vacancy">Lowongan Magang</a></li>
+            <li class="breadcrumb-item active">Ubah lowongan magang</li>
           </ol>
         </div>
       </div>
@@ -31,25 +31,42 @@
           <!-- general form elements -->
           <div class="card card-primary">
             <div class="card-header">
-              <h3 class="card-title">Form Ubah Bidang Kegiatan</h3>
+              <h3 class="card-title">Form Ubah Lowongan Magang</h3>
             </div>
             <!-- /.card-header -->
             <!-- form start -->
-            <form action="/biro/edit/<%= biro._id %>?_method=PUT" method="POST">
+            <form action="/vacancy/edit/<%= vacancy._id %>?_method=PUT" method="POST">
               <div class="card-body">
                 <div class="form-group">
-                  <label for="name">Nama Bidang Kegiatan</label>
-                  <input type="text" class="form-control" 
-                    name="name" id="name" 
-                    placeholder="Isi bidang kegitan"
-                    value="<%= biro.name %>"
-                    required
-                  >
+                  <label for="position">Posisi Magang</label>
+                  <input type="text" class="form-control" name="position" id="position" placeholder="Isi posisi kerja yang ditawarkan..." value="<%= vacancy.position %>" required>
+                </div>
+                <div class="form-group">
+                  <label for="job_desc">Deskripsi Pekerjaan</label>
+                  <textarea class="form-control" name="job_desc" id="job_desc" rows="4" placeholder="Isi deskripsi pekerjaan" required><%= vacancy.job_desc %></textarea>
+                </div>
+                <div class="form-group">
+                  <label for="requirement">Persyaratan Kandidat</label>
+                  <textarea class="form-control" name="requirement" id="requirement" rows="6" placeholder="Persyaratan kandidat.." required><%= vacancy.requirement.join(";") %></textarea>
+                  <small id="emailHelp" class="form-text text-muted">Catatan: pisahkan satu persyaratan dengan persyaratan yang lain dengan titik-koma (;)</small>
+                </div>
+                <div class="form-group">
+                  <label for="duration">Durasi Magang</label>
+                  <input type="text" class="form-control" name="duration" id="duration" placeholder="cth: 1 bulan" value="<%= vacancy.duration %>" required>
+                </div>
+                <div class="form-group">
+                  <label for="start_an_intern">Tanggal Mulai Magang</label>
+                    <div class="input-group date" id="reservationdate" data-target-input="nearest">
+                      <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
+                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                      </div>
+                      <input type="text" class="form-control datetimepicker-input" name="start_an_intern" id="start_an_intern" data-target="#reservationdate" value="<%= dateForm(vacancy.start_an_intern) %>"/>
+                    </div>
                 </div>
               </div>
               <!-- /.card-body -->
               <div class="card-footer">
-                <a href="/biro" class="btn btn-default mr-1">
+                <a href="/vacancy" class="btn btn-default mr-1">
                   Kembali
                 </a>
                 <button type="submit" class="btn btn-primary">Simpan</button>
