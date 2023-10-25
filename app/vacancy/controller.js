@@ -113,19 +113,19 @@ module.exports = {
   },
   actionDelete: async (req, res) => {
     try {
-      // const { id } = req.params;
-      // await Biro.findOneAndRemove({ _id: id });
+      const { id } = req.params;
+      await Vacancy.findOneAndRemove({ _id: id });
 
-      req.flash('alertMessage', 'Berhasil Menghapus Bidang Kegiatan');
+      req.flash('alertMessage', 'Berhasil Menghapus Lowongan Magang');
       req.flash('alertStatus', 'success');
 
-      res.redirect('/biro');
+      res.redirect('/vacancy');
     } catch (err) {
       req.flash('alertMessage', `${err.message}`);
       req.flash('alertStatus', 'danger');
 
-      console.log(`error di actionDelete controller biro >>${err}`);
-      res.redirect('/biro')
+      console.log(`error di actionDelete controller vacancy >>${err}`);
+      res.redirect('/vacancy')
     }
   },
 }
