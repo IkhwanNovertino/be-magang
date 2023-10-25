@@ -1,0 +1,51 @@
+<table id="example2" class="table table-bordered table-striped">
+  <thead>
+  <tr>
+    <th>Tanggal di Buat</th>
+    <th>Posisi</th>
+    <th>Durasi Magang</th>
+    <th>Tanggal Mulai</th>
+    <th>Aksi</th>
+  </tr>
+  </thead>
+  <tbody>
+    <% vacancy.forEach((e, i) => { %>
+      <tr>
+        <td><%= dateFormat(e.createdAt) %></td>
+        <td><%= e.position %></td>
+        <td><%= e.duration %></td>
+        <td><%= dateFormat(e.start_an_intern) %></td>
+        <td>
+          <form action="/vacancy/delete/<%= e.id %>?_method=DELETE" method="post">
+            <a href="/vacancy/edit/<%= e.id %>" class="btn btn-warning btn-sm">
+              <i class="fas fa-pencil-alt"></i>
+              Ubah
+            </a>
+            <button class="btn  btn-danger btn-sm">
+              <i class="fas fa-trash-alt"></i>
+              Hapus
+            </button>
+          </form>
+        </td>
+      </tr>
+    <% }) %>
+  <!-- <!% biro.forEach((e, i) => {i++ %>
+    <tr>
+      <td><!%= i %></td>
+      <td><!%= e.name %></td>
+      <td>
+        <form action="/biro/delete/<!%= e.id %>?_method=DELETE" method="post">
+          <a href="/biro/edit/<!%= e.id %>" class="btn btn-warning btn-sm">
+            <i class="fas fa-pencil-alt"></i>
+            Ubah
+          </a>
+          <button class="btn  btn-danger btn-sm">
+            <i class="fas fa-trash-alt"></i>
+            Hapus
+          </button>
+        </form>
+      </td>
+    </tr>
+  <!% }) %> -->
+  </tbody>
+</table>
