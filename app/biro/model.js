@@ -5,6 +5,6 @@ let biroSchema = mongoose.Schema({
     type: String,
     require: [true, "Nama bidang kegiatan harus diisi"]
   }
-})
+}, { timestamps: true })
 
 module.exports = mongoose.model('Biro', biroSchema);

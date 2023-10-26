@@ -9,6 +9,7 @@ const flash = require('connect-flash');
 
 const dashboardRouter = require('./app/dashboard/router.js');
 const biroRouter = require('./app/biro/router.js');
+const supervisorRouter = require('./app/supervisor/router.js');
 
 const app = express();
 
@@ -38,6 +39,7 @@ app.use('/adminlte', express.static(path.join(__dirname, '/node_modules/admin-lt
 
 app.use('/', dashboardRouter);
 app.use('/biro', biroRouter);
+app.use('/supervisor', supervisorRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
