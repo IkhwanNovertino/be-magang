@@ -1,9 +1,9 @@
-const Supervisor = require('./model');
+const Peg_umpeg = require('./model');
 const path = require('path');
 const fs = require('fs');
 const config = require('../../config');
 
-const urlpath = 'admin/supervisor';
+const urlpath = 'admin/peg-umpeg';
 
 module.exports = {
   index: async (req, res) => {
@@ -12,29 +12,29 @@ module.exports = {
       const alertStatus = req.flash('alertStatus');
       const alert = { message: alertMessage, status: alertStatus };
 
-      const supervisor = await Supervisor.find();
+      const peg_umpeg = await Peg_umpeg.find();
 
-      res.render(`${urlpath}/view_supervisor`, {
-        title: 'Pembimbing',
-        supervisor,
+      res.render(`${urlpath}/view_pegumpeg`, {
+        title: 'Pegawai Umpeg',
+        peg_umpeg,
         alert
       })
     } catch (err) {
       req.flash('alertMessage', `${err.message}`);
       req.flash('alertStatus', 'danger');
-      res.redirect('/supervisor')
+      res.redirect('/pegumpeg')
     }
   },
   viewCreate: async (req, res) => {
     try {
       res.render(`${urlpath}/create`, {
-        title: 'Tambah Pembimbing'
+        title: 'Tambah Pegawai Umpeg'
       })
     } catch (err) {
       req.flash('alertMessage', `${err.message}`);
       req.flash('alertStatus', 'danger');
 
-      res.redirect('/supervisor')
+      res.redirect('/pegumpeg')
     }
   },
   actionCreate: async (req, res) => {
@@ -53,7 +53,7 @@ module.exports = {
         src.pipe(dest)
         src.on('end', async () => {
           try {
-            const supervisor = new Supervisor({
+            const peg_umpeg = new Peg_umpeg({
               name: name.trim().toLowerCase(),
               nip: nip.trim().toLowerCase(),
               job_title: job_title.trim().toLowerCase(),
@@ -63,19 +63,19 @@ module.exports = {
               },
               photo_profile: filename
             });
-            await supervisor.save();
+            await peg_umpeg.save();
 
-            req.flash('alertMessage', 'Berhasil Menambah Pembimbing');
+            req.flash('alertMessage', 'Berhasil Menambah Pegawai Umpeg');
             req.flash('alertStatus', 'success');
-            res.redirect('/supervisor');
+            res.redirect('/pegumpeg');
           } catch (error) {
             req.flash('alertMessage', `${error.message}`);
             req.flash('alertStatus', 'danger');
-            res.redirect('/supervisor');
+            res.redirect('/pegumpeg');
           }
         })
       } else {
-        const supervisor = new Supervisor({
+        const peg_umpeg = new Peg_umpeg({
           name: name.trim().toLowerCase(),
           nip: nip.trim().toLowerCase(),
           job_title: job_title.trim().toLowerCase(),
@@ -84,95 +84,77 @@ module.exports = {
             phone_num: phone_num.trim() === "" ? 1 : phone_num,
           },
         });
-        await supervisor.save();
+        await peg_umpeg.save();
 
-        req.flash('alertMessage', 'Berhasil Menambah Pembimbing');
+        req.flash('alertMessage', 'Berhasil Menambah Pegawai Umpeg');
         req.flash('alertStatus', 'success');
-        res.redirect('/supervisor');
+        res.redirect('/pegumpeg');
       }
     } catch (err) {
       req.flash('alertMessage', `${err.message}`);
       req.flash('alertStatus', 'danger');
 
-      res.redirect('/supervisor')
+      res.redirect('/pegumpeg')
     }
   },
   viewDetail: async (req, res) => {
     try {
       const { id } = req.params;
-      const supervisor = await Supervisor.findById(id);
-
-
+      const peg_umpeg = await Peg_umpeg.findById(id);
 
       res.render(`${urlpath}/detail`, {
-        title: 'Detail Pembimbing',
-        supervisor
+        title: 'Detail Pegawai Umpeg',
+        peg_umpeg
       })
     } catch (err) {
       req.flash('alertMessage', `${err.message}`);
       req.flash('alertStatus', 'danger');
 
-      res.redirect('/supervisor')
+      res.redirect('/pegumpeg')
     }
   },
   actionDelete: async (req, res) => {
     try {
       const { id } = req.params;
 
-      const supervisor = await Supervisor.findOneAndRemove({
+      const peg_umpeg = await Peg_umpeg.findOneAndRemove({
         _id: id
       });
 
-      let currentImage = `${config.rootPath}/public/uploads/${supervisor.photo_profile}`;
+      let currentImage = `${config.rootPath}/public/uploads/${peg_umpeg.photo_profile}`;
       if (fs.existsSync(currentImage)) {
         fs.unlinkSync(currentImage)
       }
 
-
-      req.flash('alertMessage', 'Berhasil Menghapus Data Pembimbing');
+      req.flash('alertMessage', 'Berhasil Menghapus Data Pegawai Umpeg');
       req.flash('alertStatus', 'success');
 
-      res.redirect('/supervisor')
-
+      res.redirect('/pegumpeg')
     } catch (err) {
       req.flash('alertMessage', `${err.message}`)
       req.flash('alertStatus', 'danger')
-      res.redirect('/supervisor')
+      res.redirect('/pegumpeg')
     }
-    // try {
-    //   const { id } = req.params;
-    //   await Supervisor.findOneAndRemove({ _id: id });
-
-    //   req.flash('alertMessage', 'Berhasil Menghapus Data Pembimbing');
-    //   req.flash('alertStatus', 'success');
-
-    //   res.redirect('/supervisor');
-    // } catch (err) {
-    //   req.flash('alertMessage', `${err.message}`);
-    //   req.flash('alertStatus', 'danger');
-
-    //   res.redirect('/supervisor')
-    // }
   },
   actionStatus: async (req, res) => {
     try {
       const { id } = req.params;
-      let supervisor = await Supervisor.findOne({ _id: id })
+      let peg_umpeg = await Peg_umpeg.findOne({ _id: id })
 
-      let status = supervisor.status === 'Y' ? 'N' : 'Y';
+      let status = peg_umpeg.status === 'Y' ? 'N' : 'Y';
       let message = status === 'Y' ? 'Akun user telah aktif' : 'Akun user telah di non-aktif';
 
-      await Supervisor.findOneAndUpdate({ _id: id }, { status })
+      await Peg_umpeg.findOneAndUpdate({ _id: id }, { status })
 
       req.flash('alertMessage', message);
       req.flash('alertStatus', 'success');
 
-      res.redirect('/supervisor')
+      res.redirect('/pegumpeg')
     } catch (err) {
       req.flash('alertMessage', `${err.message}`);
       req.flash('alertStatus', 'danger');
 
-      res.redirect('/supervisor')
+      res.redirect('/pegumpeg')
     }
   }
 }

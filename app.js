@@ -11,6 +11,7 @@ const dashboardRouter = require('./app/dashboard/router.js');
 const biroRouter = require('./app/biro/router.js');
 const vacancyRouter = require('./app/vacancy/router.js');
 const supervisorRouter = require('./app/supervisor/router.js');
+const pegumpegRouter = require('./app/peg-umpeg/router.js');
 
 const app = express();
 
@@ -42,6 +43,7 @@ app.use('/', dashboardRouter);
 app.use('/biro', biroRouter);
 app.use('/vacancy', vacancyRouter);
 app.use('/supervisor', supervisorRouter);
+app.use('/pegumpeg', pegumpegRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
