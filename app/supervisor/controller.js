@@ -1,7 +1,7 @@
 const Supervisor = require('./model');
 const path = require('path');
 const fs = require('fs');
-const config = require('../../config')
+const config = require('../../config');
 
 const urlpath = 'admin/supervisor';
 
@@ -12,10 +12,11 @@ module.exports = {
       const alertStatus = req.flash('alertStatus');
       const alert = { message: alertMessage, status: alertStatus };
 
-      // const biro = await Biro.find();
+      const supervisor = await Supervisor.find();
 
       res.render(`${urlpath}/view_supervisor`, {
         title: 'Pembimbing',
+        supervisor,
         alert
       })
     } catch (err) {
@@ -53,7 +54,9 @@ module.exports = {
         src.on('end', async () => {
           try {
             const supervisor = new Supervisor({
-              name, nip, job_title,
+              name: name.trim().toLowerCase(),
+              nip: nip.trim().toLowerCase(),
+              job_title: job_title.trim().toLowerCase(),
               contact: {
                 email: email.trim() === "" ? 'default@email.com' : email,
                 phone_num: phone_num.trim() === "" ? 1 : phone_num,
@@ -73,10 +76,12 @@ module.exports = {
         })
       } else {
         const supervisor = new Supervisor({
-          name, nip, job_title,
+          name: name.trim().toLowerCase(),
+          nip: nip.trim().toLowerCase(),
+          job_title: job_title.trim().toLowerCase(),
           contact: {
-            email,
-            phone_num,
+            email: email.trim() === "" ? 'default@email.com' : email,
+            phone_num: phone_num.trim() === "" ? 1 : phone_num,
           },
         });
         await supervisor.save();
@@ -92,33 +97,17 @@ module.exports = {
       res.redirect('/supervisor')
     }
   },
-  viewEdit: async (req, res) => {
+  viewDetail: async (req, res) => {
     try {
       const { id } = req.params;
-      // const biro = await Biro.findById(id);
+      const supervisor = await Supervisor.findById(id);
 
-      res.render(`${path}/edit`, {
-        title: 'Ubah Bidang Kegiatan',
-        biro
+
+
+      res.render(`${urlpath}/detail`, {
+        title: 'Detail Pembimbing',
+        supervisor
       })
-    } catch (err) {
-      req.flash('alertMessage', `${err.message}`);
-      req.flash('alertStatus', 'danger');
-
-      res.redirect('/supervisor')
-    }
-  },
-  actionEdit: async (req, res) => {
-    try {
-      // const { id } = req.params;
-      // const { name } = req.body;
-
-      // await Biro.findOneAndUpdate({ _id: id }, { name: name });
-
-      req.flash('alertMessage', 'Berhasil Mengubah Bidang Kegiatan');
-      req.flash('alertStatus', 'success');
-
-      res.redirect('/supervisor');
     } catch (err) {
       req.flash('alertMessage', `${err.message}`);
       req.flash('alertStatus', 'danger');
@@ -128,18 +117,62 @@ module.exports = {
   },
   actionDelete: async (req, res) => {
     try {
-      // const { id } = req.params;
-      // await Biro.findOneAndRemove({ _id: id });
+      const { id } = req.params;
 
-      req.flash('alertMessage', 'Berhasil Menghapus Bidang Kegiatan');
+      const supervisor = await Supervisor.findOneAndRemove({
+        _id: id
+      });
+
+      let currentImage = `${config.rootPath}/public/uploads/${supervisor.photo_profile}`;
+      if (fs.existsSync(currentImage)) {
+        fs.unlinkSync(currentImage)
+      }
+
+
+      req.flash('alertMessage', 'Berhasil Menghapus Data Pembimbing');
       req.flash('alertStatus', 'success');
 
-      res.redirect('/supervisor');
+      res.redirect('/supervisor')
+
+    } catch (err) {
+      req.flash('alertMessage', `${err.message}`)
+      req.flash('alertStatus', 'danger')
+      res.redirect('/supervisor')
+    }
+    // try {
+    //   const { id } = req.params;
+    //   await Supervisor.findOneAndRemove({ _id: id });
+
+    //   req.flash('alertMessage', 'Berhasil Menghapus Data Pembimbing');
+    //   req.flash('alertStatus', 'success');
+
+    //   res.redirect('/supervisor');
+    // } catch (err) {
+    //   req.flash('alertMessage', `${err.message}`);
+    //   req.flash('alertStatus', 'danger');
+
+    //   res.redirect('/supervisor')
+    // }
+  },
+  actionStatus: async (req, res) => {
+    try {
+      const { id } = req.params;
+      let supervisor = await Supervisor.findOne({ _id: id })
+
+      let status = supervisor.status === 'Y' ? 'N' : 'Y';
+      let message = status === 'Y' ? 'Akun user telah aktif' : 'Akun user telah di non-aktif';
+
+      await Supervisor.findOneAndUpdate({ _id: id }, { status })
+
+      req.flash('alertMessage', message);
+      req.flash('alertStatus', 'success');
+
+      res.redirect('/supervisor')
     } catch (err) {
       req.flash('alertMessage', `${err.message}`);
       req.flash('alertStatus', 'danger');
 
       res.redirect('/supervisor')
     }
-  },
+  }
 }

@@ -73,13 +73,6 @@
                   <br>
                   <img src="" id="preview">
                 </div>
-                
-                <!-- <div class="form-group">
-                  <label for="photo_profile">Foto Profil :</label>
-                  <input type="file" name="photo_profile" class="form-control" id="photo_profile" placeholder="Masukkan gambar..">
-                  <br>
-                  <img src="" id="preview">
-                </div> -->
               </div>
               <!-- /.card-body -->
               <div class="card-footer">
@@ -112,8 +105,8 @@
 
       reader.onload = function(e) {
         $('#preview').attr('src', e.target.result);
-        $('#preview').attr('width', '50%');
-        $('#preview').attr('height', '50%');
+        $('#preview').attr('width', '30%');
+        $('#preview').attr('height', '30%');
       }
 
       reader.readAsDataURL(input.files[0])

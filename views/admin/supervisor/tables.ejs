@@ -5,29 +5,44 @@
     <th>Nama Lengkap</th>
     <th>NIP</th>
     <th>Jabatan</th>
+    <th>Status</th>
     <th>Aksi</th>
   </tr>
   </thead>
   <tbody>
-  <%# supervisor.forEach((e, i) => %>
+  <% supervisor.forEach((e, i) => { i++ %>
     <tr>
-      <td><#%= i %></td>
-      <td><#%= e.name %></td>
-      <td><#%= e.name %></td>
-      <td><#%= e.name %></td>
+      <td><%= i %></td>
+      <td><%= e.name.toUpperCase() %></td>
+      <td><%= e.nip %></td>
+      <td><%= e.job_title.toUpperCase() %></td>
       <td>
-        <form action="/supervisor/delete/%= e.id %>?_method=DELETE" method="post">
-          <a href="/supervisor/edit/%= e.id %>" class="btn btn-default btn-sm">
-            <i class="fas fa-pencil-alt"></i>
-            Detail
-          </a>
-          <button class="btn  btn-danger btn-sm">
-            <i class="fas fa-trash-alt"></i>
-            Hapus
+        <% if (e.status === 'Y') { %>
+          <span class="badge badge-success">
+            Aktif
+          </span>
+        <% } else { %>
+          <span class="badge badge-danger">
+            Tidak aktif
+          </span>
+        <% } %>
+      </td>
+      <td>
+        <form action="/supervisor/status/<%= e.id %>?_method=PUT" method="POST" style="display: inline-block;">
+          <button class="btn btn-primary btn-sm">
+            <% if(supervisor.status === 'Y') { %>
+                Non-aktifkan user
+            <% } else { %>
+                Aktifkan User
+            <% } %>
           </button>
         </form>
+        <a href="/supervisor/detail/<%= e.id %>" class="btn btn-default btn-sm ml-2">
+          <i class="fas fa-pencil-alt"></i>
+          Detail
+        </a>
       </td>
     </tr>
-  <%# }) %>
+  <% }) %>
   </tbody>
 </table>
