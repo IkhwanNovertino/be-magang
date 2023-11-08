@@ -1,0 +1,29 @@
+<table id="example2" class="table table-bordered table-striped">
+  <thead>
+  <tr>
+    <th>No.</th>
+    <th>Nama Lengkap</th>
+    <th>NIP</th>
+    <th>Jabatan</th>
+    <th>Status</th>
+    <th>Aksi</th>
+  </tr>
+  </thead>
+  <tbody>
+  <%# peg_umpeg.forEach((e, i) => { i++ %>
+    <tr>
+      <td><%#= i %></td>
+      <td><%#= e.name.toUpperCase() %></td>
+      <td><%#= e.nip %></td>
+      <td><%#= e.job_title.toUpperCase() %></td>
+      <td></td>
+      <td>
+        <a href="/pegumpeg/detail/<%#= e.id %>" class="btn btn-default btn-sm ml-2">
+          <i class="fas fa-pencil-alt"></i>
+          Detail
+        </a>
+      </td>
+    </tr>
+  <%# }) %>
+  </tbody>
+</table>
