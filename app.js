@@ -1,4 +1,3 @@
-const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
@@ -6,6 +5,7 @@ const logger = require('morgan');
 const methodOverride = require('method-override')
 const session = require('express-session')
 const flash = require('connect-flash');
+const createError = require('http-errors');
 
 const dashboardRouter = require('./app/dashboard/router.js');
 const biroRouter = require('./app/biro/router.js');
@@ -13,8 +13,11 @@ const vacancyRouter = require('./app/vacancy/router.js');
 const supervisorRouter = require('./app/supervisor/router.js');
 const pegumpegRouter = require('./app/peg-umpeg/router.js');
 const pembinaRouter = require('./app/pembina/router.js');
+const authRouter = require('./app/auth/router.js');
 
 const app = express();
+
+const urlAPI = `/api/v1`
 
 //konfig express-session dan flash
 app.use(session({
@@ -46,6 +49,8 @@ app.use('/vacancy', vacancyRouter);
 app.use('/supervisor', supervisorRouter);
 app.use('/pegumpeg', pegumpegRouter);
 app.use('/pembina', pembinaRouter);
+
+app.use(`${urlAPI}/auth`, authRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
