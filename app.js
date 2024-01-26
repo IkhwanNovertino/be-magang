@@ -16,7 +16,7 @@ const pembinaRouter = require('./app/pembina/router.js');
 // const submissionRouter = require('./app/submission/router.js');
 
 // API
-const authRouter = require('./app/auth/router.js');
+const authRouter = require('./app/authenticate/router.js');
 
 const app = express();
 
@@ -54,7 +54,7 @@ app.use('/pegumpeg', pegumpegRouter);
 app.use('/pembina', pembinaRouter);
 // app.use('/submission', submissionRouter);
 
-// app.use(`${urlAPI}/auth`, authRouter);
+app.use(`${urlAPI}/auth`, authRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
