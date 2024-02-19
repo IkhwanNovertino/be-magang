@@ -1,4 +1,5 @@
 const Pembina = require('./model');
+const authModel = require('../authenticate/model');
 const path = require('path');
 const fs = require('fs');
 const config = require('../../config');
@@ -41,6 +42,9 @@ module.exports = {
     try {
       const { name, nip, job_title } = req.body;
 
+      const noInduk = nip.replace(/ /gi, '');
+      const role = "pembina";
+
       if (req.file) {
         let tmp_path = req.file.path;
         let originalExt = req.file.originalname.split('.')[req.file.originalname.split('.').length - 1];
@@ -55,11 +59,18 @@ module.exports = {
           try {
             const pembina = new Pembina({
               name: name.trim().toLowerCase(),
-              nip: nip.trim().toLowerCase(),
+              nip: noInduk,
               job_title: job_title.trim().toLowerCase(),
               photo_profile: filename
             });
             await pembina.save();
+
+            const userPembina = new authModel({
+              username: noInduk,
+              password: noInduk,
+              role: role
+            });
+            await userPembina.save();
 
             req.flash('alertMessage', 'Berhasil Menambah Pembina');
             req.flash('alertStatus', 'success');
@@ -73,10 +84,17 @@ module.exports = {
       } else {
         const pembina = new Pembina({
           name: name.trim().toLowerCase(),
-          nip: nip.trim().toLowerCase(),
+          nip: noInduk,
           job_title: job_title.trim().toLowerCase(),
         });
         await pembina.save();
+
+        const userPembina = new authModel({
+          username: noInduk,
+          password: noInduk,
+          role: role
+        });
+        await userPembina.save();
 
         req.flash('alertMessage', 'Berhasil Menambah Pembina');
         req.flash('alertStatus', 'success');

@@ -1,5 +1,8 @@
 const authModel = require('./model');
 const applicantModel = require('../applicants/model');
+const umpegModel = require('../peg-umpeg/model');
+const supervisorModel = require('../supervisor/model');
+const pembinaModel = require('../pembina/model');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const config = require('../../config');
@@ -50,8 +53,7 @@ module.exports = {
       }
     } catch (err) {
       if (err && err.name === "ValidationError") {
-        console.log(`ERRORS >>> ${err.errors.username.path}`);
-        const username = err.errors.username.path
+        // const username = err.errors.username.path
         return res.status(422).json({
           errors: {
             username: [
@@ -72,27 +74,49 @@ module.exports = {
       if (authData) {
         const checkPassword = bcrypt.compareSync(password, authData.password);
         if (checkPassword) {
-          let dataUser;
+
+          let dataUser = {};
           switch (authData.role) {
             case "pemohon":
               dataUser = await applicantModel.findOne({ username });
               break;
+            case "umpeg":
+              dataUser = await umpegModel.findOne({ nip: username });
+              break;
+            case "supervisor":
+              dataUser = await supervisorModel.findOne({ nip: username });
+              break;
+            case "pembina":
+              dataUser = await pembinaModel.findOne({ nip: username });
+              break;
+            // case "peserta":
+            //   dataUser = await pesertaModel.findOne({ nip: username });
+            //   break;
             default:
               break;
           }
 
-          const token = jwt.sign({
-            user: {
-              id: dataUser.id,
-              username: dataUser.username,
-              name: dataUser.name,
-              email: dataUser.contact.email,
-              phoneNumber: dataUser.contact.phone_num,
-              photo_profile: dataUser.photo_profile,
-            }
-          }, config.jwtKey)
+          // const token = jwt.sign({
+          //   user: {
+          //     id: dataUser.id,
+          //     username: dataUser.username,
+          //     name: dataUser.name,
+          //     email: dataUser.contact.email,
+          //     role: authData.role,
+          //     phoneNumber: dataUser.contact.phone_num,
+          //     photo_profile: dataUser.photo_profile,
+          //   }
+          // }, config.jwtKey)
 
-          res.status(200).json({ data: { token } });
+          // res.status(200).json({ data: { token } });
+          console.log(dataUser);
+
+          res.status(200).json({
+            data: {
+              authData,
+              dataUser
+            }
+          })
 
         } else {
           return res.status(403).json({
@@ -114,44 +138,9 @@ module.exports = {
       }
 
     } catch (err) {
-
+      return res.status(422).json({
+        errors: err.errors,
+      })
     }
-    // const { username, password } = req.body;
-
-    // authModel.findOne({ username }).then((user) => {
-    //   if (user) {
-    //     const checkPassword = bcrypt.compareSync(password, user.password);
-    //     if (checkPassword) {
-    //       let dataUser;
-    //       if (user.role === "pemohon") {
-    //         dataUser = await applicantModel.findOne({ username })
-    //       }
-    //       return res.status(201).json({
-    //         data: {
-    //           user
-    //         }
-    //       })
-    //     } else {
-    //       return res.status(403).json({
-    //         errors: {
-    //           password: [
-    //             'password salah'
-    //           ]
-    //         }
-    //       })
-    //     }
-    //   } else {
-    //     return res.status(403).json({
-    //       errors: {
-    //         username: [
-    //           'username tidak ditemukan'
-    //         ]
-    //       }
-    //     })
-    //   }
-
-    // }).catch((err) => {
-    //   console.log(`ERROR >>> ${err}`);
-    // });
-  }
+  },
 }

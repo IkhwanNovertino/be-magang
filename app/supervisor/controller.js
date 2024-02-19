@@ -1,4 +1,5 @@
 const Supervisor = require('./model');
+const authModel = require('../authenticate/model');
 const path = require('path');
 const fs = require('fs');
 const config = require('../../config');
@@ -41,6 +42,9 @@ module.exports = {
     try {
       const { name, nip, job_title, email, phone_num } = req.body;
 
+      const noInduk = nip.replace(/ /gi, '');
+      const role = "supervisor";
+
       if (req.file) {
         let tmp_path = req.file.path;
         let originalExt = req.file.originalname.split('.')[req.file.originalname.split('.').length - 1];
@@ -55,7 +59,7 @@ module.exports = {
           try {
             const supervisor = new Supervisor({
               name: name.trim().toLowerCase(),
-              nip: nip.trim().toLowerCase(),
+              nip: noInduk,
               job_title: job_title.trim().toLowerCase(),
               contact: {
                 email: email.trim() === "" ? 'default@email.com' : email,
@@ -64,6 +68,13 @@ module.exports = {
               photo_profile: filename
             });
             await supervisor.save();
+
+            const userSupervisor = new authModel({
+              username: noInduk,
+              password: noInduk,
+              role: role
+            });
+            await userSupervisor.save();
 
             req.flash('alertMessage', 'Berhasil Menambah Pembimbing');
             req.flash('alertStatus', 'success');
@@ -77,7 +88,7 @@ module.exports = {
       } else {
         const supervisor = new Supervisor({
           name: name.trim().toLowerCase(),
-          nip: nip.trim().toLowerCase(),
+          nip: noInduk,
           job_title: job_title.trim().toLowerCase(),
           contact: {
             email: email.trim() === "" ? 'default@email.com' : email,
@@ -85,6 +96,13 @@ module.exports = {
           },
         });
         await supervisor.save();
+
+        const userSupervisor = new authModel({
+          username: noInduk,
+          password: noInduk,
+          role: role
+        });
+        await userSupervisor.save();
 
         req.flash('alertMessage', 'Berhasil Menambah Pembimbing');
         req.flash('alertStatus', 'success');

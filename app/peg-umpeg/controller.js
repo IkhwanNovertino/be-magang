@@ -2,6 +2,7 @@ const Peg_umpeg = require('./model');
 const path = require('path');
 const fs = require('fs');
 const config = require('../../config');
+const authModel = require('../authenticate/model');
 
 const urlpath = 'admin/peg-umpeg';
 
@@ -41,6 +42,9 @@ module.exports = {
     try {
       const { name, nip, job_title, email, phone_num } = req.body;
 
+      const noInduk = nip.replace(/ /gi, '');
+      const role = "umpeg";
+
       if (req.file) {
         let tmp_path = req.file.path;
         let originalExt = req.file.originalname.split('.')[req.file.originalname.split('.').length - 1];
@@ -55,7 +59,7 @@ module.exports = {
           try {
             const peg_umpeg = new Peg_umpeg({
               name: name.trim().toLowerCase(),
-              nip: nip.trim().toLowerCase(),
+              nip: noInduk,
               job_title: job_title.trim().toLowerCase(),
               contact: {
                 email: email.trim() === "" ? 'default@email.com' : email,
@@ -64,6 +68,13 @@ module.exports = {
               photo_profile: filename
             });
             await peg_umpeg.save();
+
+            const userUmpeg = new authModel({
+              username: noInduk,
+              password: noInduk,
+              role: role
+            });
+            await userUmpeg.save();
 
             req.flash('alertMessage', 'Berhasil Menambah Pegawai Umpeg');
             req.flash('alertStatus', 'success');
@@ -77,7 +88,7 @@ module.exports = {
       } else {
         const peg_umpeg = new Peg_umpeg({
           name: name.trim().toLowerCase(),
-          nip: nip.trim().toLowerCase(),
+          nip: noInduk,
           job_title: job_title.trim().toLowerCase(),
           contact: {
             email: email.trim() === "" ? 'default@email.com' : email,
@@ -85,6 +96,13 @@ module.exports = {
           },
         });
         await peg_umpeg.save();
+
+        const userUmpeg = new authModel({
+          username: noInduk,
+          password: noInduk,
+          role: role
+        });
+        await userUmpeg.save();
 
         req.flash('alertMessage', 'Berhasil Menambah Pegawai Umpeg');
         req.flash('alertStatus', 'success');

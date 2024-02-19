@@ -62,7 +62,7 @@ module.exports = {
       req.flash('alertStatus', 'danger');
 
       console.log(`error di actionCreate controller vacancy >>${err}`);
-      res.redirect('/biro')
+      res.redirect('/vacancy')
     }
   },
   viewEdit: async (req, res) => {
@@ -128,4 +128,49 @@ module.exports = {
       res.redirect('/vacancy')
     }
   },
+
+  getVacancy: async (req, res) => {
+    try {
+      const toDay = Date.now();
+      const vacancy = await Vacancy.find({
+        start_an_intern: { $gt: toDay },
+      }).sort({ createdAt: -1 })
+      // const vacancy = await Vacancy.aggregate([
+      //   {
+      //     $match: {
+      //       start_an_intern: { $gt: toDay }
+      //     }
+      //   }
+      // ]);
+
+      res.status(200).json({
+        data: {
+          vacancy
+        }
+      })
+    } catch (err) {
+      return res.status(422).json({
+        errors: err.errors,
+      })
+    }
+  },
+  getVacancyById: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const vacancy = await Vacancy.findOne({ _id: id });
+
+      if (!vacancy) return res.status(404)
+        .json({
+          erros: {
+            message: 'data tidak ditemukan'
+          }
+        })
+
+      res.status(201).json({ data: vacancy })
+    } catch (err) {
+      return res.status(422).json({
+        errors: err.errors,
+      })
+    }
+  }
 }
