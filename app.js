@@ -17,6 +17,7 @@ const pembinaRouter = require('./app/pembina/router.js');
 
 // API
 const authRouter = require('./app/authenticate/router.js');
+const vacancyRouterAPI = require('./app/vacancy/routerAPI.js');
 
 const app = express();
 
@@ -55,6 +56,7 @@ app.use('/pembina', pembinaRouter);
 // app.use('/submission', submissionRouter);
 
 app.use(`${urlAPI}/auth`, authRouter);
+app.use(`${urlAPI}/vacancy`, vacancyRouterAPI);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
