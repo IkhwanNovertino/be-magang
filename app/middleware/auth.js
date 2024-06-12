@@ -1,6 +1,6 @@
 const config = require('../../config');
 const jwt = require('jsonwebtoken');
-const Player = require('../authenticate/model');
+const Auth = require('../authenticate/model');
 
 module.exports = {
   isLoginAdmin: (req, res, next) => {
@@ -19,13 +19,13 @@ module.exports = {
 
       const data = jwt.verify(token, config.jwtKey)
 
-      const player = await Player.findOne({ _id: data.player.id })
+      const user = await Auth.findOne({ _id: data.user.id })
 
-      if (!player) {
+      if (!user) {
         throw new Error()
       }
 
-      req.player = player
+      req.user = user
       req.token = token
       next()
     } catch (err) {

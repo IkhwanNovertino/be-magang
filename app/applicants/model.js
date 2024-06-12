@@ -3,14 +3,6 @@ const mongoose = require('mongoose');
 let applicantSchema = mongoose.Schema({
   name: {
     type: String,
-    // validate: {
-    //   validator: function (v) {
-    //     if (!v) {
-    //       throw new Error('name not null')
-    //     }
-    //   },
-    //   message: props => `${props.value} is not null`
-    // },
     require: [true, "Nama pemohon harus diisi"]
   },
   institute: {

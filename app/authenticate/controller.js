@@ -31,7 +31,7 @@ module.exports = {
             }
           })
 
-        let user = new authModel({ username, password, role: "pemohon" });
+        let user = new authModel({ username, password, role: "applicant" });
         await user.save();
 
         let applicant = new applicantModel({ username, name, institute });
@@ -53,13 +53,8 @@ module.exports = {
       }
     } catch (err) {
       if (err && err.name === "ValidationError") {
-        // const username = err.errors.username.path
         return res.status(422).json({
-          errors: {
-            username: [
-              err.errors.username.message
-            ]
-          }
+          errors: err.errors
         })
       }
       next()
@@ -74,10 +69,9 @@ module.exports = {
       if (authData) {
         const checkPassword = bcrypt.compareSync(password, authData.password);
         if (checkPassword) {
-
           let dataUser = {};
           switch (authData.role) {
-            case "pemohon":
+            case "applicant":
               dataUser = await applicantModel.findOne({ username });
               break;
             case "umpeg":
@@ -89,34 +83,23 @@ module.exports = {
             case "pembina":
               dataUser = await pembinaModel.findOne({ nip: username });
               break;
-            // case "peserta":
-            //   dataUser = await pesertaModel.findOne({ nip: username });
-            //   break;
             default:
               break;
           }
-
-          // const token = jwt.sign({
-          //   user: {
-          //     id: dataUser.id,
-          //     username: dataUser.username,
-          //     name: dataUser.name,
-          //     email: dataUser.contact.email,
-          //     role: authData.role,
-          //     phoneNumber: dataUser.contact.phone_num,
-          //     photo_profile: dataUser.photo_profile,
-          //   }
-          // }, config.jwtKey)
-
-          // res.status(200).json({ data: { token } });
           console.log(dataUser);
 
-          res.status(200).json({
-            data: {
-              authData,
-              dataUser
+          const token = jwt.sign({
+            user: {
+              idUser: dataUser.id,
+              idAuth: authData.id,
+              username: dataUser.username,
+              name: dataUser.name,
+              role: authData.role,
+              photo_profile: dataUser.photo_profile,
             }
-          })
+          }, config.jwtKey)
+
+          res.status(200).json({ data: { token } });
 
         } else {
           return res.status(403).json({
