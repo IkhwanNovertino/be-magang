@@ -1,12 +1,39 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const methodOverride = require('method-override')
+const session = require('express-session')
+const flash = require('connect-flash');
+const createError = require('http-errors');
+const cors = require('cors');
 
-var biroRouter = require('./app/biro/router.js');
+const dashboardRouter = require('./app/dashboard/router.js');
+const biroRouter = require('./app/biro/router.js');
+const vacancyRouter = require('./app/vacancy/router.js');
+const supervisorRouter = require('./app/supervisor/router.js');
+const pegumpegRouter = require('./app/peg-umpeg/router.js');
+const pembinaRouter = require('./app/pembina/router.js');
+// const submissionRouter = require('./app/submission/router.js');
 
-var app = express();
+// API
+const authRouter = require('./app/authenticate/router.js');
+const vacancyRouterAPI = require('./app/vacancy/routerAPI.js');
+
+const app = express();
+const urlAPI = `/api/v1`
+app.use(cors())
+
+//konfig express-session dan flash
+app.use(session({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false }
+}))
+app.use(flash());
+
+app.use(methodOverride('_method'))
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -21,7 +48,16 @@ app.use(express.static(path.join(__dirname, 'public')));
 // config admin-lte
 app.use('/adminlte', express.static(path.join(__dirname, '/node_modules/admin-lte/')))
 
-app.use('/', biroRouter);
+app.use('/', dashboardRouter);
+app.use('/biro', biroRouter);
+app.use('/vacancy', vacancyRouter);
+app.use('/supervisor', supervisorRouter);
+app.use('/pegumpeg', pegumpegRouter);
+app.use('/pembina', pembinaRouter);
+// app.use('/submission', submissionRouter);
+
+app.use(`${urlAPI}/auth`, authRouter);
+app.use(`${urlAPI}/vacancy`, vacancyRouterAPI);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
