@@ -15,8 +15,8 @@ let authSchema = mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ['supervisor', 'umpeg', 'pembina', 'pemohon', 'peserta'],
-    default: 'pemohon'
+    enum: ['supervisor', 'umpeg', 'pembina', 'applicant', 'peserta'],
+    default: 'applicant'
   },
   status: {
     type: String,
