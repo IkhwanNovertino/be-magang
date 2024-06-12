@@ -129,19 +129,32 @@ module.exports = {
     }
   },
 
+  getTopVacancy: async (req, res) => {
+    try {
+      const toDay = Date.now();
+      const vacancy = await Vacancy
+        .find({
+          start_an_intern: { $gt: toDay },
+        })
+        .sort({ start_an_intern: -1 })
+        .limit(3)
+      res.status(200).json({
+        data: {
+          vacancy
+        }
+      })
+    } catch (err) {
+      return res.status(422).json({
+        errors: err.errors,
+      })
+    }
+  },
   getVacancy: async (req, res) => {
     try {
       const toDay = Date.now();
       const vacancy = await Vacancy.find({
         start_an_intern: { $gt: toDay },
-      }).sort({ createdAt: -1 })
-      // const vacancy = await Vacancy.aggregate([
-      //   {
-      //     $match: {
-      //       start_an_intern: { $gt: toDay }
-      //     }
-      //   }
-      // ]);
+      }).sort({ start_an_intern: -1 })
 
       res.status(200).json({
         data: {

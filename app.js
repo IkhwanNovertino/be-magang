@@ -6,6 +6,7 @@ const methodOverride = require('method-override')
 const session = require('express-session')
 const flash = require('connect-flash');
 const createError = require('http-errors');
+const cors = require('cors');
 
 const dashboardRouter = require('./app/dashboard/router.js');
 const biroRouter = require('./app/biro/router.js');
@@ -20,8 +21,8 @@ const authRouter = require('./app/authenticate/router.js');
 const vacancyRouterAPI = require('./app/vacancy/routerAPI.js');
 
 const app = express();
-
 const urlAPI = `/api/v1`
+app.use(cors())
 
 //konfig express-session dan flash
 app.use(session({
