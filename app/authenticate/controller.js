@@ -10,51 +10,32 @@ const config = require('../../config');
 module.exports = {
   signup: async (req, res, next) => {
     try {
-      const { username, password, confirmPassword, name, institute, } = req.body;
+      const { name, institute, email, password, } = req.body;
+      let applicant = new applicantModel({ email, name, institute, password });
+      await applicant.save();
 
-      if (password === confirmPassword) {
-        if (!name) return res.status(403)
-          .json({
-            errors: {
-              name: [
-                'nama harus diisi'
-              ]
-            }
-          })
+      delete applicant._doc.password;
 
-        if (!institute) return res.status(403)
-          .json({
-            errors: {
-              institute: [
-                'Sekolah atau perguruan tinggi atau institusi harus diisi'
-              ]
-            }
-          })
-
-        let user = new authModel({ username, password, role: "applicant" });
-        await user.save();
-
-        let applicant = new applicantModel({ username, name, institute });
-        await applicant.save();
-
-        delete user._doc.password;
-
-        return res.status(201).json({
-          data: user
-        })
-      } else {
-        return res.status(403).json({
-          errors: {
-            confirmPassword: [
-              'password tidak terkonfirmasi'
-            ]
-          }
-        })
-      }
+      return res.status(201).json({
+        data: applicant
+      })
     } catch (err) {
       if (err && err.name === "ValidationError") {
         return res.status(422).json({
-          errors: err.errors
+          errors: {
+            name: [
+              err.errors?.name?.message || ''
+            ],
+            email: [
+              err.errors?.email?.message || ''
+            ],
+            password: [
+              err.errors?.password?.message || ''
+            ],
+            institute: [
+              err.errors?.institute?.message || ''
+            ]
+          }
         })
       }
       next()
