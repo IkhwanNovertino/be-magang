@@ -43,7 +43,6 @@ module.exports = {
       const { name, nip, job_title } = req.body;
 
       const noInduk = nip.replace(/ /gi, '');
-      const role = "pembina";
 
       if (req.file) {
         let tmp_path = req.file.path;
@@ -61,16 +60,11 @@ module.exports = {
               name: name.trim().toLowerCase(),
               nip: noInduk,
               job_title: job_title.trim().toLowerCase(),
+              password: noInduk,
               photo_profile: filename
             });
             await pembina.save();
-
-            const userPembina = new authModel({
-              username: noInduk,
-              password: noInduk,
-              role: role
-            });
-            await userPembina.save();
+            delete pembina._doc.password;
 
             req.flash('alertMessage', 'Berhasil Menambah Pembina');
             req.flash('alertStatus', 'success');
@@ -85,16 +79,11 @@ module.exports = {
         const pembina = new Pembina({
           name: name.trim().toLowerCase(),
           nip: noInduk,
+          password: noInduk,
           job_title: job_title.trim().toLowerCase(),
         });
         await pembina.save();
-
-        const userPembina = new authModel({
-          username: noInduk,
-          password: noInduk,
-          role: role
-        });
-        await userPembina.save();
+        delete pembina._doc.password;
 
         req.flash('alertMessage', 'Berhasil Menambah Pembina');
         req.flash('alertStatus', 'success');

@@ -43,7 +43,6 @@ module.exports = {
       const { name, nip, job_title, email, phone_num } = req.body;
 
       const noInduk = nip.replace(/ /gi, '');
-      const role = "supervisor";
 
       if (req.file) {
         let tmp_path = req.file.path;
@@ -61,20 +60,14 @@ module.exports = {
               name: name.trim().toLowerCase(),
               nip: noInduk,
               job_title: job_title.trim().toLowerCase(),
-              contact: {
-                email: email.trim() === "" ? 'default@email.com' : email,
-                phone_num: phone_num.trim() === "" ? 1 : phone_num,
-              },
+              email: email.trim(),
+              phone_num: phone_num.trim(),
+              password: `supervisor${noInduk}`,
               photo_profile: filename
             });
             await supervisor.save();
 
-            const userSupervisor = new authModel({
-              username: noInduk,
-              password: noInduk,
-              role: role
-            });
-            await userSupervisor.save();
+            delete supervisor._doc.password
 
             req.flash('alertMessage', 'Berhasil Menambah Pembimbing');
             req.flash('alertStatus', 'success');
@@ -90,19 +83,12 @@ module.exports = {
           name: name.trim().toLowerCase(),
           nip: noInduk,
           job_title: job_title.trim().toLowerCase(),
-          contact: {
-            email: email.trim() === "" ? 'default@email.com' : email,
-            phone_num: phone_num.trim() === "" ? 1 : phone_num,
-          },
+          email: email.trim(),
+          phone_num: phone_num.trim(),
+          password: `supervisor${noInduk}`,
         });
         await supervisor.save();
-
-        const userSupervisor = new authModel({
-          username: noInduk,
-          password: noInduk,
-          role: role
-        });
-        await userSupervisor.save();
+        delete supervisor._doc.password
 
         req.flash('alertMessage', 'Berhasil Menambah Pembimbing');
         req.flash('alertStatus', 'success');
@@ -119,8 +105,6 @@ module.exports = {
     try {
       const { id } = req.params;
       const supervisor = await Supervisor.findById(id);
-
-
 
       res.render(`${urlpath}/detail`, {
         title: 'Detail Pembimbing',
@@ -146,31 +130,14 @@ module.exports = {
         fs.unlinkSync(currentImage)
       }
 
-
       req.flash('alertMessage', 'Berhasil Menghapus Data Pembimbing');
       req.flash('alertStatus', 'success');
-
       res.redirect('/supervisor')
-
     } catch (err) {
       req.flash('alertMessage', `${err.message}`)
       req.flash('alertStatus', 'danger')
       res.redirect('/supervisor')
     }
-    // try {
-    //   const { id } = req.params;
-    //   await Supervisor.findOneAndRemove({ _id: id });
-
-    //   req.flash('alertMessage', 'Berhasil Menghapus Data Pembimbing');
-    //   req.flash('alertStatus', 'success');
-
-    //   res.redirect('/supervisor');
-    // } catch (err) {
-    //   req.flash('alertMessage', `${err.message}`);
-    //   req.flash('alertStatus', 'danger');
-
-    //   res.redirect('/supervisor')
-    // }
   },
   actionStatus: async (req, res) => {
     try {

@@ -144,8 +144,8 @@ module.exports = {
         }
       })
     } catch (err) {
-      return res.status(422).json({
-        errors: err.errors,
+      return res.status(500).json({
+        message: err.message || 'Terjadi kesalahan pada server'
       })
     }
   },
