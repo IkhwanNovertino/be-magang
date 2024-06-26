@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
+const HASH_ROUND = 16;
 
 let supervisorSchema = mongoose.Schema({
   name: {
@@ -13,20 +15,17 @@ let supervisorSchema = mongoose.Schema({
     type: String,
     require: [true, 'Jabatan harus diisi']
   },
-  contact: {
-    email: {
-      type: String,
-    },
-    phone_num: {
-      type: Number,
-    }
+  email: {
+    type: String,
+    match: [/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g, `Email tidak valid`],
+    default: 'email@default.com'
+  },
+  phone_num: {
+    type: Number,
+    default: 1
   },
   photo_profile: {
     type: String,
-  },
-  username: {
-    type: String,
-    require: [true, 'username harus diisi'],
   },
   password: {
     type: String,
@@ -38,5 +37,19 @@ let supervisorSchema = mongoose.Schema({
     default: 'Y'
   },
 }, { timestamps: true })
+
+supervisorSchema.path('nip').validate(async function (value) {
+  try {
+    const count = await this.model('Supervisor').countDocuments({ nip: value });
+    return !count;
+  } catch (err) {
+    throw err;
+  }
+}, attr => `${attr.value} sudah ada`);
+
+supervisorSchema.pre('save', function (next) {
+  this.password = bcrypt.hashSync(this.password, HASH_ROUND);
+  next();
+});
 
 module.exports = mongoose.model('Supervisor', supervisorSchema);

@@ -50,14 +50,6 @@ applicantSchema.path('email').validate(async function (value) {
   }
 }, attr => `${attr.value} sudah terdaftar`);
 
-// applicantSchema.path('email').validate(async function (value) {
-//   try {
-//     const 
-//   } catch (err) {
-//     throw err;
-//   }
-// })
-
 applicantSchema.pre('save', function (next) {
   this.password = bcrypt.hashSync(this.password, HASH_ROUND);
   next();

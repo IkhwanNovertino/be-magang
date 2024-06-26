@@ -43,7 +43,6 @@ module.exports = {
       const { name, nip, job_title, email, phone_num } = req.body;
 
       const noInduk = nip.replace(/ /gi, '');
-      const role = "umpeg";
 
       if (req.file) {
         let tmp_path = req.file.path;
@@ -61,20 +60,14 @@ module.exports = {
               name: name.trim().toLowerCase(),
               nip: noInduk,
               job_title: job_title.trim().toLowerCase(),
-              contact: {
-                email: email.trim() === "" ? 'default@email.com' : email,
-                phone_num: phone_num.trim() === "" ? 1 : phone_num,
-              },
+              email: email.trim(),
+              phone_num: phone_num.trim(),
+              password: `umpeg${noInduk}`,
               photo_profile: filename
             });
             await peg_umpeg.save();
 
-            const userUmpeg = new authModel({
-              username: noInduk,
-              password: noInduk,
-              role: role
-            });
-            await userUmpeg.save();
+            delete peg_umpeg._doc.password;
 
             req.flash('alertMessage', 'Berhasil Menambah Pegawai Umpeg');
             req.flash('alertStatus', 'success');
@@ -90,19 +83,13 @@ module.exports = {
           name: name.trim().toLowerCase(),
           nip: noInduk,
           job_title: job_title.trim().toLowerCase(),
-          contact: {
-            email: email.trim() === "" ? 'default@email.com' : email,
-            phone_num: phone_num.trim() === "" ? 1 : phone_num,
-          },
+          email: email.trim(),
+          phone_num: phone_num.trim(),
+          password: `umpeg${noInduk}`,
         });
         await peg_umpeg.save();
 
-        const userUmpeg = new authModel({
-          username: noInduk,
-          password: noInduk,
-          role: role
-        });
-        await userUmpeg.save();
+        delete peg_umpeg._doc.password;
 
         req.flash('alertMessage', 'Berhasil Menambah Pegawai Umpeg');
         req.flash('alertStatus', 'success');
@@ -162,7 +149,7 @@ module.exports = {
       let status = peg_umpeg.status === 'Y' ? 'N' : 'Y';
       let message = status === 'Y' ? 'Akun user telah aktif' : 'Akun user telah di non-aktif';
 
-      await Peg_umpeg.findOneAndUpdate({ _id: id }, { status })
+      await Peg_umpeg.findOneAndUpdate({ _id: id }, { status });
 
       req.flash('alertMessage', message);
       req.flash('alertStatus', 'success');
