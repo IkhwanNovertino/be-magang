@@ -47,7 +47,12 @@ module.exports = {
     try {
       const { username, password } = req.body;
       let checkPassword = false;
+
       const authApplicant = await applicantModel.findOne({ email: username });
+      const authPembina = await pembinaModel.findOne({ nip: username });
+      const authSupervisor = await supervisorModel.findOne({ nip: username });
+      const authUmpeg = await umpegModel.findOne({ nip: username });
+
       if (authApplicant) {
         checkPassword = bcrypt.compareSync(password, authApplicant.password);
         if (checkPassword) {
@@ -77,9 +82,7 @@ module.exports = {
             fields: 'password',
           })
         }
-      }
-      const authPembina = await pembinaModel.findOne({ nip: username });
-      if (authPembina) {
+      } else if (authPembina) {
         checkPassword = bcrypt.compareSync(password, authPembina.password)
         if (checkPassword) {
           if (authPembina.status === 'Y') {
@@ -108,9 +111,7 @@ module.exports = {
             fields: 'password',
           })
         }
-      }
-      const authSupervisor = await supervisorModel.findOne({ nip: username });
-      if (authSupervisor) {
+      } else if (authSupervisor) {
         checkPassword = bcrypt.compareSync(password, authSupervisor.password);
         console.log(checkPassword);
         if (checkPassword) {
@@ -140,9 +141,7 @@ module.exports = {
             fields: 'password',
           })
         }
-      }
-      const authUmpeg = await umpegModel.findOne({ nip: username });
-      if (authUmpeg) {
+      } else if (authUmpeg) {
         checkPassword = bcrypt.compareSync(password, authUmpeg.password)
         if (checkPassword) {
           if (authUmpeg.status === 'Y') {
@@ -171,9 +170,7 @@ module.exports = {
             fields: 'password',
           })
         }
-      }
-
-      if (!authApplicant && !authPembina && !authSupervisor && !authUmpeg) {
+      } else {
         return res.status(422).json({
           message: ['user tidak ditemukan'],
           fields: 'username'
