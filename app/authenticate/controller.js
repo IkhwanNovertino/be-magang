@@ -77,7 +77,7 @@ module.exports = {
             })
           }
         } else {
-          return res.status(422).json({
+          return res.status(403).json({
             message: ['password salah, isi kembali.'],
             fields: 'password',
           })
@@ -106,7 +106,7 @@ module.exports = {
             })
           }
         } else {
-          return res.status(422).json({
+          return res.status(403).json({
             message: ['password salah, isi kembali.'],
             fields: 'password',
           })
@@ -136,7 +136,7 @@ module.exports = {
             })
           }
         } else {
-          return res.status(422).json({
+          return res.status(403).json({
             message: ['password salah, isi kembali.'],
             fields: 'password',
           })
@@ -165,13 +165,13 @@ module.exports = {
             })
           }
         } else {
-          return res.status(422).json({
+          return res.status(403).json({
             message: ['password salah, isi kembali.'],
             fields: 'password',
           })
         }
       } else {
-        return res.status(422).json({
+        return res.status(403).json({
           message: ['user tidak ditemukan'],
           fields: 'username'
         })
