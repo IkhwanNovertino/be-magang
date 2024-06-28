@@ -75,10 +75,10 @@
                 </div>
                 
                 <div class="form-group">
-                  <% if (!pembina.photo_profile) { %>
-                    <img class="img-fluid img-circle img-lg" src="http://localhost:3000/images/person-circle.svg" alt="foto profil">
+                  <% if (pembina.avatar === 'none') { %>
+                    <img class="img-fluid img-circle img-lg" src="http://localhost:5000/images/person-circle.svg" alt="foto profil">
                   <% } else { %>
-                    <img class="img-fluid img-circle img-lg" src='http://localhost:3000/uploads/<%= pembina.photo_profile %>' alt="Foto">
+                    <img class="img-fluid img-circle img-lg" src='http://localhost:5000/uploads/<%= pembina.avatar %>' alt="Foto">
                   <% } %>
                 </div>
                 

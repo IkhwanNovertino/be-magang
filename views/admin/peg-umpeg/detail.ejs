@@ -82,7 +82,7 @@
                       readonly 
                       class="form-control-plaintext border-bottom" 
                       id="email" 
-                      value="<%= peg_umpeg.contact.email === 'default@email.com' ? 'email tidak ada' : peg_umpeg.contact.email %>"
+                      value="<%= peg_umpeg.email || 'email belum ada' %>"
                     >
                   </div>
                 </div>
@@ -94,16 +94,16 @@
                       readonly 
                       class="form-control-plaintext border-bottom" 
                       id="email" 
-                      value="<%= peg_umpeg.contact.phone_num === 1 ? "no.telpon tidak ada" : `+62 ${peg_umpeg.contact.phone_num}` %>"
+                      value="<%= !peg_umpeg.phone_num ? `nomor telpon belum dimasukkan` : `+62-${peg_umpeg.phone_num}` %>"
                     >
                   </div>
                 </div>
                 <hr>
                 <div class="form-group">
-                  <% if (!peg_umpeg.photo_profile) { %>
+                  <% if (peg_umpeg.avatar === 'none') { %>
                     <img class="img-fluid img-circle img-lg" src="http://localhost:5000/images/person-circle.svg" alt="foto profil">
                   <% } else { %>
-                    <img class="img-fluid img-circle img-lg" src='http://localhost:5000/uploads/<%= peg_umpeg.photo_profile %>' alt="Foto">
+                    <img class="img-fluid img-circle img-lg" src='http://localhost:5000/uploads/<%= peg_umpeg.avatar %>' alt="Foto">
                   <% } %>
                 </div>
                 
