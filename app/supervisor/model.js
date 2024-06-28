@@ -24,8 +24,9 @@ let supervisorSchema = mongoose.Schema({
     type: Number,
     default: 1
   },
-  photo_profile: {
+  avatar: {
     type: String,
+    default: "none"
   },
   password: {
     type: String,
