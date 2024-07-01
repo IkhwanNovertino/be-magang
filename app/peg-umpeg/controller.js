@@ -61,9 +61,9 @@ module.exports = {
               nip: noInduk,
               job_title: job_title.trim().toLowerCase(),
               email: email.trim(),
-              phone_num: phone_num.trim(),
-              password: `umpeg${noInduk}`,
-              photo_profile: filename
+              phone_num,
+              password: noInduk,
+              avatar: filename
             });
             await peg_umpeg.save();
 
@@ -84,8 +84,8 @@ module.exports = {
           nip: noInduk,
           job_title: job_title.trim().toLowerCase(),
           email: email.trim(),
-          phone_num: phone_num.trim(),
-          password: `umpeg${noInduk}`,
+          phone_num,
+          password: noInduk,
         });
         await peg_umpeg.save();
 
@@ -126,7 +126,7 @@ module.exports = {
         _id: id
       });
 
-      let currentImage = `${config.rootPath}/public/uploads/${peg_umpeg.photo_profile}`;
+      let currentImage = `${config.rootPath}/public/uploads/${peg_umpeg.avatar}`;
       if (fs.existsSync(currentImage)) {
         fs.unlinkSync(currentImage)
       }

@@ -15,8 +15,9 @@ let pembinaSchema = mongoose.Schema({
     type: String,
     require: [true, 'Jabatan harus diisi']
   },
-  photo_profile: {
+  avatar: {
     type: String,
+    default: "none"
   },
   password: {
     type: String,
