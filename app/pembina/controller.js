@@ -61,7 +61,7 @@ module.exports = {
               nip: noInduk,
               job_title: job_title.trim().toLowerCase(),
               password: noInduk,
-              photo_profile: filename
+              avatar: filename
             });
             await pembina.save();
             delete pembina._doc.password;
@@ -120,7 +120,7 @@ module.exports = {
         _id: id
       });
 
-      let currentImage = `${config.rootPath}/public/uploads/${pembina.photo_profile}`;
+      let currentImage = `${config.rootPath}/public/uploads/${pembina.avatar}`;
       if (fs.existsSync(currentImage)) {
         fs.unlinkSync(currentImage)
       }

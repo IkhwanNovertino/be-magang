@@ -82,7 +82,7 @@
                       readonly 
                       class="form-control-plaintext border-bottom" 
                       id="email" 
-                      value="<%= supervisor.contact.email === 'default@email.com' ? 'email tidak ada' : supervisor.contact.email %>"
+                      value="<%= supervisor.email || 'email belum ada' %>"
                     >
                   </div>
                 </div>
@@ -94,16 +94,16 @@
                       readonly 
                       class="form-control-plaintext border-bottom" 
                       id="email" 
-                      value="<%= supervisor.contact.phone_num === 1 ? "no.telpon tidak ada" : `+62 ${supervisor.contact.phone_num}` %>"
+                      value="<%= !supervisor.phone_num ? `nomor telpon belum dimasukkan` : `+62-${supervisor.phone_num}` %>"
                     >
                   </div>
                 </div>
                 <hr>
                 <div class="form-group">
-                  <% if (!supervisor.photo_profile) { %>
-                    <img class="img-fluid img-circle img-lg" src="http://localhost:3000/images/person-circle.svg" alt="foto profil">
+                  <% if (supervisor.avatar === 'none') { %>
+                    <img class="img-fluid img-circle img-lg" src="http://localhost:5000/images/person-circle.svg" alt="foto profil">
                   <% } else { %>
-                    <img class="img-fluid img-circle img-lg" src='http://localhost:3000/uploads/<%= supervisor.photo_profile %>' alt="Foto">
+                    <img class="img-fluid img-circle img-lg" src='http://localhost:5000/uploads/<%= supervisor.avatar %>' alt="Foto profil">
                   <% } %>
                 </div>
                 

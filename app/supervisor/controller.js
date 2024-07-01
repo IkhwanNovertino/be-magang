@@ -61,9 +61,9 @@ module.exports = {
               nip: noInduk,
               job_title: job_title.trim().toLowerCase(),
               email: email.trim(),
-              phone_num: phone_num.trim(),
-              password: `supervisor${noInduk}`,
-              photo_profile: filename
+              phone_num,
+              password: noInduk,
+              avatar: filename
             });
             await supervisor.save();
 
@@ -84,8 +84,8 @@ module.exports = {
           nip: noInduk,
           job_title: job_title.trim().toLowerCase(),
           email: email.trim(),
-          phone_num: phone_num.trim(),
-          password: `supervisor${noInduk}`,
+          phone_num,
+          password: noInduk,
         });
         await supervisor.save();
         delete supervisor._doc.password
@@ -125,7 +125,7 @@ module.exports = {
         _id: id
       });
 
-      let currentImage = `${config.rootPath}/public/uploads/${supervisor.photo_profile}`;
+      let currentImage = `${config.rootPath}/public/uploads/${supervisor.avatar}`;
       if (fs.existsSync(currentImage)) {
         fs.unlinkSync(currentImage)
       }
