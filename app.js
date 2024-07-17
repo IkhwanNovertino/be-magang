@@ -54,7 +54,7 @@ app.use('/vacancy', vacancyRouter);
 app.use('/supervisor', supervisorRouter);
 app.use('/pegumpeg', pegumpegRouter);
 app.use('/pembina', pembinaRouter);
-// app.use('/submission', submissionRouter);
+app.use('/submission', submissionRouter);
 
 app.use(`${urlAPI}/auth`, authRouter);
 app.use(`${urlAPI}/vacancy`, vacancyRouterAPI);

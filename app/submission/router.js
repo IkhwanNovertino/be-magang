@@ -13,12 +13,15 @@ var router = express.Router();
 // router.put('/status/:id', actionStatus)
 
 const { isLoginUser } = require('../middleware/auth');
-const { saveSubmission } = require('./controller');
+const { saveSubmission, index, viewDetail, downloadFile } = require('./controller');
 
 router.post('/',
   isLoginUser,
   multer({ dest: os.tmpdir() }).single('offering_letter'),
   saveSubmission
 );
+router.get('/', index);
+router.get('/detail/:id', viewDetail);
+router.get('/download/:id', downloadFile);
 
 module.exports = router;

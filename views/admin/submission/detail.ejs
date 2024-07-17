@@ -1,0 +1,219 @@
+<%- include('../../partials/header.ejs') %>
+<%- include('../../partials/navbar.ejs') %>
+<%- include('../../partials/sidebar.ejs') %>
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1>Pegawai Umpeg</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+            <li class="breadcrumb-item"><a href="/submission">Pengajuan magang</a></li>
+            <li class="breadcrumb-item active">Detail pengajuan magang</li>
+          </ol>
+        </div>
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <!-- left column -->
+        <div class="col-md-12">
+          <!-- general form elements -->
+          <div class="card card-primary">
+            <div class="card-header">
+              <h3 class="card-title">Data Pengajuan Magang</h3>
+            </div>
+            <!-- /.card-header -->
+            <!-- form start -->
+            <form>
+              <div class="card-body">
+                <div class="form-group row">
+                  <label for="name" class="col-sm-2 col-form-label">Nama Pemohon</label>
+                  <div class="col-sm-10">
+                    <input 
+                      type="text" 
+                      readonly 
+                      class="form-control-plaintext border-bottom" 
+                      id="name" 
+                      value="<%= submission.applicant.name.toUpperCase() || "" %>"
+                    >
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="nip" class="col-sm-2 col-form-label">Sekolah/Kampus/Instansi</label>
+                  <div class="col-sm-10">
+                    <input 
+                      type="text" 
+                      readonly 
+                      class="form-control-plaintext border-bottom" 
+                      id="nip" 
+                      value="<%= submission.doc_institute || "" %>"
+                    >
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="job_title" class="col-sm-2 col-form-label">No. Surat Pengajuan</label>
+                  <div class="col-sm-10">
+                    <input 
+                      type="text" 
+                      readonly 
+                      class="form-control-plaintext border-bottom" 
+                      id="job_title" 
+                      value="<%= submission.doc_number || "" %>"
+                    >
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="email" class="col-sm-2 col-form-label">Tanggal Surat Pengajuan</label>
+                  <div class="col-sm-10">
+                    <input 
+                      type="text" 
+                      readonly 
+                      class="form-control-plaintext border-bottom" 
+                      id="email" 
+                      value="<%= dateFormat(submission.doc_date) %>"
+                    >
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="email" class="col-sm-2 col-form-label">Surat Pengajuan</label>
+                  <div class="col-sm-10">
+                    <!-- <input 
+                      type="text" 
+                      readonly 
+                      class="form-control-plaintext border-bottom" 
+                      id="email" 
+                      value=""
+                    > -->
+                    <a href="/submission/download/<%= submission.id %>">unduh file surat pengajuan</a>
+                  </div>
+                </div>
+                <hr>
+                <div class="form-group row">
+                  <label for="email" class="col-sm-2 col-form-label">Tanggal Mulai Magang</label>
+                  <div class="col-sm-10">
+                    <input 
+                      type="text" 
+                      readonly 
+                      class="form-control-plaintext border-bottom" 
+                      id="email" 
+                      value="<%= dateFormat(submission.start_an_internship) %>"
+                    >
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="email" class="col-sm-2 col-form-label">Tanggal Selesai Magang</label>
+                  <div class="col-sm-10">
+                    <input 
+                      type="text" 
+                      readonly 
+                      class="form-control-plaintext border-bottom" 
+                      id="email" 
+                      value="<%= dateFormat(submission.end_an_internship) %>"
+                    >
+                  </div>
+                </div>
+                <hr>
+                <% submission.candidates.forEach((el, i) => { i++ %>
+                  <div class="form-group">
+                    <div class="row">
+                      <h6 class="col-sm-12 text-muted">Data kandidat peserta magang <%= i %></h6>
+                      <div class="col-sm-6">
+                        <!-- text input -->
+                        <div class="form-group">
+                          <label>Nama Calon Peserta</label>
+                          <input readonly type="text" class="form-control" value="<%= el.name %>">
+                        </div>
+                      </div>
+                      <div class="col-sm-6">
+                        <!-- text input -->
+                        <div class="form-group">
+                          <label>No. Siswa/Mahasiswa/Pegawai</label>
+                          <input readonly type="text" class="form-control" value="<%= el.id_num %>">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-6">
+                        <div class="form-group">
+                          <label>Jurusan</label>
+                          <input readonly type="text" class="form-control" value="<%= el.major %>">
+                        </div>
+                      </div>
+                      <div class="col-sm-6 d-flex">
+                        <div class="form-group align-self-end">
+                          <button 
+                            type="button" 
+                            class="btn btn-primary" 
+                            data-toggle="modal" 
+                            data-target="#modal-default"
+                            <% if (submission.status !== 'success') { %>
+                              disabled
+                            <% } %>
+                          >
+                            + Tambah menjadi peserta
+                          </button>
+                          <!-- <a href="/intern/create" class="btn btn-primary">
+                            Ubah Jadi Peserta
+                          </a> -->
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                <% }) %>
+              </div>
+              <!-- /.card-body -->
+              <div class="card-footer">
+                <a href="/submission" class="btn btn-default mr-1">
+                  Kembali
+                </a>
+              </div>
+            </form>
+          </div>
+          <!-- /.card -->
+        </div>
+        <!--/.col (left) -->
+      </div>
+      <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+  </section>
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+<!-- modal create intern -->
+<div class="modal fade" id="modal-default">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Default Modal</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>One fine body&hellip;</p>
+      </div>
+      <div class="modal-footer justify-content-between">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+<%- include('../../partials/footer.ejs') %>
+<%- include('../../partials/js.ejs') %>

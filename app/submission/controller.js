@@ -2,23 +2,79 @@ const path = require('path');
 const fs = require('fs');
 const config = require('../../config');
 const Submission = require('./model');
+const { dateFormat } = require('../../utils')
+
+const urlpath = 'admin/submission';
 
 module.exports = {
+  index: async (req, res) => {
+    try {
+      const alertMessage = req.flash('alertMessage');
+      const alertStatus = req.flash('alertStatus');
+      const alert = { message: alertMessage, status: alertStatus };
 
-  
+      const submission = await Submission.find().populate('applicant');
+      console.log(submission);
+      res.render(`${urlpath}/view_submission`, {
+        title: 'Pengajuan Magang',
+        submission,
+        alert
+      })
+    } catch (err) {
+      req.flash('alertMessage', `${err.message}`);
+      req.flash('alertStatus', 'danger');
+      res.redirect('/submission')
+    }
+  },
+  viewDetail: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const submission = await Submission.findById(id).populate('applicant');
 
+      res.render(`${urlpath}/detail`, {
+        title: 'Detail Pengajuan Magang',
+        submission,
+        dateFormat
+      })
+    } catch (err) {
+      req.flash('alertMessage', `${err.message}`);
+      req.flash('alertStatus', 'danger');
+
+      res.redirect('/submission')
+    }
+  },
+  downloadFile: async (req, res) => {
+    try {
+      const { id } = req.params
+      const file = await Submission.findById(id);
+      let file_path = path.resolve(config.rootPath, `public/offering-letter`, file.offering_letter);
+
+      res.set('Content-Disposition', `attachment; filename="${file.offering_letter}"`);
+      res.download(file_path, file.offering_letter, (err) => {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log('file successfully downloading');
+        }
+      })
+    } catch (err) {
+      console.log(err);
+      req.flash('alertMessage', `${err.message}`);
+      req.flash('alertStatus', 'danger');
+      res.redirect(`/submission`)
+    }
+  },
+  // API
   saveSubmission: async (req, res) => {
     try {
       const { doc_institute, doc_number, doc_date,
         start_an_internship, end_an_internship,
         offering_letter, vacancy, candidates } = req.body;
 
-      // const res_vacancy = vacancy !== 1 ?
-      //   await vancant.findOne({ _id: vacancy }) :
-      //   vacancy;
       const res_candidates = typeof candidates === 'string' ? JSON.parse(candidates) : candidates;
 
       const payload = {
+        applicant: req.user.id,
         doc_institute: doc_institute,
         doc_number: doc_number,
         doc_date: Date.parse(doc_date),
@@ -31,6 +87,7 @@ module.exports = {
       console.log(payload);
 
       if (req.file) {
+        console.log(req.file);
         let tmp_path = req.file.path;
         let originalExt = req.file.originalname.split('.')[req.file.originalname.split('.').length - 1];
         let filename = req.file.filename + '.' + originalExt;
