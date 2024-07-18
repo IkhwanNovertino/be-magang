@@ -54,15 +54,28 @@ let submissionSchema = mongoose.Schema({
   },
   acceptance_letter: {
     type: String,
+    default: '',
   },
   status: {
     type: String,
     enum: ['pending', 'success', 'confirmed', 'failed'],
     default: 'pending',
   },
-  vacancy: {
+  type_of_submission: {
     type: String,
-    default: '1'
+    enum: ['mandiri', 'lowongan'],
+    default: 'mandiri',
+  },
+  historyVacancy: {
+    id: {
+      type: String
+    },
+    position: {
+      type: String,
+    },
+    duration: {
+      type: String,
+    }
   },
   applicant: {
     type: mongoose.Schema.Types.ObjectId,
@@ -82,7 +95,7 @@ let submissionSchema = mongoose.Schema({
       require: [true, 'Jurusan tidak boleh kosong']
     },
     levels: {
-      String,
+      type: String,
       enum: ['slta', 'college', 'employee'],
       default: ['college']
     }

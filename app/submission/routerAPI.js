@@ -13,10 +13,16 @@ var router = express.Router();
 // router.put('/status/:id', actionStatus)
 
 const { isLoginUser } = require('../middleware/auth');
-const { index, viewDetail, downloadFile } = require('./controller');
+const { saveSubmission, getAllSubmission, getSubmissionById, setSubmissionStatus, setSubmmissionSuccess } = require('./controller');
 
-router.get('/', index);
-router.get('/detail/:id', viewDetail);
-router.get('/download/:id', downloadFile);
 
+router.get('/', isLoginUser, getAllSubmission);
+router.get('/:id', isLoginUser, getSubmissionById)
+router.post('/',
+  isLoginUser,
+  multer({ dest: os.tmpdir() }).single('offering_letter'),
+  saveSubmission
+);
+router.put('/status/:id', isLoginUser, setSubmissionStatus);
+router.put('/:id', isLoginUser, multer({ dest: os.tmpdir() }).single('acceptance_letter'), setSubmmissionSuccess);
 module.exports = router;
