@@ -48,16 +48,18 @@ module.exports = {
     try {
       const { id } = req.params
       const file = await Submission.findById(id);
-      let file_path = path.resolve(config.rootPath, `public/offering-letter`, file.offering_letter);
+      if (req.query.letter === 'offering') {
+        const file_path = path.resolve(config.rootPath, `public/offering-letter`, file.offering_letter);
 
-      res.set('Content-Disposition', `attachment; filename="${file.offering_letter}"`);
-      res.download(file_path, file.offering_letter, (err) => {
-        if (err) {
-          console.log(err);
-        } else {
-          console.log('file successfully downloading');
-        }
-      })
+        res.set('Content-Disposition', `attachment; filename="${file.offering_letter}"`);
+        res.download(file_path, file.offering_letter)
+      } else {
+        const file_path = path.resolve(config.rootPath, `public/acceptance-letter`, file.acceptance_letter);
+
+        res.set('Content-Disposition', `attachment; filename="${file.acceptance_letter}"`);
+        res.download(file_path, file.acceptance_letter)
+      }
+
     } catch (err) {
       console.log(err);
       req.flash('alertMessage', `${err.message}`);
@@ -233,6 +235,30 @@ module.exports = {
       } else {
         return res.status(500).json({ message: 'File harus ada!!!' });
       }
+    } catch (err) {
+      return res.status(500).json({ message: err.message || 'Terjadi kesalahan pada server' });
+    }
+  },
+  actionDelete: async (req, res) => {
+    try {
+      const { id } = req.params;
+
+      const submission = await Submission.findOneAndRemove({
+        _id: id
+      });
+
+      let currentFile = `${config.rootPath}/public/offering-letter/${submission.offering_letter}`;
+      if (fs.existsSync(currentFile)) {
+        fs.unlinkSync(currentFile)
+      }
+
+      res.status(200).json({
+        data: {
+          message: [
+            'data berhasil dihapus'
+          ],
+        }
+      });
     } catch (err) {
       return res.status(500).json({ message: err.message || 'Terjadi kesalahan pada server' });
     }
