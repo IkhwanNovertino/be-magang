@@ -14,11 +14,12 @@ const vacancyRouter = require('./app/vacancy/router.js');
 const supervisorRouter = require('./app/supervisor/router.js');
 const pegumpegRouter = require('./app/peg-umpeg/router.js');
 const pembinaRouter = require('./app/pembina/router.js');
-// const submissionRouter = require('./app/submission/router.js');
+const submissionRouter = require('./app/submission/router.js');
 
 // API
 const authRouter = require('./app/authenticate/router.js');
 const vacancyRouterAPI = require('./app/vacancy/routerAPI.js');
+const submissionRouterAPI = require('./app/submission/routerAPI.js');
 
 const app = express();
 const urlAPI = `/api/v1`
@@ -54,10 +55,11 @@ app.use('/vacancy', vacancyRouter);
 app.use('/supervisor', supervisorRouter);
 app.use('/pegumpeg', pegumpegRouter);
 app.use('/pembina', pembinaRouter);
-// app.use('/submission', submissionRouter);
+app.use('/submission', submissionRouter);
 
 app.use(`${urlAPI}/auth`, authRouter);
 app.use(`${urlAPI}/vacancy`, vacancyRouterAPI);
+app.use(`${urlAPI}/submission`, submissionRouterAPI);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
