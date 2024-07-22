@@ -9,13 +9,13 @@
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1>Pegawai Umpeg</h1>
+          <h1>Peserta Magang</h1>
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
-            <li class="breadcrumb-item"><a href="/pegumpeg">Pegawai umpeg</a></li>
-            <li class="breadcrumb-item active">Detail pegawai umpeg</li>
+            <li class="breadcrumb-item"><a href="/intern">peserta magang</a></li>
+            <li class="breadcrumb-item active">Detail peserta magang</li>
           </ol>
         </div>
       </div>
@@ -31,80 +31,143 @@
           <!-- general form elements -->
           <div class="card card-primary">
             <div class="card-header">
-              <h3 class="card-title">Data Pegawai Umpeg</h3>
+              <h3 class="card-title">Data Peserta Magang</h3>
             </div>
             <!-- /.card-header -->
             <!-- form start -->
             <form>
               <div class="card-body">
                 <div class="form-group row">
-                  <label for="name" class="col-sm-2 col-form-label">Nama Lengkap</label>
-                  <div class="col-sm-10">
+                  <label for="name" class="col-sm-4 col-form-label">Nama Lengkap</label>
+                  <div class="col-sm-8">
                     <input 
                       type="text" 
                       readonly 
                       class="form-control-plaintext border-bottom" 
                       id="name" 
-                      value=""
+                      value="<%= intern.name %>"
                     >
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="nip" class="col-sm-2 col-form-label">No. Induk Pegawai</label>
-                  <div class="col-sm-10">
+                  <label for="nim" class="col-sm-4 col-form-label">No. Induk Siswa/Mahasiswa</label>
+                  <div class="col-sm-8">
                     <input 
                       type="text" 
                       readonly 
                       class="form-control-plaintext border-bottom" 
-                      id="nip" 
-                      value=""
+                      id="nim" 
+                      value="<%= intern.id_num %>"
                     >
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="job_title" class="col-sm-2 col-form-label">Jabatan</label>
-                  <div class="col-sm-10">
+                  <label for="institute" class="col-sm-4 col-form-label">Sekolah/Kampus/Instansi</label>
+                  <div class="col-sm-8">
                     <input 
                       type="text" 
                       readonly 
                       class="form-control-plaintext border-bottom" 
-                      id="job_title" 
-                      value=""
+                      id="institute" 
+                      value="<%= intern.institute %>"
+                    >
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="major" class="col-sm-4 col-form-label">Jurusan</label>
+                  <div class="col-sm-8">
+                    <input 
+                      type="text" 
+                      readonly 
+                      class="form-control-plaintext border-bottom" 
+                      id="major" 
+                      value="<%= intern.major %>"
+                    >
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="levels" class="col-sm-4 col-form-label">Kategori Peserta</label>
+                  <div class="col-sm-8">
+                    <input 
+                      type="text" 
+                      readonly 
+                      class="form-control-plaintext border-bottom" 
+                      id="levels"
+                      <% if (intern.levels === 'slta') { %>
+                        value="SLTA/SMK/SMA"
+                      <% } else if (intern.levels === 'college') { %>
+                        value="Perguruan Tinggi"
+                      <% } else { %>
+                        value="Pegawai"
+                      <% } %>
                     >
                   </div>
                 </div>
                 <hr>
                 <div class="form-group row">
-                  <label for="email" class="col-sm-2 col-form-label">Email</label>
-                  <div class="col-sm-10">
+                  <label for="email" class="col-sm-4 col-form-label">Tanggal Mulai Magang</label>
+                  <div class="col-sm-8">
                     <input 
                       type="text" 
                       readonly 
                       class="form-control-plaintext border-bottom" 
                       id="email" 
-                      value=""
+                      value="<%= intern.start_an_internship %>"
                     >
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="email" class="col-sm-2 col-form-label">No. Telpon</label>
-                  <div class="col-sm-10">
+                  <label for="email" class="col-sm-4 col-form-label">Tanggal Selesai Magang</label>
+                  <div class="col-sm-8">
                     <input 
                       type="text" 
                       readonly 
                       class="form-control-plaintext border-bottom" 
                       id="email" 
-                      value=""
+                      value="<%= intern.end_an_internship %>"
                     >
                   </div>
                 </div>
                 <hr>
-                <div class="form-group">
-                  <%# if (peg_umpeg.avatar === 'none') { %>
-                    <!-- <img class="img-fluid img-circle img-lg" src="http://localhost:5000/images/person-circle.svg" alt="foto profil"> -->
-                  <%# } else { %>
-                    <!-- <img class="img-fluid img-circle img-lg" src='http://localhost:5000/uploads/<%#= peg_umpeg.avatar %>' alt="Foto"> -->
-                  <%# } %>
+                <div class="form-group row">
+                  <label for="email" class="col-sm-4 col-form-label">Email</label>
+                  <div class="col-sm-8">
+                    <input 
+                      type="text" 
+                      readonly 
+                      class="form-control-plaintext border-bottom" 
+                      id="email" 
+                      value="<%= intern.email %>"
+                    >
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="email" class="col-sm-4 col-form-label">No. Telpon</label>
+                  <div class="col-sm-8">
+                    <input 
+                      type="text" 
+                      readonly 
+                      class="form-control-plaintext border-bottom" 
+                      id="email" 
+                      value="<%= intern.phone_num === 1 ? `nomor telpon belum dimasukkan` : `+62-${intern.phone_num}` %>"
+                    >
+                  </div>
+                </div>
+                <hr>
+                <div class="form-group row">
+                  <label for="email" class="col-sm-4 col-form-label">Data Pengajuan Magang</label>
+                  <div class="col-sm-8">
+                    <a href="/submission/detail/<%= intern.submissionID %>" class="btn btn-default mr-1">
+                      Lihat data pengajuan magang
+                    </a>
+                  </div>
+                </div>
+                <div class="form-group mt-5 pt-5">
+                  <% if (intern.avatar === 'none') { %>
+                    <img class="img-fluid img-circle img-lg" src="http://localhost:5000/images/person-circle.svg" alt="foto profil">
+                  <% } else { %>
+                    <img class="img-fluid img-circle img-lg" src='http://localhost:5000/uploads/<%= intern.avatar %>' alt="Foto">
+                  <% } %>
                 </div>
                 
               </div>
@@ -113,9 +176,6 @@
                 <a href="/interns" class="btn btn-default mr-1">
                   Kembali
                 </a>
-                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal-sm">
-                  Hapus
-                </button>
               </div>
             </form>
           </div>
@@ -130,24 +190,6 @@
   <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
-
-<!-- modal-dialog -->
-<div class="modal fade" id="modal-sm">
-  <div class="modal-dialog modal-sm">
-    <div class="modal-content">
-      <div class="modal-body">
-        <p>Apakah anda yakin ingin menghapus data ini?</p>
-      </div>
-      <div class="modal-footer justify-end">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Tidak</button>
-        <form action="/pegumpeg/delete/<%= peg_umpeg.id %>?_method=DELETE" method="POST">
-          <button class="btn btn-danger">Ya</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- /.modal-dialog -->
 
 <%- include('../../partials/footer.ejs') %>
 <%- include('../../partials/js.ejs') %>

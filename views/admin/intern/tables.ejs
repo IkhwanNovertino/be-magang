@@ -10,23 +10,45 @@
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <td>Nama Lengkap</td>
-      <td>NIS/NIM</td>
-      <td>Asal Sekolah</td>
-      <td>Jurusan</td>
-      <td>status</td>
-      <td>
-        <form action="/pegumpeg/status/?_method=PUT" method="POST" style="display: inline-block;">
-          <button class="btn btn-primary btn-sm">
-            Done
-          </button>
-        </form>
-        <a href="/pegumpeg/detail/" class="btn btn-default btn-sm ml-2">
-          <i class="fas fa-pencil-alt"></i>
-          Detail
-        </a>
-      </td>
-    </tr>
+    <% intern.forEach(el => { %>
+      <tr>
+        <th><%= el.name %></th>
+        <td><%= el.id_num %></td>
+        <td><%= el.institute %></td>
+        <td><%= el.major %></td>
+        <td>
+          <% if (el.statusIntern === 'pending') { %>
+            <span class="badge badge-warning">
+              pending
+            </span>
+          <% } else if(el.status === 'active') { %>
+            <span class="badge badge-success">
+              aktif
+            </span>
+          <% } else { %>
+            <span class="badge badge-primary">
+              selesai
+            </span>
+          <% } %>
+        </td>
+        <td>
+          <form action="/intern/status/?_method=PUT" method="POST" style="display: inline-block;">
+            <button 
+              class="btn btn-primary btn-sm"
+              <% if (el.statusIntern === 'active' || el.statusIntern === 'finish') { %>
+                disabled
+              <% } %>
+              >
+              Aktifkan akun peserta 
+            </button>
+          </form>
+          <a href="/intern/detail/<%= el.id %>" class="btn btn-default btn-sm ml-2">
+            <i class="fas fa-pencil-alt"></i>
+            Detail
+          </a>
+        </td>
+      </tr>
+    <% }) %>
+    
   </tbody>
 </table>

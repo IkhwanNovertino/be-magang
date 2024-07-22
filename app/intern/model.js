@@ -57,7 +57,7 @@ let internSchema = mongoose.Schema({
   status: {
     type: String,
     enum: ['Y', 'N'],
-    default: 'Y'
+    default: 'N'
   },
   submissionID: {
     type: mongoose.Schema.Types.ObjectId,
