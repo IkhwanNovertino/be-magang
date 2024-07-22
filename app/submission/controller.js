@@ -3,6 +3,7 @@ const fs = require('fs');
 const config = require('../../config');
 const Submission = require('./model');
 const Vacancy = require('../vacancy/model');
+const Intern = require('../intern/model');
 const { dateFormat } = require('../../utils')
 
 const urlpath = 'admin/submission';
@@ -15,7 +16,6 @@ module.exports = {
       const alert = { message: alertMessage, status: alertStatus };
 
       const submission = await Submission.find().populate('applicant');
-      console.log(submission);
       res.render(`${urlpath}/view_submission`, {
         title: 'Pengajuan Magang',
         submission,
@@ -29,14 +29,49 @@ module.exports = {
   },
   viewDetail: async (req, res) => {
     try {
+      const alertMessage = req.flash('alertMessage');
+      const alertStatus = req.flash('alertStatus');
+      const alert = { message: alertMessage, status: alertStatus };
+
       const { id } = req.params;
       const submission = await Submission.findById(id).populate('applicant');
 
       res.render(`${urlpath}/detail`, {
         title: 'Detail Pengajuan Magang',
         submission,
-        dateFormat
+        dateFormat,
+        alert
       })
+    } catch (err) {
+      req.flash('alertMessage', `${err.message}`);
+      req.flash('alertStatus', 'danger');
+
+      res.redirect('/submission')
+    }
+  },
+  createIntern: async (req, res) => {
+    try {
+      const { idSubmission, name, nim, major, levels } = req.body;
+      const submission = await Submission.findOne({ _id: idSubmission });
+
+      const payload = {
+        name: name,
+        id_num: nim,
+        password: nim,
+        institute: submission.doc_institute,
+        major: major,
+        levels: levels,
+        start_an_internship: submission.start_an_internship,
+        end_an_internship: submission.end_an_internship,
+        submissionID: idSubmission,
+      };
+
+      const intern = new Intern({ ...payload });
+      await intern.save()
+
+      req.flash('alertMessage', 'Berhasil Menambah Peserta Magang');
+      req.flash('alertStatus', 'success');
+      res.redirect(`/submission/detail/${idSubmission}`);
     } catch (err) {
       req.flash('alertMessage', `${err.message}`);
       req.flash('alertStatus', 'danger');
