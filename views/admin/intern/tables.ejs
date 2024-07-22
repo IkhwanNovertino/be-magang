@@ -32,7 +32,7 @@
           <% } %>
         </td>
         <td>
-          <form action="/intern/status/?_method=PUT" method="POST" style="display: inline-block;">
+          <form action="/intern/status/<%= el.id %>?_method=PUT" method="POST" style="display: inline-block;">
             <button 
               class="btn btn-primary btn-sm"
               <% if (el.statusIntern === 'active' || el.statusIntern === 'finish') { %>
