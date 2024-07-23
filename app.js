@@ -15,6 +15,7 @@ const supervisorRouter = require('./app/supervisor/router.js');
 const pegumpegRouter = require('./app/peg-umpeg/router.js');
 const pembinaRouter = require('./app/pembina/router.js');
 const submissionRouter = require('./app/submission/router.js');
+const internRouter = require('./app/intern/router.js');
 
 // API
 const authRouter = require('./app/authenticate/router.js');
@@ -56,6 +57,7 @@ app.use('/supervisor', supervisorRouter);
 app.use('/pegumpeg', pegumpegRouter);
 app.use('/pembina', pembinaRouter);
 app.use('/submission', submissionRouter);
+app.use('/intern', internRouter);
 
 app.use(`${urlAPI}/auth`, authRouter);
 app.use(`${urlAPI}/vacancy`, vacancyRouterAPI);

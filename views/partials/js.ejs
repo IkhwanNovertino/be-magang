@@ -67,6 +67,20 @@
         format: 'll'
     });
 
+    $('#exampleModal').on('show.bs.modal', function (event) {
+      var button = $(event.relatedTarget) // Button that triggered the modal
+      var recipient = button.data('whatever') // Extract info from data-* attributes
+      var data = recipient.split("/")
+      // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+      // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+      var modal = $(this)
+      modal.find('.modal-body input#idSubmission').val(data[0])
+      modal.find('.modal-body input#name').val(data[1])
+      modal.find('.modal-body input#nim').val(data[2])
+      modal.find('.modal-body input#major').val(data[3])
+      modal.find('.modal-body input#levels').val(data[4])
+    })
+
     //Date and time picker
     $('#reservationdatetime').datetimepicker({ icons: { time: 'far fa-clock' } });
     $(function () {

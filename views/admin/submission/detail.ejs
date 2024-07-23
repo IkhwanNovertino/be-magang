@@ -5,6 +5,7 @@
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
   <!-- Content Header (Page header) -->
+  <%- include('../../partials/message.ejs') %>
   <section class="content-header">
     <div class="container-fluid">
       <div class="row mb-2">
@@ -169,17 +170,19 @@
                             type="button" 
                             class="btn btn-primary" 
                             data-toggle="modal" 
-                            data-target="#modal-default"
+                            data-target="#exampleModal" 
+                            data-whatever="<%= submission.id %>/<%= el.name %>/<%= el.id_num %>/<%= el.major %>/<%= el.levels %>"
                             <% if (submission.status !== 'success') { %>
                               disabled
                             <% } %>
                           >
-                            + Tambah menjadi peserta
+                            + Tambah menjadi peserta magang
                           </button>
                         </div>
                       </div>
                     </div>
                   </div>
+
                 <% }) %>
               </div>
               <!-- /.card-body -->
@@ -202,27 +205,44 @@
 </div>
 <!-- /.content-wrapper -->
 
-<!-- modal create intern -->
-<div class="modal fade" id="modal-default">
-  <div class="modal-dialog">
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
     <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">Default Modal</h4>
+      <div class="modal-header bg-primary">
+        <h5 class="modal-title" id="exampleModalLabel">Tambah peserta magang atas nama:</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
-        <p>One fine body&hellip;</p>
-      </div>
-      <div class="modal-footer justify-content-between">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
+      <form action="/submission/intern" method="post">
+        <div class="modal-body">
+            <div class="form-group">
+              <input type="text" class="form-control" id="idSubmission" name="idSubmission" hidden>
+            </div>
+            <div class="form-group">
+              <label for="recipient-name" class="col-form-label">Nama Lengkap</label>
+              <input type="text" class="form-control" id="name" name="name" readonly>
+            </div>
+            <div class="form-group">
+              <label for="recipient-name" class="col-form-label">NIS/NIM</label>
+              <input type="text" class="form-control" id="nim" name="nim" readonly>
+            </div>
+            <div class="form-group">
+              <label for="recipient-name" class="col-form-label">NIS/NIM</label>
+              <input type="text" class="form-control" id="major" name="major" readonly>
+            </div>
+            <div class="form-group">
+              <label for="recipient-name" class="col-form-label">NIS/NIM</label>
+              <input type="text" class="form-control" id="levels" name="levels" readonly>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+          <button type="submit" class="btn btn-primary">Tambah peserta magang</button>
+        </div>
+      </form>
     </div>
-    <!-- /.modal-content -->
   </div>
-  <!-- /.modal-dialog -->
 </div>
 
 <%- include('../../partials/footer.ejs') %>

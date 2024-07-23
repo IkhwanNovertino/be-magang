@@ -13,10 +13,11 @@ var router = express.Router();
 // router.put('/status/:id', actionStatus)
 
 const { isLoginUser } = require('../middleware/auth');
-const { index, viewDetail, downloadFile } = require('./controller');
+const { index, viewDetail, downloadFile, createIntern } = require('./controller');
 
 router.get('/', index);
 router.get('/detail/:id', viewDetail);
 router.get('/download/:id', downloadFile);
+router.post('/intern', createIntern);
 
 module.exports = router;
