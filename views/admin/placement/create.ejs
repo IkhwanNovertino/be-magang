@@ -1,0 +1,107 @@
+<%- include('../../partials/header.ejs') %>
+<%- include('../../partials/navbar.ejs') %>
+<%- include('../../partials/sidebar.ejs') %>
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1>Penempatan Peserta Magang</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+            <li class="breadcrumb-item"><a href="/supervisor">Penempatan</a></li>
+            <li class="breadcrumb-item active">Tambah penempatan</li>
+          </ol>
+        </div>
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <!-- left column -->
+        <div class="col-md-12">
+          <!-- general form elements -->
+          <div class="card card-primary">
+            <div class="card-header">
+              <h3 class="card-title">Form Tambah Penempatan Peserta Magang</h3>
+            </div>
+            <!-- /.card-header -->
+            <!-- form start -->
+            <form action="/placement/create" method="POST">
+              <div class="card-body">
+                <div class="form-group">
+                  <label>Peserta Magang</label>
+                  <select class="form-control select2bs4" data-placeholder="Pilih peserta magang" name="intern" id="intern" required style="width: 100%;">
+                    <option></option>
+                    <% intern.forEach(el => { %>
+                      <option value="<%= el.id %>"><%= el.name %></option>
+                    <% }) %>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Pembimbing Lapangan/Supervisor</label>
+                  <select class="form-control select2bs4" data-placeholder="Pilih pembimbing/supervisor" name="supervisor" id="supervisor" required style="width: 100%;">
+                    <option></option>
+                    <% supervisor.forEach(el => { %>
+                      <option value="<%= el.id %>"><%= el.name.toUpperCase() %></option>
+                    <% }) %>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Bidang Kegiatan</label>
+                  <select class="form-control select2bs4" data-placeholder="Pilih bidang kegiatan" name="biro" id="biro" required style="width: 100%;">
+                    <option></option>
+                    <% biro.forEach(el => { %>
+                      <option value="<%= el.id %>"><%= el.name.toUpperCase() %></option>
+                    <% }) %>
+                  </select>
+                </div>
+              <!-- /.card-body -->
+              <div class="card-footer">
+                <a href="/placement" class="btn btn-default mr-1">
+                  Kembali
+                </a>
+                <button type="submit" class="btn btn-primary">Simpan</button>
+              </div>
+            </form>
+          </div>
+          <!-- /.card -->
+        </div>
+        <!--/.col (left) -->
+      </div>
+      <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+  </section>
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+<%- include('../../partials/footer.ejs') %>
+<%- include('../../partials/js.ejs') %>
+
+<script>
+  function readURL(input) {
+    if (input.files && input.files[0]) {
+      const reader = new FileReader();
+
+      reader.onload = function(e) {
+        $('#preview').attr('src', e.target.result);
+        $('#preview').attr('width', '30%');
+        $('#preview').attr('height', '30%');
+      }
+
+      reader.readAsDataURL(input.files[0])
+    }
+  }
+
+  $('#photo_profile').change( function() { readURL(this) });
+</script>
