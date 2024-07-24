@@ -1,6 +1,4 @@
 var express = require('express');
-const multer = require('multer')
-const os = require('os')
 var router = express.Router();
 const { index, viewDetail, viewCreate, actionCreate, actionDelete } = require('./controller')
 
