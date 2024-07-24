@@ -10,5 +10,4 @@ router.get('/edit/:id', viewEdit);
 router.put('/edit/:id', actionEdit);
 router.delete('/delete/:id', actionDelete);
 
-
 module.exports = router;
