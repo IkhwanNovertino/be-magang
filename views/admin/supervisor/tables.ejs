@@ -30,7 +30,7 @@
       <td>
         <form action="/supervisor/status/<%= e.id %>?_method=PUT" method="POST" style="display: inline-block;">
           <button class="btn btn-primary btn-sm">
-            <% if(supervisor.status === 'Y') { %>
+            <% if(e.status === 'Y') { %>
                 Non-aktifkan user
             <% } else { %>
                 Aktifkan User
