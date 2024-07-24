@@ -1,0 +1,27 @@
+<table id="example2" class="table table-bordered table-striped">
+  <thead>
+  <tr>
+    <th>Peserta Magang</th>
+    <th>NIS/NIM</th>
+    <th>Pembimbing Lapangan</th>
+    <th>Bidang Kegiatan</th>
+    <th>Aksi</th>
+  </tr>
+  </thead>
+  <tbody>
+    <% placement.forEach((el, i) => { %>
+      <tr>
+        <th><%= el.intern.name.toUpperCase() %></th>
+        <td><%= el.intern.id_num %></td>
+        <td><%= el.supervisor.name.toUpperCase() %></td>
+        <td><%= el.biro.name.toUpperCase() %></td>
+        <td>
+          <a href="/placement/detail/<%= el.id %>" class="btn btn-default btn-sm ml-2">
+            <i class="fas fa-pencil-alt"></i>
+            Detail
+          </a>
+        </td>
+      </tr>
+    <% }) %>
+  </tbody>
+</table>
