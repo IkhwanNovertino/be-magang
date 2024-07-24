@@ -170,11 +170,8 @@ module.exports = {
           duration: res_vancant.duration || '',
         }
       };
-      console.log('Data Payload controller saveSubmission');
-      console.log(payload);
 
       if (req.file) {
-        console.log(req.file);
         let tmp_path = req.file.path;
         let originalExt = req.file.originalname.split('.')[req.file.originalname.split('.').length - 1];
         let filename = req.file.filename + '.' + originalExt;
@@ -187,17 +184,14 @@ module.exports = {
         src.on('end', async () => {
           try {
             const submission = new Submission({ ...payload, offering_letter: filename });
-            console.log('log data sebelum di save ke database');
-            console.log(submission);
             await submission.save();
-            console.log('DATATATAAAA');
+
             return res.status(201).json({
               data: {
                 submission
               }
             })
           } catch (err) {
-            console.log('ERRR di Stream');
             if (err && err.name === "ValidationError") {
               const message = [];
               if (err.errors.doc_institute) message.push(err.errors.doc_institute.message);
@@ -239,7 +233,6 @@ module.exports = {
     try {
       const { id } = req.params;
       if (req.file) {
-        console.log(req.file);
         let tmp_path = req.file.path;
         let originalExt = req.file.originalname.split('.')[req.file.originalname.split('.').length - 1];
         let filename = req.file.filename + '.' + originalExt;
@@ -263,12 +256,23 @@ module.exports = {
               }
             })
           } catch (err) {
-            console.log(err);
-            return res.status(500).json({ message: 'Doooor!!!' });
+            if (err && err.name === "ValidationError") {
+              const message = [];
+              if (err.errors.acceptance_letter) message.push(err.errors.acceptance_letter.message);
+              if (err.errors.status) message.push(err.errors.status.message);
+
+              return res.status(422).json({
+                message: message,
+                fields: err.errors,
+              });
+            }
           }
         })
       } else {
-        return res.status(500).json({ message: 'File harus ada!!!' });
+        return res.status(422).json({
+          message: ['Surat balasan pengajuan magang tidak boleh kosong'],
+          fields: 'acceptance_letter',
+        });
       }
     } catch (err) {
       return res.status(500).json({ message: err.message || 'Terjadi kesalahan pada server' });
