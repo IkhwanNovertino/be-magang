@@ -22,6 +22,7 @@ const placementRouter = require('./app/placement/router.js');
 const authRouter = require('./app/authenticate/router.js');
 const vacancyRouterAPI = require('./app/vacancy/routerAPI.js');
 const submissionRouterAPI = require('./app/submission/routerAPI.js');
+const internRouterAPI = require('./app/intern/routerAPI.js');
 
 const app = express();
 const urlAPI = `/api/v1`
@@ -64,6 +65,7 @@ app.use('/placement', placementRouter);
 app.use(`${urlAPI}/auth`, authRouter);
 app.use(`${urlAPI}/vacancy`, vacancyRouterAPI);
 app.use(`${urlAPI}/submission`, submissionRouterAPI);
+app.use(`${urlAPI}/intern`, internRouterAPI);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
