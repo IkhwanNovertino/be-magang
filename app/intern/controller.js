@@ -105,4 +105,15 @@ module.exports = {
       return res.status(404).json({ message: ['data tidak ditemukan'], field: 'id' });
     }
   },
+  // DASHBOARD INTERN/PESERTA MAGANG
+  dashboard: async (req, res) => {
+    try {
+      console.log('DATA');
+      console.log(req.user);
+      res.status(200).json({ data: 'data dimuat' });
+    } catch (err) {
+      console.log(err.errors);
+
+    }
+  }
 };
