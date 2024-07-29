@@ -1,6 +1,7 @@
 <table id="example2" class="table table-bordered table-striped">
   <thead>
     <tr>
+      <th>No</th>
       <th>Nama Lengkap</th>
       <th>NIS/NIM</th>
       <th>Asal Sekolah</th>
@@ -10,8 +11,9 @@
     </tr>
   </thead>
   <tbody>
-    <% intern.forEach(el => { %>
+    <% intern.forEach((el, i) => { %>
       <tr>
+        <td><%= ++i %></td>
         <th><%= el.name %></th>
         <td><%= el.id_num %></td>
         <td><%= el.institute %></td>
@@ -21,7 +23,7 @@
             <span class="badge badge-warning">
               pending
             </span>
-          <% } else if(el.status === 'active') { %>
+          <% } else if(el.statusIntern === 'active') { %>
             <span class="badge badge-success">
               aktif
             </span>

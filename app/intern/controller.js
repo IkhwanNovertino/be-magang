@@ -10,8 +10,8 @@ module.exports = {
       const alertStatus = req.flash('alertStatus');
       const alert = { message: alertMessage, status: alertStatus };
 
-      const intern = await Intern.find();
-      console.log(intern);
+      const intern = await Intern.find().sort({ createdAt: -1 });
+      // console.log(intern);
       res.render(`${urlpath}/view_interns`, {
         title: 'Peserta Magang',
         intern,
@@ -20,7 +20,7 @@ module.exports = {
     } catch (err) {
       req.flash('alertMessage', `${err.message}`);
       req.flash('alertStatus', 'danger');
-      res.redirect('/inten')
+      res.redirect('/intern')
     }
   },
   viewDetail: async (req, res) => {
@@ -42,8 +42,9 @@ module.exports = {
     try {
       const { id } = req.params;
       let intern = await Intern.findOne({ _id: id })
-
-      if (Date.now() >= Date(intern.start_an_internship)) {
+      console.log(Date(intern.start_an_internship));
+      console.log();
+      if (Date.now() >= intern.start_an_internship) {
         let status = intern.status === 'Y' ? 'N' : 'Y';
         let statusIntern = 'active';
         await Intern.findOneAndUpdate({ _id: id }, { status, statusIntern });
@@ -59,19 +60,29 @@ module.exports = {
     } catch (err) {
       req.flash('alertMessage', `${err.message}`);
       req.flash('alertStatus', 'danger');
-      res.redirect('/inten')
+      res.redirect('/intern')
     }
   },
 
   // API
   getAllIntern: async (req, res) => {
     try {
-      const intern = await Intern.find().sort({ createdAt: -1 });
-      return res.status(200).json({
-        data: {
-          intern,
-        }
-      });
+      if (req.user.role === 'supervisor') {
+        const intern = await Placement.find({ supervisor: req.user.id })
+          .populate('intern')
+          .populate('biro')
+          .sort({ createdAt: -1 })
+        res.status(200).json({
+          data: intern,
+        })
+      } else {
+        const intern = await Intern.find().sort({ createdAt: -1 });
+        res.status(200).json({
+          data: {
+            intern,
+          }
+        });
+      }
     } catch (err) {
       return res.status(500).json({ message: err.message || 'Terjadi kesalahan pada server' });
     }
@@ -79,20 +90,30 @@ module.exports = {
   getInternById: async (req, res) => {
     try {
       const { id } = req.params;
+
       const intern = await Intern.findById(id).populate('submissionID');
       const placement = await Placement.find({ intern: id }).populate('supervisor').populate('biro');
 
-      let payload = {
+      let data = {
         intern, placement
       };
 
       return res.status(200).json({
-        data: {
-          payload,
-        }
+        data
       });
     } catch (err) {
       return res.status(404).json({ message: ['data tidak ditemukan'], field: 'id' });
     }
   },
+  // DASHBOARD INTERN/PESERTA MAGANG
+  dashboard: async (req, res) => {
+    try {
+      console.log('DATA');
+      console.log(req.user);
+      res.status(200).json({ data: 'data dimuat' });
+    } catch (err) {
+      console.log(err.errors);
+
+    }
+  }
 };
