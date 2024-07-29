@@ -165,9 +165,9 @@ module.exports = {
         candidates: res_candidates,
         type_of_submission: vacancy === '1' ? 'mandiri' : 'lowongan',
         historyVacancy: {
-          id: res_vancant.id || '1',
-          position: res_vancant.position || '',
-          duration: res_vancant.duration || '',
+          id: res_vancant?.id ? res_vancant.id : '1',
+          position: res_vancant?.position ? res_vancant.position : '',
+          duration: res_vancant?.duration ? res_vancant.duration : '',
         }
       };
 
@@ -210,7 +210,7 @@ module.exports = {
         });
       }
     } catch (err) {
-      res.status(500).json({ message: err.message || 'Terjadi kesalahan pada server' });
+      res.status(500).json({ errors: err.errors });
     }
   },
   setSubmissionStatus: async (req, res) => {
