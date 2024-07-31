@@ -12,8 +12,11 @@ module.exports = {
       const alertStatus = req.flash('alertStatus');
       const alert = { message: alertMessage, status: alertStatus };
 
-      const placement = await Placement.find().populate('intern').populate('biro').populate('supervisor');
-      console.log(placement);
+      const placement = await Placement.find()
+        .populate('intern')
+        .populate('biro')
+        .populate('supervisor')
+        .sort({ createdAt: -1 });
       res.render(`${urlpath}/view_placement`, {
         title: 'Penempatan Magang',
         placement,
@@ -27,7 +30,6 @@ module.exports = {
   },
   viewCreate: async (req, res) => {
     try {
-
       const biro = await Biro.find();
       const supervisor = await Supervisor.find();
       const intern = await Intern.find().sort({ createdAt: -1 })
@@ -50,7 +52,6 @@ module.exports = {
       const placement = new Placement({
         intern, supervisor, biro
       })
-
       await placement.save();
 
       res.redirect('/placement');
