@@ -24,6 +24,8 @@ const vacancyRouterAPI = require('./app/vacancy/routerAPI.js');
 const submissionRouterAPI = require('./app/submission/routerAPI.js');
 const internRouterAPI = require('./app/intern/routerAPI.js');
 const logbookRouterAPI = require('./app/logbook/routerAPI.js');
+const scoreComponentAPI = require('./app/score-component/routerAPI.js');
+const evaluationAPI = require('./app/evaluation/routerAPI.js');
 
 const app = express();
 const urlAPI = `/api/v1`
@@ -68,6 +70,8 @@ app.use(`${urlAPI}/vacancy`, vacancyRouterAPI);
 app.use(`${urlAPI}/submission`, submissionRouterAPI);
 app.use(`${urlAPI}/intern`, internRouterAPI);
 app.use(`${urlAPI}/logbook`, logbookRouterAPI);
+app.use(`${urlAPI}/score-component`, scoreComponentAPI);
+app.use(`${urlAPI}/evaluation`, evaluationAPI);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
