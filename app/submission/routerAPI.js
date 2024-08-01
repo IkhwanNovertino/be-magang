@@ -12,7 +12,7 @@ router.get('/', isLoginUser, getAllSubmission);
 router.get('/:id', isLoginUser, getSubmissionById)
 router.post('/',
   isLoginUser,
-  multer({ dest: os.tmpdir() }).single('offering_letter'),
+  multer({ dest: os.tmpdir() }).single('acceptance_letter'),
   saveSubmission
 );
 router.put('/status/:id', isLoginUser, setSubmissionStatus);
