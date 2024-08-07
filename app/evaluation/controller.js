@@ -14,6 +14,9 @@ module.exports = {
         })
       }
       const res_score = typeof score === 'string' ? JSON.parse(score) : score;
+      const date2 = new Date().getFullYear();
+      console.log(`${date2}`);
+      const date = new Date().getFullYear();
 
       const evaluation = new Evaluation({
         intern: intern,

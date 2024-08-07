@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const AutoIncrement = require('mongoose-sequence')(mongoose);
 
 let evaluationSchema = mongoose.Schema({
   intern: {
@@ -11,7 +12,7 @@ let evaluationSchema = mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ['pending', 'accept', 'reject'],
+    enum: ['pending', 'accept'],
     default: 'pending',
   },
   score: [{
@@ -24,6 +25,24 @@ let evaluationSchema = mongoose.Schema({
       default: 0
     },
   }],
+  // for cerificate number
+  inc_reference: {
+    type: Number
+  },
+  evaluateId: {
+    type: Number
+  },
 }, { timestamps: true });
+
+evaluationSchema.pre('save', function (next) {
+  this.inc_reference = new Date().getFullYear();
+  next();
+});
+
+evaluationSchema.plugin(AutoIncrement, {
+  id: 'certif',
+  inc_field: 'evaluateId',
+  reference_fields: ['inc_reference']
+});
 
 module.exports = mongoose.model('Evaluation', evaluationSchema);
