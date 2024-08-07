@@ -1,6 +1,7 @@
 <table id="example2" class="table table-bordered table-striped">
   <thead>
   <tr>
+    <th>No.</th>
     <th>Peserta Magang</th>
     <th>NIS/NIM</th>
     <th>Pembimbing Lapangan</th>
@@ -11,7 +12,8 @@
   <tbody>
     <% placement.forEach((el, i) => { %>
       <tr>
-        <th><%= el.intern.name.toUpperCase() %></th>
+        <td><%= ++i %></td>
+        <td><%= el.intern.name.toUpperCase() %></td>
         <td><%= el.intern.id_num %></td>
         <td><%= el.supervisor.name.toUpperCase() %></td>
         <td><%= el.biro.name.toUpperCase() %></td>

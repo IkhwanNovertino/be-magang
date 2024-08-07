@@ -1,6 +1,7 @@
 const Intern = require('./model');
 const Placement = require('../placement/model');
 
+const { dateFormat } = require('../../utils/index');
 const urlpath = 'admin/intern';
 
 module.exports = {
@@ -11,7 +12,7 @@ module.exports = {
       const alert = { message: alertMessage, status: alertStatus };
 
       const intern = await Intern.find().sort({ createdAt: -1 });
-      // console.log(intern);
+
       res.render(`${urlpath}/view_interns`, {
         title: 'Peserta Magang',
         intern,
@@ -31,6 +32,7 @@ module.exports = {
       res.render(`${urlpath}/detail`, {
         title: 'Detail Peserta Magang',
         intern,
+        dateFormat,
       })
     } catch (err) {
       req.flash('alertMessage', `${err.message}`);
