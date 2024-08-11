@@ -17,6 +17,7 @@ const pembinaRouter = require('./app/pembina/router.js');
 const submissionRouter = require('./app/submission/router.js');
 const internRouter = require('./app/intern/router.js');
 const placementRouter = require('./app/placement/router.js');
+const logbookRouter = require('./app/logbook/router.js');
 
 // API
 const authRouter = require('./app/authenticate/router.js');
@@ -65,6 +66,7 @@ app.use('/pembina', pembinaRouter);
 app.use('/submission', submissionRouter);
 app.use('/intern', internRouter);
 app.use('/placement', placementRouter);
+app.use('/logbook', logbookRouter);
 
 app.use(`${urlAPI}/auth`, authRouter);
 app.use(`${urlAPI}/vacancy`, vacancyRouterAPI);

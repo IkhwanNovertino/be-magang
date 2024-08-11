@@ -54,7 +54,6 @@ module.exports = {
       const certificate = new Certificate({ ...payload });
       console.log(certificate);
 
-
       await certificate.save();
 
       res.status(201).json({
