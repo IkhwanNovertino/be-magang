@@ -1,8 +1,46 @@
 const Logbook = require('./model');
+const Intern = require('../intern/model');
 
-const urlpath = 'admin/intern';
+const urlpath = 'admin/logbook';
 
 module.exports = {
+  index: async (req, res) => {
+    try {
+      const alertMessage = req.flash('alertMessage');
+      const alertStatus = req.flash('alertStatus');
+      const alert = { message: alertMessage, status: alertStatus };
+
+      const intern = await Intern.find().sort({ createdAt: -1 });
+
+      res.render(`${urlpath}/view_logbook`, {
+        title: 'Laporan Kegiatan',
+        intern,
+        alert
+      })
+    } catch (err) {
+      req.flash('alertMessage', `${err.message}`);
+      req.flash('alertStatus', 'danger');
+      res.redirect('/logbook')
+    }
+  },
+  viewLogbook: async (req, res) => {
+    try {
+      const { intern } = req.body;
+      const logbook = await Logbook.findOne({ intern: intern }).populate('intern');
+
+      res.render(`${urlpath}/view_logbook`, {
+        title: 'Laporan Kegiatan',
+        logbook,
+        status: true,
+      });
+    } catch (err) {
+      req.flash('alertMessage', `${err.message}`);
+      req.flash('alertStatus', 'danger');
+      res.redirect('/logbook')
+    }
+  },
+
+  // APIs
   createLogbook: async (req, res) => {
     try {
       console.log(req.user);

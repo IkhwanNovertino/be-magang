@@ -1,0 +1,82 @@
+<%- include('../../partials/header.ejs') %>
+<%- include('../../partials/navbar.ejs') %>
+<%- include('../../partials/sidebar.ejs') %>
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <%- include('../../partials/message.ejs') %>
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1>Laporan Kegiatan Magang Peserta</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+            <li class="breadcrumb-item active">Laporan Kegiatan</li>
+          </ol>
+        </div>
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header">
+              <form action="/logbook/create" method="get">
+                <div class="d-flex flex-row mt-3">
+                  <div class="col-10 form-group">
+                    <div class="input-group">
+                      <select class="form-control select2bs4" data-placeholder="Pilih peserta magang" name="intern" id="intern" required style="width: 100%;">
+                        <% intern.forEach(el => { %>
+                          <option></option>
+                          <option value="<%= el.id %>"><%= el.name %></option>
+                        <% }) %>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-2">
+                    <button type="submit" class=" btn btn-primary">Cari laporan</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+          <!-- /.card -->
+          <section class="content">
+            <!-- <div class="container-fluid"> -->
+              <div class="row">
+                <div class="col-12">
+                  <div class="card">
+                    <div class="card-header">
+                      <%- include('../../partials/profile_intern.ejs') %>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                      <%- include('./tables.ejs') %>
+                    </div>
+                    <!-- /.card-body -->
+                  </div>
+                </div>
+              </div>
+            <!-- </div> -->
+          </section>
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+  </section>
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+<%- include('../../partials/footer.ejs') %>
+<%- include('../../partials/js.ejs') %>
