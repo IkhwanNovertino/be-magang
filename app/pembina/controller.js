@@ -47,7 +47,7 @@ module.exports = {
         let tmp_path = req.file.path;
         let originalExt = req.file.originalname.split('.')[req.file.originalname.split('.').length - 1];
         let filename = req.file.filename + '.' + originalExt;
-        let target_path = path.resolve(config.rootPath, `public/uploads/${filename}`);
+        let target_path = path.resolve(config.rootPath, `/public/uploads/${filename}`);
 
         const src = fs.createReadStream(tmp_path);
         const dest = fs.createWriteStream(target_path);
