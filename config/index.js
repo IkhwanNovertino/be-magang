@@ -9,5 +9,5 @@ module.exports = {
   urlDb: process.env.MONGO_URL,
   jwtKey: process.env.SECRET,
   urlIMG: process.env.IMG_URL,
-  urlUploads: process.env.UPLOAD_URL,
+  urlUploads: process.env.RAILWAY_VOLUME_MOUNT_PATH || process.env.UPLOAD_URL,
 }

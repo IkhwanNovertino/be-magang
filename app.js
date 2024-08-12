@@ -63,9 +63,21 @@ app.use('/vacancy', vacancyRouter);
 app.use('/supervisor', supervisorRouter);
 app.use('/pegumpeg', pegumpegRouter);
 app.use('/pembina', pembinaRouter);
-// app.use('/submission', submissionRouter);
+app.use('/intern', internRouter);
+app.use('/submission', submissionRouter);
+app.use('/placement', placementRouter);
+app.use('/logbook', logbookRouter);
 
-// app.use(`${urlAPI}/auth`, authRouter);
+
+// APIs
+app.use(`${urlAPI}/auth`, authRouter);
+app.use(`${urlAPI}/vacancy`, vacancyRouterAPI);
+app.use(`${urlAPI}/submission`, submissionRouterAPI);
+app.use(`${urlAPI}/intern`, internRouterAPI);
+app.use(`${urlAPI}/logbook`, logbookRouterAPI);
+app.use(`${urlAPI}/score-component`, scoreComponentRouterAPI);
+app.use(`${urlAPI}/evaluation`, evaluationRouterAPI);
+app.use(`${urlAPI}/certificate`, certificateRouterAPI);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
