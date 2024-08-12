@@ -34,7 +34,6 @@ module.exports = {
     } catch (err) {
       req.flash('alertMessage', `${err.message}`);
       req.flash('alertStatus', 'danger');
-
       res.redirect('/pembina')
     }
   },
@@ -92,7 +91,6 @@ module.exports = {
     } catch (err) {
       req.flash('alertMessage', `${err.message}`);
       req.flash('alertStatus', 'danger');
-
       res.redirect('/pembina')
     }
   },
@@ -108,7 +106,6 @@ module.exports = {
     } catch (err) {
       req.flash('alertMessage', `${err.message}`);
       req.flash('alertStatus', 'danger');
-
       res.redirect('/pembina')
     }
   },
@@ -125,12 +122,9 @@ module.exports = {
         fs.unlinkSync(currentImage)
       }
 
-
       req.flash('alertMessage', 'Berhasil Menghapus Data Pembina');
       req.flash('alertStatus', 'success');
-
       res.redirect('/pembina')
-
     } catch (err) {
       req.flash('alertMessage', `${err.message}`)
       req.flash('alertStatus', 'danger')
@@ -149,13 +143,11 @@ module.exports = {
 
       req.flash('alertMessage', message);
       req.flash('alertStatus', 'success');
-
-      res.redirect('/pembina')
+      res.redirect('/pembina');
     } catch (err) {
       req.flash('alertMessage', `${err.message}`);
       req.flash('alertStatus', 'danger');
-
-      res.redirect('/pembina')
+      res.redirect('/pembina');
     }
   }
 }

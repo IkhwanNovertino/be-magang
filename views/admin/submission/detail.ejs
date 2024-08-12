@@ -1,0 +1,249 @@
+<%- include('../../partials/header.ejs') %>
+<%- include('../../partials/navbar.ejs') %>
+<%- include('../../partials/sidebar.ejs') %>
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <%- include('../../partials/message.ejs') %>
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1>Pegawai Umpeg</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+            <li class="breadcrumb-item"><a href="/submission">Pengajuan magang</a></li>
+            <li class="breadcrumb-item active">Detail pengajuan magang</li>
+          </ol>
+        </div>
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <!-- left column -->
+        <div class="col-md-12">
+          <!-- general form elements -->
+          <div class="card card-primary">
+            <div class="card-header">
+              <h3 class="card-title">Data Pengajuan Magang</h3>
+            </div>
+            <!-- /.card-header -->
+            <!-- form start -->
+            <form>
+              <div class="card-body">
+                <div class="form-group row">
+                  <label for="name" class="col-sm-4 col-form-label">Nama Pemohon</label>
+                  <div class="col-sm-8">
+                    <input 
+                      type="text" 
+                      readonly 
+                      class="form-control-plaintext border-bottom" 
+                      id="name" 
+                      value="<%= submission.applicant.name.toUpperCase() || "" %>"
+                    >
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="nip" class="col-sm-4 col-form-label">Sekolah/Kampus/Instansi</label>
+                  <div class="col-sm-8">
+                    <input 
+                      type="text" 
+                      readonly 
+                      class="form-control-plaintext border-bottom" 
+                      id="nip" 
+                      value="<%= submission.doc_institute || "" %>"
+                    >
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="job_title" class="col-sm-4 col-form-label">No. Surat Pengajuan</label>
+                  <div class="col-sm-8">
+                    <input 
+                      type="text" 
+                      readonly 
+                      class="form-control-plaintext border-bottom" 
+                      id="job_title" 
+                      value="<%= submission.doc_number || "" %>"
+                    >
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="email" class="col-sm-4 col-form-label">Tanggal Surat Pengajuan</label>
+                  <div class="col-sm-8">
+                    <input 
+                      type="text" 
+                      readonly 
+                      class="form-control-plaintext border-bottom" 
+                      id="email" 
+                      value="<%= dateFormat(submission.doc_date) %>"
+                    >
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="email" class="col-sm-4 col-form-label">Surat Pengajuan Magang</label>
+                  <div class="col-sm-8">
+                    <!-- <input 
+                      type="text" 
+                      readonly 
+                      class="form-control-plaintext border-bottom" 
+                      id="email" 
+                      value=""
+                    > -->
+                    <a href="/submission/download/<%= submission.id %>?letter=offering">unduh file surat pengajuan</a>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="email" class="col-sm-4 col-form-label">Surat Persetujuan Magang</label>
+                  <div class="col-sm-8">
+                    <!-- <input 
+                      type="text" 
+                      readonly 
+                      class="form-control-plaintext border-bottom" 
+                      id="email" 
+                      value=""
+                    > -->
+                    <a href="/submission/download/<%= submission.id %>?letter=acceptance">unduh file surat persetujuan</a>
+                  </div>
+                </div>
+                <hr>
+                <div class="form-group row">
+                  <label for="email" class="col-sm-4 col-form-label">Tanggal Mulai Magang</label>
+                  <div class="col-sm-8">
+                    <input 
+                      type="text" 
+                      readonly 
+                      class="form-control-plaintext border-bottom" 
+                      id="email" 
+                      value="<%= dateFormat(submission.start_an_internship) %>"
+                    >
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="email" class="col-sm-4 col-form-label">Tanggal Selesai Magang</label>
+                  <div class="col-sm-8">
+                    <input 
+                      type="text" 
+                      readonly 
+                      class="form-control-plaintext border-bottom" 
+                      id="email" 
+                      value="<%= dateFormat(submission.end_an_internship) %>"
+                    >
+                  </div>
+                </div>
+                <hr>
+                <% submission.candidates.forEach((el, i) => { i++ %>
+                  <div class="form-group">
+                    <div class="row">
+                      <h6 class="col-sm-12 text-muted">Data kandidat peserta magang <%= i %></h6>
+                      <div class="col-sm-6">
+                        <!-- text input -->
+                        <div class="form-group">
+                          <label>Nama Calon Peserta</label>
+                          <input readonly type="text" class="form-control" value="<%= el.name %>">
+                        </div>
+                      </div>
+                      <div class="col-sm-6">
+                        <!-- text input -->
+                        <div class="form-group">
+                          <label>No. Siswa/Mahasiswa/Pegawai</label>
+                          <input readonly type="text" class="form-control" value="<%= el.id_num %>">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-6">
+                        <div class="form-group">
+                          <label>Jurusan</label>
+                          <input readonly type="text" class="form-control" value="<%= el.major %>">
+                        </div>
+                      </div>
+                      <div class="col-sm-6 d-flex">
+                        <div class="form-group align-self-end">
+                          <button 
+                            type="button" 
+                            class="btn btn-primary" 
+                            data-toggle="modal" 
+                            data-target="#exampleModal" 
+                            data-whatever="<%= submission.id %>/<%= el.name %>/<%= el.id_num %>/<%= el.major %>/<%= el.levels %>"
+                            <% if (submission.status !== 'success') { %>
+                              disabled
+                            <% } %>
+                          >
+                            + Tambah menjadi peserta magang
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                <% }) %>
+              </div>
+              <!-- /.card-body -->
+              <div class="card-footer">
+                <a href="/submission" class="btn btn-default mr-1">
+                  Kembali
+                </a>
+              </div>
+            </form>
+          </div>
+          <!-- /.card -->
+        </div>
+        <!--/.col (left) -->
+      </div>
+      <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+  </section>
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-primary">
+        <h5 class="modal-title" id="exampleModalLabel">Tambah peserta magang atas nama:</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form action="/submission/intern" method="post">
+        <div class="modal-body">
+            <div class="form-group">
+              <input type="text" class="form-control" id="idSubmission" name="idSubmission" hidden>
+            </div>
+            <div class="form-group">
+              <label for="recipient-name" class="col-form-label">Nama Lengkap</label>
+              <input type="text" class="form-control" id="name" name="name" readonly>
+            </div>
+            <div class="form-group">
+              <label for="recipient-name" class="col-form-label">NIS/NIM</label>
+              <input type="text" class="form-control" id="nim" name="nim" readonly>
+            </div>
+            <div class="form-group">
+              <label for="recipient-name" class="col-form-label">NIS/NIM</label>
+              <input type="text" class="form-control" id="major" name="major" readonly>
+            </div>
+            <div class="form-group">
+              <label for="recipient-name" class="col-form-label">NIS/NIM</label>
+              <input type="text" class="form-control" id="levels" name="levels" readonly>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+          <button type="submit" class="btn btn-primary">Tambah peserta magang</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<%- include('../../partials/footer.ejs') %>
+<%- include('../../partials/js.ejs') %>

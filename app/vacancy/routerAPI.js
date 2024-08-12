@@ -7,5 +7,4 @@ router.get('/', getVacancy);
 router.get('/topvacancy', getTopVacancy);
 router.get('/:id', getVacancyById);
 
-
 module.exports = router;

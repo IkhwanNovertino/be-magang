@@ -34,7 +34,6 @@ module.exports = {
     } catch (err) {
       req.flash('alertMessage', `${err.message}`);
       req.flash('alertStatus', 'danger');
-
       res.redirect('/pegumpeg')
     }
   },
@@ -98,7 +97,6 @@ module.exports = {
     } catch (err) {
       req.flash('alertMessage', `${err.message}`);
       req.flash('alertStatus', 'danger');
-
       res.redirect('/pegumpeg')
     }
   },
@@ -114,7 +112,6 @@ module.exports = {
     } catch (err) {
       req.flash('alertMessage', `${err.message}`);
       req.flash('alertStatus', 'danger');
-
       res.redirect('/pegumpeg')
     }
   },
@@ -153,12 +150,10 @@ module.exports = {
 
       req.flash('alertMessage', message);
       req.flash('alertStatus', 'success');
-
       res.redirect('/pegumpeg')
     } catch (err) {
       req.flash('alertMessage', `${err.message}`);
       req.flash('alertStatus', 'danger');
-
       res.redirect('/pegumpeg')
     }
   }

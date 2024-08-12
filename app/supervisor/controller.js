@@ -34,7 +34,6 @@ module.exports = {
     } catch (err) {
       req.flash('alertMessage', `${err.message}`);
       req.flash('alertStatus', 'danger');
-
       res.redirect('/supervisor')
     }
   },
@@ -66,7 +65,6 @@ module.exports = {
               avatar: filename
             });
             await supervisor.save();
-
             delete supervisor._doc.password
 
             req.flash('alertMessage', 'Berhasil Menambah Pembimbing');
@@ -113,7 +111,6 @@ module.exports = {
     } catch (err) {
       req.flash('alertMessage', `${err.message}`);
       req.flash('alertStatus', 'danger');
-
       res.redirect('/supervisor')
     }
   },
@@ -132,11 +129,11 @@ module.exports = {
 
       req.flash('alertMessage', 'Berhasil Menghapus Data Pembimbing');
       req.flash('alertStatus', 'success');
-      res.redirect('/supervisor')
+      res.redirect('/supervisor');
     } catch (err) {
       req.flash('alertMessage', `${err.message}`)
       req.flash('alertStatus', 'danger')
-      res.redirect('/supervisor')
+      res.redirect('/supervisor');
     }
   },
   actionStatus: async (req, res) => {
@@ -151,13 +148,11 @@ module.exports = {
 
       req.flash('alertMessage', message);
       req.flash('alertStatus', 'success');
-
-      res.redirect('/supervisor')
+      res.redirect('/supervisor');
     } catch (err) {
       req.flash('alertMessage', `${err.message}`);
       req.flash('alertStatus', 'danger');
-
-      res.redirect('/supervisor')
+      res.redirect('/supervisor');
     }
   }
 }

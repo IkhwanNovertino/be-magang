@@ -3,6 +3,7 @@ const applicantModel = require('../applicants/model');
 const umpegModel = require('../peg-umpeg/model');
 const supervisorModel = require('../supervisor/model');
 const pembinaModel = require('../pembina/model');
+const internModel = require('../intern/model');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const config = require('../../config');
@@ -52,6 +53,7 @@ module.exports = {
       const authPembina = await pembinaModel.findOne({ nip: username });
       const authSupervisor = await supervisorModel.findOne({ nip: username });
       const authUmpeg = await umpegModel.findOne({ nip: username });
+      const authIntern = await internModel.findOne({ id_num: username });
 
       if (authApplicant) {
         checkPassword = bcrypt.compareSync(password, authApplicant.password);
@@ -151,6 +153,35 @@ module.exports = {
                 name: authUmpeg.name,
                 role: 'umpeg',
                 avatar: authUmpeg.avatar,
+              }
+            }, config.jwtKey);
+            return res.status(200).json({
+              data: {
+                token: token,
+              }
+            })
+          } else {
+            return res.status(403).json({
+              message: ['Akun telah di non aktifkan.'],
+              fields: 'status'
+            })
+          }
+        } else {
+          return res.status(403).json({
+            message: ['password salah, isi kembali.'],
+            fields: 'password',
+          })
+        }
+      } else if (authIntern) {
+        checkPassword = bcrypt.compareSync(password, authIntern.password)
+        if (checkPassword) {
+          if (authIntern.status === 'Y') {
+            const token = jwt.sign({
+              user: {
+                id: authIntern.id,
+                name: authIntern.name,
+                role: 'intern',
+                avatar: authIntern.avatar,
               }
             }, config.jwtKey);
             return res.status(200).json({

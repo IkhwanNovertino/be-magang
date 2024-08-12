@@ -14,11 +14,20 @@ const vacancyRouter = require('./app/vacancy/router.js');
 const supervisorRouter = require('./app/supervisor/router.js');
 const pegumpegRouter = require('./app/peg-umpeg/router.js');
 const pembinaRouter = require('./app/pembina/router.js');
-// const submissionRouter = require('./app/submission/router.js');
+const submissionRouter = require('./app/submission/router.js');
+const internRouter = require('./app/intern/router.js');
+const placementRouter = require('./app/placement/router.js');
+const logbookRouter = require('./app/logbook/router.js');
 
 // API
 const authRouter = require('./app/authenticate/router.js');
 const vacancyRouterAPI = require('./app/vacancy/routerAPI.js');
+const submissionRouterAPI = require('./app/submission/routerAPI.js');
+const internRouterAPI = require('./app/intern/routerAPI.js');
+const logbookRouterAPI = require('./app/logbook/routerAPI.js');
+const scoreComponentRouterAPI = require('./app/score-component/routerAPI.js');
+const evaluationRouterAPI = require('./app/evaluation/routerAPI.js');
+const certificateRouterAPI = require('./app/certificate/routerAPI.js');
 
 const app = express();
 const urlAPI = `/api/v1`
@@ -54,10 +63,19 @@ app.use('/vacancy', vacancyRouter);
 app.use('/supervisor', supervisorRouter);
 app.use('/pegumpeg', pegumpegRouter);
 app.use('/pembina', pembinaRouter);
-// app.use('/submission', submissionRouter);
+app.use('/submission', submissionRouter);
+app.use('/intern', internRouter);
+app.use('/placement', placementRouter);
+app.use('/logbook', logbookRouter);
 
 app.use(`${urlAPI}/auth`, authRouter);
 app.use(`${urlAPI}/vacancy`, vacancyRouterAPI);
+app.use(`${urlAPI}/submission`, submissionRouterAPI);
+app.use(`${urlAPI}/intern`, internRouterAPI);
+app.use(`${urlAPI}/logbook`, logbookRouterAPI);
+app.use(`${urlAPI}/score-component`, scoreComponentRouterAPI);
+app.use(`${urlAPI}/evaluation`, evaluationRouterAPI);
+app.use(`${urlAPI}/certificate`, certificateRouterAPI);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

@@ -1,0 +1,194 @@
+<%- include('../../partials/header.ejs') %>
+<%- include('../../partials/navbar.ejs') %>
+<%- include('../../partials/sidebar.ejs') %>
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1>Penempatan Peserta Magang</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+            <li class="breadcrumb-item"><a href="/placement">Penempatan</a></li>
+            <li class="breadcrumb-item active">Detail penempatan</li>
+          </ol>
+        </div>
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <!-- left column -->
+        <div class="col-md-12">
+          <!-- general form elements -->
+          <div class="card card-primary">
+            <div class="card-header">
+              <h3 class="card-title">Data Penempatan Peserta Magang</h3>
+            </div>
+            <!-- /.card-header -->
+            <!-- form start -->
+            <form>
+              <div class="card-body">
+                <div class="form-group row">
+                  <label for="name" class="col-sm-4 col-form-label">Nama Peserta Magang</label>
+                  <div class="col-sm-8">
+                    <input 
+                      type="text" 
+                      readonly 
+                      class="form-control-plaintext border-bottom" 
+                      id="name" 
+                      value="<%= placement.intern.name.toUpperCase() %>"
+                    >
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="nip" class="col-sm-4 col-form-label">No. Induk Siswa/Mahasiswa</label>
+                  <div class="col-sm-8">
+                    <input 
+                      type="text" 
+                      readonly 
+                      class="form-control-plaintext border-bottom" 
+                      id="nip" 
+                      value="<%= placement.intern.id_num %>"
+                    >
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="nip" class="col-sm-4 col-form-label">Asal Sekolah/Kampus/Institusi</label>
+                  <div class="col-sm-8">
+                    <input 
+                      type="text" 
+                      readonly 
+                      class="form-control-plaintext border-bottom" 
+                      id="nip" 
+                      value="<%= placement.intern.institute.toUpperCase() %>"
+                    >
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="nip" class="col-sm-4 col-form-label">Jurusan</label>
+                  <div class="col-sm-8">
+                    <input 
+                      type="text" 
+                      readonly 
+                      class="form-control-plaintext border-bottom" 
+                      id="nip" 
+                      value="<%= placement.intern.major.toUpperCase() %>"
+                    >
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="job_title" class="col-sm-4 col-form-label">Mulai Magang</label>
+                  <div class="col-sm-8">
+                    <input 
+                      type="text" 
+                      readonly 
+                      class="form-control-plaintext border-bottom" 
+                      id="job_title" 
+                      value="<%= placement.intern.start_an_internship %>"
+                    >
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="job_title" class="col-sm-4 col-form-label">Selesai Magang</label>
+                  <div class="col-sm-8">
+                    <input 
+                      type="text" 
+                      readonly 
+                      class="form-control-plaintext border-bottom" 
+                      id="job_title" 
+                      value="<%= placement.intern.end_an_internship %>"
+                    >
+                  </div>
+                </div>
+                <hr>
+                <div class="form-group row">
+                  <label for="email" class="col-sm-4 col-form-label">Nama Pembimbing</label>
+                  <div class="col-sm-8">
+                    <input 
+                      type="text" 
+                      readonly 
+                      class="form-control-plaintext border-bottom" 
+                      id="email" 
+                      value="<%= placement.supervisor.name.toUpperCase() %>"
+                    >
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="email" class="col-sm-4 col-form-label">No. Induk Pegawai</label>
+                  <div class="col-sm-8">
+                    <input 
+                      type="text" 
+                      readonly 
+                      class="form-control-plaintext border-bottom" 
+                      id="email" 
+                      value="<%= placement.supervisor.nip %>"
+                    >
+                  </div>
+                </div>
+                <hr>
+                <div class="form-group row">
+                  <label for="email" class="col-sm-4 col-form-label">Nama Bidang Kegiatan</label>
+                  <div class="col-sm-8">
+                    <input 
+                      type="text" 
+                      readonly 
+                      class="form-control-plaintext border-bottom" 
+                      id="email" 
+                      value="<%= placement.biro.name.toUpperCase() %>"
+                    >
+                  </div>
+                </div>
+              </div>
+              <!-- /.card-body -->
+              <div class="card-footer">
+                <a href="/placement" class="btn btn-default mr-1">
+                  Kembali
+                </a>
+                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal-sm">
+                  Hapus
+                </button>
+                <!-- <button type="submit" class="btn btn-danger">Hapus</button> -->
+              </div>
+            </form>
+          </div>
+          <!-- /.card -->
+        </div>
+        <!--/.col (left) -->
+      </div>
+      <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+  </section>
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+<!-- modal-dialog -->
+<div class="modal fade" id="modal-sm">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-body">
+        <p>Apakah anda yakin ingin menghapus data ini?</p>
+      </div>
+      <div class="modal-footer justify-end">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Tidak</button>
+        <form action="/placement/delete/<%= placement.id %>?_method=DELETE" method="POST">
+          <button class="btn btn-danger">Hapus</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /.modal-dialog -->
+
+<%- include('../../partials/footer.ejs') %>
+<%- include('../../partials/js.ejs') %>

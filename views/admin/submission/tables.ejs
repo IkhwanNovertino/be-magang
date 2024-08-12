@@ -2,28 +2,58 @@
   <thead>
   <tr>
     <th>No.</th>
-    <th>Nama Lengkap</th>
-    <th>NIP</th>
-    <th>Jabatan</th>
+    <th>Nama Pemohon</th>
+    <th>Instansi</th>
+    <th>Kandidat</th>
+    <th>Jenis <br> Pengajuan</th>
     <th>Status</th>
-    <th>Aksi</th>
+    <th></th>
   </tr>
   </thead>
   <tbody>
-  <%# peg_umpeg.forEach((e, i) => { i++ %>
+  <% submission.forEach((e, i) => { i++ %>
     <tr>
-      <td><%#= i %></td>
-      <td><%#= e.name.toUpperCase() %></td>
-      <td><%#= e.nip %></td>
-      <td><%#= e.job_title.toUpperCase() %></td>
-      <td></td>
+      <td><%= i %></td>
+      <td><%= e.applicant.name.toUpperCase() %></td>
+      <td><%= e.doc_institute %></td>
+      <td><%= e.candidates.length %> kandidat</td>
       <td>
-        <a href="/pegumpeg/detail/<%#= e.id %>" class="btn btn-default btn-sm ml-2">
+        <% if (e.type_of_submission === 'mandiri') { %>
+          <span class="badge badge-secondary">
+            mandiri
+          </span>
+        <% } else { %>
+          <span class="badge badge-secondary">
+            lowongan
+          </span>
+        <% } %>
+      </td>
+      <td>
+        <% if (e.status === 'pending') { %>
+          <span class="badge badge-warning">
+            pending
+          </span>
+        <% } else if(e.status === 'success') { %>
+          <span class="badge badge-success">
+            success
+          </span>
+        <% } else if(e.status === 'confirmed') { %>
+          <span class="badge badge-info">
+            confirm
+          </span>
+        <% } else { %>
+          <span class="badge badge-danger">
+            failed
+          </span>
+        <% } %>
+      </td>
+      <td>
+        <a href="/submission/detail/<%= e.id %>" class="btn btn-default btn-sm">
           <i class="fas fa-pencil-alt"></i>
           Detail
         </a>
       </td>
     </tr>
-  <%# }) %>
+  <% }) %>
   </tbody>
 </table>
