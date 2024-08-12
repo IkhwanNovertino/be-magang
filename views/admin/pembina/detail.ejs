@@ -77,7 +77,7 @@
                   <% if (pembina.avatar === 'none') { %>
                     <img class="img-fluid img-circle img-lg" src="<%= imgURL %>/images/person-circle.svg" alt="foto profil">
                   <% } else { %>
-                    <img class="img-fluid img-circle img-lg" src='<%= imgURL %>/uploads/<%= pembina.avatar %>' alt="Foto">
+                    <img class="img-fluid img-circle img-lg" src='<%= imgURL %><%= uploadURL %>/<%= pembina.avatar %>' alt="Foto">
                   <% } %>
                 </div>
                 
