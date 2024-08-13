@@ -84,12 +84,12 @@ module.exports = {
       const { id } = req.params
       const file = await Submission.findById(id);
       if (req.query.letter === 'offering') {
-        const file_path = path.resolve(config.rootPath, `public/offering-letter`, file.offering_letter);
+        const file_path = path.resolve(config.rootPath, config.urlUploads, file.offering_letter);
 
         res.set('Content-Disposition', `attachment; filename="${file.offering_letter}"`);
         res.download(file_path, file.offering_letter)
       } else {
-        const file_path = path.resolve(config.rootPath, `public/acceptance-letter`, file.acceptance_letter);
+        const file_path = path.resolve(config.rootPath, config.urlUploads, file.acceptance_letter);
 
         res.set('Content-Disposition', `attachment; filename="${file.acceptance_letter}"`);
         res.download(file_path, file.acceptance_letter)
@@ -116,7 +116,7 @@ module.exports = {
       } else {
         let payload = {};
         const submission = await Submission.find().populate('applicant');
-        let vacant = submission.vacancy !== '1' ? await Vacancy.findOne({ _id: submission.vacancy }) : submission.vacancy;
+        let vacant = submission.vacancy !== '1' ? await Vacancy.findOne({ _id: submission.historyVacancy.id }) : 1;
 
         payload = {
           submission,
@@ -175,7 +175,7 @@ module.exports = {
         let tmp_path = req.file.path;
         let originalExt = req.file.originalname.split('.')[req.file.originalname.split('.').length - 1];
         let filename = req.file.filename + '.' + originalExt;
-        let target_path = path.resolve(config.rootPath, `public/offering-letter/${filename}`);
+        let target_path = path.resolve(config.rootPath, `${config.urlUploads}/${filename}`);
 
         const src = fs.createReadStream(tmp_path);
         const dest = fs.createWriteStream(target_path);
@@ -236,7 +236,7 @@ module.exports = {
         let tmp_path = req.file.path;
         let originalExt = req.file.originalname.split('.')[req.file.originalname.split('.').length - 1];
         let filename = req.file.filename + '.' + originalExt;
-        let target_path = path.resolve(config.rootPath, `public/acceptance-letter/${filename}`);
+        let target_path = path.resolve(config.rootPath, `${config.urlUploads}/${filename}`);
 
         const src = fs.createReadStream(tmp_path);
         const dest = fs.createWriteStream(target_path);
@@ -286,7 +286,7 @@ module.exports = {
         _id: id
       });
 
-      let currentFile = `${config.rootPath}/public/offering-letter/${submission.offering_letter}`;
+      let currentFile = `${config.rootPath}/public/uploads/${submission.offering_letter}`;
       if (fs.existsSync(currentFile)) {
         fs.unlinkSync(currentFile)
       }
