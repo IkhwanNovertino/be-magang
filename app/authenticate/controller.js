@@ -1,4 +1,3 @@
-const authModel = require('./model');
 const applicantModel = require('../applicants/model');
 const umpegModel = require('../peg-umpeg/model');
 const supervisorModel = require('../supervisor/model');
@@ -12,9 +11,13 @@ module.exports = {
   signup: async (req, res, next) => {
     try {
       const { name, institute, email, password, } = req.body;
-      let applicant = new applicantModel({ email, name, institute, password });
+      let applicant = new applicantModel({
+        email: email.trim(),
+        password,
+        name: name.trim().toLowerCase(),
+        institute: institute.trim().toLowerCase(),
+      });
       await applicant.save();
-
       delete applicant._doc.password;
 
       return res.status(201).json({
