@@ -2,7 +2,6 @@ const Peg_umpeg = require('./model');
 const path = require('path');
 const fs = require('fs');
 const config = require('../../config');
-const authModel = require('../authenticate/model');
 
 const urlpath = 'admin/peg-umpeg';
 
@@ -47,7 +46,7 @@ module.exports = {
         let tmp_path = req.file.path;
         let originalExt = req.file.originalname.split('.')[req.file.originalname.split('.').length - 1];
         let filename = req.file.filename + '.' + originalExt;
-        let target_path = path.resolve(config.rootPath, `public/uploads/${filename}`);
+        let target_path = path.resolve(config.rootPath, `${config.urlUploads}/${filename}`);
 
         const src = fs.createReadStream(tmp_path);
         const dest = fs.createWriteStream(target_path);
@@ -104,10 +103,12 @@ module.exports = {
     try {
       const { id } = req.params;
       const peg_umpeg = await Peg_umpeg.findById(id);
+      const imgURL = config.urlIMG;
 
       res.render(`${urlpath}/detail`, {
         title: 'Detail Pegawai Umpeg',
-        peg_umpeg
+        peg_umpeg,
+        imgURL,
       })
     } catch (err) {
       req.flash('alertMessage', `${err.message}`);
