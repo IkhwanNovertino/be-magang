@@ -152,7 +152,7 @@ module.exports = {
         start_an_internship, end_an_internship,
         vacancy, candidates } = req.body;
 
-      if (role === 'applicant') {
+      if (req.user.role === 'applicant') {
         return res.status(401).json({
           errors: {
             message: [
