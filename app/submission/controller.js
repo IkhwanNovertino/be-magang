@@ -152,6 +152,16 @@ module.exports = {
         start_an_internship, end_an_internship,
         vacancy, candidates } = req.body;
 
+      if (role === 'applicant') {
+        return res.status(401).json({
+          errors: {
+            message: [
+              'Not authorized to access this resource',
+            ],
+          }
+        })
+      };
+
       const res_candidates = typeof candidates === 'string' ? JSON.parse(candidates) : candidates;
       const res_vancant = vacancy !== '1' ? await Vacancy.findOne({ _id: vacancy }) : vacancy;
 
