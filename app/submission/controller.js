@@ -116,7 +116,7 @@ module.exports = {
       } else {
         let payload = {};
         const submission = await Submission.find().populate('applicant');
-        let vacant = submission.vacancy !== '1' ? await Vacancy.findOne({ _id: submission.historyVacancy.id }) : 1;
+        let vacant = submission.historyVacancy.id !== '1' ? await Vacancy.findOne({ _id: submission.historyVacancy.id }) : 1;
 
         payload = {
           submission,
@@ -136,10 +136,13 @@ module.exports = {
   getSubmissionById: async (req, res) => {
     try {
       const { id } = req.params;
-      const submission = await Submission.findOne({ _id: id });
+      const submission = await Submission.findOne({ _id: id }).populate('applicant');
+      let vacant = submission.historyVacancy.id !== '1' ? await Vacancy.findOne({ _id: submission.historyVacancy.id }) : 1;
+
       return res.status(200).json({
         data: {
           submission,
+          vacant
         }
       })
     } catch (err) {
