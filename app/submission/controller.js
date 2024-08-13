@@ -220,7 +220,8 @@ module.exports = {
         });
       }
     } catch (err) {
-      res.status(500).json({ errors: err.errors });
+      console.log(err);
+      res.status(500).json({ errors: err });
     }
   },
   setSubmissionStatus: async (req, res) => {
