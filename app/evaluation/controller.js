@@ -14,9 +14,6 @@ module.exports = {
         })
       }
       const res_score = typeof score === 'string' ? JSON.parse(score) : score;
-      const date2 = new Date().getFullYear();
-      console.log(`${date2}`);
-      const date = new Date().getFullYear();
 
       const evaluation = new Evaluation({
         intern: intern,
@@ -45,6 +42,7 @@ module.exports = {
           message: [
             err.message || 'Terjadi masalah pada server',
           ],
+          fields: err.errors
         },
       })
     }
@@ -52,7 +50,9 @@ module.exports = {
   getEvaluationById: async (req, res) => {
     try {
       const { id } = req.params;
-      const evaluation = await Evaluation.findOne({ intern: id }).populate('intern').populate('score.title');
+      const evaluation = await Evaluation.findOne({ intern: id })
+        .populate('intern')
+        .populate('score.title');
 
       res.status(200).json({
         data: evaluation,
