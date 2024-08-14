@@ -1,5 +1,6 @@
 const Intern = require('./model');
 const Placement = require('../placement/model');
+const Logbook = require('../intern/model');
 
 const { dateFormat } = require('../../utils/index');
 const urlpath = 'admin/intern';
@@ -95,9 +96,11 @@ module.exports = {
 
       const intern = await Intern.findById(id).populate('submissionID');
       const placement = await Placement.find({ intern: id }).populate('supervisor').populate('biro');
+      const logbook = await Logbook.find({ intern: id });
+      const evaluate = await Evaluate.find()
 
       let data = {
-        intern, placement
+        intern, placement, logbook
       };
 
       return res.status(200).json({

@@ -10,6 +10,10 @@ let evaluationSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Supervisor',
   },
+  pembina: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Pembina',
+  },
   status: {
     type: String,
     enum: ['pending', 'accept'],
@@ -25,6 +29,14 @@ let evaluationSchema = mongoose.Schema({
       default: 0
     },
   }],
+  certificate: {
+    publish_date: {
+      type: Number,
+    },
+    certif_num: {
+      type: String,
+    },
+  },
   // for cerificate number
   inc_reference: {
     type: Number
