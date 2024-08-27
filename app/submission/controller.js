@@ -105,30 +105,38 @@ module.exports = {
   getAllSubmission: async (req, res) => {
     try {
       const role = req.user.role;
+      let payload = [];
       if (role === 'applicant') {
         const { id } = req.user;
         const submission = await Submission.find({ applicant: id });
-        return res.status(200).json({
-          data: {
-            submission
-          }
+        submission.forEach(el => {
+          payload.push({
+            id: el._id,
+            status: el.status,
+            start_an_internship: el.start_an_internship,
+            end_an_internship: el.end_an_internship,
+            candidates: el.candidates,
+            createdAt: el.createdAt,
+          })
         });
       } else {
-        let payload = {};
-        const submission = await Submission.find().populate('applicant');
-        let vacant = submission.historyVacancy.id !== '1' ? await Vacancy.findOne({ _id: submission.historyVacancy.id }) : 1;
-
-        payload = {
-          submission,
-          vacant,
-        };
-
-        return res.status(200).json({
-          data: {
-            payload,
-          }
-        })
+        const submission = await Submission.find();
+        submission.forEach(el => {
+          payload.push({
+            id: el._id,
+            status: el.status,
+            doc_institute: el.doc_institute,
+            candidates: el.candidates,
+            createdAt: el.createdAt,
+          })
+        });
       }
+
+      return res.status(200).json({
+        data: {
+          payload,
+        }
+      })
     } catch (err) {
       return res.status(500).json({ message: err.message || 'Terjadi kesalahan pada server' });
     }
