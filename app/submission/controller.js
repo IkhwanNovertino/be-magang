@@ -126,6 +126,7 @@ module.exports = {
             id: el._id,
             status: el.status,
             doc_institute: el.doc_institute,
+            type_of_submission: el.type_of_submission,
             candidates: el.candidates,
             createdAt: el.createdAt,
           })
@@ -145,12 +146,10 @@ module.exports = {
     try {
       const { id } = req.params;
       const submission = await Submission.findOne({ _id: id }).populate('applicant');
-      let vacant = submission.historyVacancy.id !== '1' ? await Vacancy.findOne({ _id: submission.historyVacancy.id }) : 1;
 
       return res.status(200).json({
         data: {
-          submission,
-          vacant
+          submission
         }
       })
     } catch (err) {
