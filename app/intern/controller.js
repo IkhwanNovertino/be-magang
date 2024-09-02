@@ -1,6 +1,7 @@
 const Intern = require('./model');
 const Placement = require('../placement/model');
 const Logbook = require('../intern/model');
+const Evaluate = require('../evaluation/model');
 
 const { dateFormat } = require('../../utils/index');
 const urlpath = 'admin/intern';
@@ -94,7 +95,7 @@ module.exports = {
     try {
       const { id } = req.params;
 
-      const intern = await Intern.findById(id).populate('submissionID');
+      const intern = await Intern.findOne({ _id: id }).populate('submissionID');
       const placement = await Placement.find({ intern: id }).populate('supervisor').populate('biro');
       const logbook = await Logbook.find({ intern: id });
       const evaluate = await Evaluate.find()
@@ -107,7 +108,7 @@ module.exports = {
         data
       });
     } catch (err) {
-      return res.status(404).json({ message: ['data tidak ditemukan'], field: 'id' });
+      return res.status(404).json({ message: ['data tidak ditemukan', err.message], field: 'id' });
     }
   },
   // DASHBOARD INTERN/PESERTA MAGANG
