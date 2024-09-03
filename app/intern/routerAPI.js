@@ -7,8 +7,8 @@ const { isLoginUser } = require('../middleware/auth');
 
 /* GET home page. */
 router.get('/', isLoginUser, getAllIntern);
-router.get('/:id', isLoginUser, getInternById);
 router.get('/dashboard', isLoginUser, dashboard);
+router.get('/:id', isLoginUser, getInternById);
 // router.get('/detail/:id', multer({ dest: os.tmpdir() }).single('photo_profile'), viewDetail);
 
 module.exports = router;
