@@ -114,12 +114,27 @@ module.exports = {
   // DASHBOARD INTERN/PESERTA MAGANG
   dashboard: async (req, res) => {
     try {
-      console.log('DATA');
-      console.log(req.user);
-      res.status(200).json({ data: 'data dimuat' });
-    } catch (err) {
-      console.log(err.errors);
+      const { id } = req.user;
+      const intern = await Intern.findOne({ _id: id });
+      const placement = await Placement.findOne({ intern: id }).populate('supervisor').populate('biro');
+      const logbook = await Logbook.find({ intern: id });
+      const evaluate = await Evaluate.findOne({ intern: id });
 
+      const data = {
+        name: intern.name,
+        supervisor: placement.supervisor.name,
+        biro: placement.biro.name,
+        startAnIntern: intern.start_an_internship,
+        endAnIntern: intern.end_an_internship,
+        logbook: logbook,
+        evaluate: evaluate,
+      };
+      res.status(200).json({ data });
+    } catch (err) {
+      console.log(err);
+      res.status(404).json({
+        message: [err.message]
+      });
     }
   }
 };
