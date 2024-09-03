@@ -40,11 +40,11 @@ let internSchema = mongoose.Schema({
     type: String,
     match: [/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g, `Email tidak valid`],
     default: 'email@default.com'
-  },
-  phone_num: {
-    type: Number,
-    default: 1
-  },
+    },
+    phone_num: {
+      type: Number,
+      default: 1
+    },
   avatar: {
     type: String,
     default: "none"
