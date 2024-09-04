@@ -90,6 +90,25 @@ module.exports = {
       })
     }
   },
+  getAllLogbook: async (req, res) => {
+    try {
+      const { id } = req.user;
+      const logbook = await Logbook.find({ intern: id });
+
+      res.status(200).json({
+        data: logbook,
+      })
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({
+        errors: {
+          message: [
+            err.message || "terjadi kesalahan pada server"
+          ],
+        }
+      })
+    }
+  },
   acceptLogbook: async (req, res) => {
     try {
       if (req.user.role !== 'supervisor') {

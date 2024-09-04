@@ -118,7 +118,7 @@ module.exports = {
       const intern = await Intern.findOne({ _id: id });
       const placement = await Placement.findOne({ intern: id }).populate('supervisor').populate('biro');
       const logbook = await Logbook.find({ intern: id });
-      const evaluate = await Evaluate.findOne({ intern: id });
+      const evaluate = await Evaluate.findOne({ intern: id }).populate('score.title');
 
       const data = {
         name: intern.name,
