@@ -100,10 +100,28 @@ module.exports = {
       })
     } catch (err) {
       console.log(err);
-      res.status(500).json({
+      res.status(404).json({
         errors: {
           message: [
-            err.message || "terjadi kesalahan pada server"
+            err.message || "Data tidak ditemukan"
+          ],
+        }
+      })
+    }
+  },
+  getLogbookById: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const logbook = await Logbook.findOne({ _id: id });
+      res.status(200).json({
+        data: logbook,
+      })
+    } catch (err) {
+      console.log(err);
+      res.status(404).json({
+        errors: {
+          message: [
+            err.message || "Data tidak ditemukan"
           ],
         }
       })
