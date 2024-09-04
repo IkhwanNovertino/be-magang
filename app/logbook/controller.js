@@ -90,6 +90,43 @@ module.exports = {
       })
     }
   },
+  getAllLogbook: async (req, res) => {
+    try {
+      const { id } = req.user;
+      const logbook = await Logbook.find({ intern: id });
+
+      res.status(200).json({
+        data: logbook,
+      })
+    } catch (err) {
+      console.log(err);
+      res.status(404).json({
+        errors: {
+          message: [
+            err.message || "Data tidak ditemukan"
+          ],
+        }
+      })
+    }
+  },
+  getLogbookById: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const logbook = await Logbook.findOne({ _id: id });
+      res.status(200).json({
+        data: logbook,
+      })
+    } catch (err) {
+      console.log(err);
+      res.status(404).json({
+        errors: {
+          message: [
+            err.message || "Data tidak ditemukan"
+          ],
+        }
+      })
+    }
+  },
   acceptLogbook: async (req, res) => {
     try {
       if (req.user.role !== 'supervisor') {
