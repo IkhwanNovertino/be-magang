@@ -2,10 +2,12 @@ var express = require('express');
 const multer = require('multer')
 const os = require('os')
 var router = express.Router();
-const { createLogbook, deleteLogbook, updateLogbook, acceptLogbook } = require('./controller');
+const { createLogbook, deleteLogbook, updateLogbook, acceptLogbook, getAllLogbook, getLogbookById } = require('./controller');
 const { isLoginUser } = require('../middleware/auth');
 
 /* GET home page. */
+router.get('/', isLoginUser, getAllLogbook);
+router.get('/:id', isLoginUser, getLogbookById);
 router.post('/', isLoginUser, createLogbook);
 router.put('/update/:id', isLoginUser, updateLogbook);
 router.put('/:id', isLoginUser, acceptLogbook);
