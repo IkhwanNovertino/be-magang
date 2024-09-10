@@ -1,6 +1,6 @@
 const Intern = require('./model');
 const Placement = require('../placement/model');
-const Logbook = require('../intern/model');
+const Logbook = require('../logbook/model');
 const Evaluate = require('../evaluation/model');
 
 const { dateFormat } = require('../../utils/index');
