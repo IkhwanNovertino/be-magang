@@ -1,5 +1,7 @@
 const Logbook = require('./model');
 const Intern = require('../intern/model');
+const Placement = require('../placement/model');
+const mongoose = require('mongoose')
 
 const urlpath = 'admin/logbook';
 
@@ -92,12 +94,59 @@ module.exports = {
   },
   getAllLogbook: async (req, res) => {
     try {
-      const { id } = req.user;
-      const logbook = await Logbook.find({ intern: id });
+      const { role } = req.user;
+      const { intern } = req.query;
 
-      res.status(200).json({
-        data: logbook,
-      })
+      if (role === 'intern') {
+        const { id } = req.user;
+        const data = await Logbook.find({ intern: id });
+        return res.status(200).json({
+          data: data,
+        })
+      } else if (role === 'supervisor') {
+        const data = await Placement.aggregate([
+          {
+            $match: {
+              supervisor: new mongoose.Types.ObjectId(req.user.id)
+            }
+          },
+          {
+            $lookup: {
+              from: 'interns',
+              localField: 'intern',
+              foreignField: '_id',
+              pipeline: [
+                {
+                  $lookup: {
+                    from: 'logbooks',
+                    localField: '_id',
+                    foreignField: 'intern',
+                    pipeline: [
+                      { $sort: { date: -1 } },
+                      { $match: { status: 'pending' } }
+                    ],
+                    as: 'logbook'
+                  }
+                }
+              ],
+              as: 'intern'
+            }
+          }
+        ]);
+
+        return res.status(200).json({
+          data: data
+        })
+      } else {
+        const logbook = await Logbook.find({ intern: intern })
+          .sort({ createdAt: -1 });
+
+        const interns = await Intern.findOne({ _id: intern })
+
+        return res.status(200).json({
+          data: { logbook, interns }
+        })
+      }
     } catch (err) {
       console.log(err);
       res.status(404).json({
@@ -112,7 +161,7 @@ module.exports = {
   getLogbookById: async (req, res) => {
     try {
       const { id } = req.params;
-      const logbook = await Logbook.findOne({ _id: id });
+      const logbook = await Logbook.findOne({ _id: id }).populate('intern');
       res.status(200).json({
         data: logbook,
       })
