@@ -71,20 +71,34 @@ module.exports = {
   // API
   getAllIntern: async (req, res) => {
     try {
+      const data = [];
       if (req.user.role === 'supervisor') {
         const intern = await Placement.find({ supervisor: req.user.id })
           .populate('intern')
           .populate('biro')
           .sort({ createdAt: -1 })
+
+        intern.forEach((item, index) => {
+          data.push({
+            _id: item.intern._id,
+            name: item.intern.name,
+            id_num: item.intern.id_num,
+            start_an_internship: item.intern.start_an_internship,
+            end_an_internship: item.intern.end_an_internship,
+            institute: item.intern.institute,
+            major: item.intern.major,
+            statusIntern: item.intern.statusIntern,
+            biro: item.biro.name,
+          })
+        });
+
         res.status(200).json({
-          data: intern,
+          data: data
         })
       } else {
         const intern = await Intern.find().sort({ createdAt: -1 });
         res.status(200).json({
-          data: {
-            intern,
-          }
+          data: intern,
         });
       }
     } catch (err) {
@@ -97,18 +111,36 @@ module.exports = {
 
       const intern = await Intern.findOne({ _id: id }).populate('submissionID');
       const placement = await Placement.find({ intern: id }).populate('supervisor').populate('biro');
-      const logbook = await Logbook.find({ intern: id });
-      const evaluate = await Evaluate.find()
+      const logbook = await Logbook.find({ intern: id }).sort({ createdAt: -1 }).limit(5)
+      const evaluate = await Evaluate.findOne({ intern: id }).populate('score.title');
 
       let data = {
-        intern, placement, logbook
+        _id: intern._id,
+        name: intern.name,
+        id_num: intern.id_num,
+        institute: intern.institute,
+        major: intern.major,
+        start_an_internship: intern.start_an_internship,
+        end_an_internship: intern.end_an_internship,
+        email: intern.email,
+        phone_num: intern.phone_num,
+        offering_letter: intern.submissionID.offering_letter,
+        acceptance_letter: intern.submissionID.acceptance_letter,
+        statusIntern: intern.statusIntern,
+        logbook: logbook,
+        placement: placement,
+        evaluate: !evaluate ? null : evaluate,
       };
 
       return res.status(200).json({
         data
       });
     } catch (err) {
-      return res.status(404).json({ message: ['data tidak ditemukan', err.message], field: 'id' });
+      return res.status(404).json({
+        errors: {
+          message: ['data tidak ditemukan', err.message]
+        }
+      });
     }
   },
   // DASHBOARD INTERN/PESERTA MAGANG
@@ -117,7 +149,7 @@ module.exports = {
       const { id } = req.user;
       const intern = await Intern.findOne({ _id: id });
       const placement = await Placement.findOne({ intern: id }).populate('supervisor').populate('biro');
-      const logbook = await Logbook.find({ intern: id });
+      const logbook = await Logbook.find({ intern: id }).sort({ createdAt: -1 }).limit(5);
       const evaluate = await Evaluate.findOne({ intern: id }).populate('score.title');
 
       const data = {
@@ -133,7 +165,9 @@ module.exports = {
     } catch (err) {
       console.log(err);
       res.status(404).json({
-        message: [err.message]
+        errors: {
+          message: ['data tidak ditemukan', err.message],
+        }
       });
     }
   }

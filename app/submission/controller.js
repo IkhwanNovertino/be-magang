@@ -105,12 +105,12 @@ module.exports = {
   getAllSubmission: async (req, res) => {
     try {
       const role = req.user.role;
-      let payload = [];
+      let data = [];
       if (role === 'applicant') {
         const { id } = req.user;
         const submission = await Submission.find({ applicant: id });
         submission.forEach(el => {
-          payload.push({
+          data.push({
             id: el._id,
             status: el.status,
             start_an_internship: el.start_an_internship,
@@ -122,7 +122,7 @@ module.exports = {
       } else {
         const submission = await Submission.find();
         submission.forEach(el => {
-          payload.push({
+          data.push({
             id: el._id,
             status: el.status,
             doc_institute: el.doc_institute,
@@ -134,26 +134,37 @@ module.exports = {
       }
 
       return res.status(200).json({
-        data: {
-          payload,
-        }
+        data: data
       })
     } catch (err) {
-      return res.status(500).json({ message: err.message || 'Terjadi kesalahan pada server' });
+      return res.status(400).json({
+        errors: {
+          message: [err.message || 'Terjadi kesalahan pada server']
+        }
+      });
     }
   },
   getSubmissionById: async (req, res) => {
     try {
       const { id } = req.params;
-      const submission = await Submission.findOne({ _id: id }).populate('applicant');
+      const submission = await Submission.findOne({ _id: id })
+        .populate('applicant');
 
-      return res.status(200).json({
-        data: {
-          submission
+      if (!submission) return res.status(404).json({
+        errors: {
+          message: ['Pengajuan tidak ditemukan']
         }
       })
+
+      return res.status(200).json({
+        data: submission
+      })
     } catch (err) {
-      return res.status(500).json({ message: err.message || 'Terjadi kesalahan pada server' });
+      return res.status(400).json({
+        errors: {
+          message: [err.message || 'Terjadi kesalahan pada server']
+        }
+      });
     }
   },
   saveSubmission: async (req, res) => {
@@ -163,10 +174,10 @@ module.exports = {
         vacancy, candidates } = req.body;
 
       if (req.user.role !== 'applicant') {
-        return res.status(401).json({
+        return res.status(403).json({
           errors: {
             message: [
-              'Not authorized to access this resource',
+              'Not allowed to access this resource',
             ],
           }
         })
@@ -207,9 +218,7 @@ module.exports = {
             await submission.save();
 
             return res.status(201).json({
-              data: {
-                submission
-              }
+              data: submission
             })
           } catch (err) {
             if (err && err.name === "ValidationError") {
@@ -222,8 +231,10 @@ module.exports = {
               if (err.errors.offering_letter) message.push(err.errors.offering_letter.message);
 
               return res.status(422).json({
-                message: message,
-                fields: err.errors,
+                errors: {
+                  message: message,
+                  fields: err.errors,
+                }
               });
             }
           }
@@ -239,15 +250,21 @@ module.exports = {
       const { id } = req.params;
       const { status } = req.query;
 
-      const submission = await Submission.findOneAndUpdate({ _id: id }, { status }, { new: true, runValidators: true });
+      const submission = await Submission.findOneAndUpdate(
+        { _id: id },
+        { status },
+        { new: true, runValidators: true }
+      );
 
-      return res.status(200).json({
-        data: {
-          submission
-        }
+      return res.status(201).json({
+        data: submission
       })
     } catch (err) {
-      return res.status(500).json({ message: err.message || 'Terjadi kesalahan pada server' });
+      return res.status(500).json({
+        errors: {
+          message: [err.message || 'Terjadi kesalahan pada server']
+        }
+      });
     }
   },
   setSubmmissionSuccess: async (req, res) => {
@@ -272,9 +289,7 @@ module.exports = {
                 status: 'success'
               }, { new: true, runValidators: true });
             return res.status(201).json({
-              data: {
-                submission
-              }
+              data: submission,
             })
           } catch (err) {
             if (err && err.name === "ValidationError") {
@@ -283,20 +298,28 @@ module.exports = {
               if (err.errors.status) message.push(err.errors.status.message);
 
               return res.status(422).json({
-                message: message,
-                fields: err.errors,
+                errors: {
+                  message: message,
+                  fields: err.errors,
+                }
               });
             }
           }
         })
       } else {
         return res.status(422).json({
-          message: ['Surat balasan pengajuan magang tidak boleh kosong'],
-          fields: 'acceptance_letter',
+          errors: {
+            message: ['Surat balasan pengajuan magang tidak boleh kosong'],
+            fields: 'acceptance_letter',
+          }
         });
       }
     } catch (err) {
-      return res.status(500).json({ message: err.message || 'Terjadi kesalahan pada server' });
+      return res.status(500).json({
+        errors: {
+          message: [err.message || 'Terjadi kesalahan pada server']
+        }
+      });
     }
   },
   actionDelete: async (req, res) => {
@@ -320,7 +343,11 @@ module.exports = {
         }
       });
     } catch (err) {
-      return res.status(500).json({ message: err.message || 'Terjadi kesalahan pada server' });
+      return res.status(404).json({
+        errors: {
+          message: [err.message || 'Data tidak ditemukan']
+        }
+      });
     }
   },
 }
