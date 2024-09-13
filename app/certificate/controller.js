@@ -1,16 +1,17 @@
 const Certificate = require('./model');
 const Evaluation = require('../evaluation/model');
 const Intern = require('../intern/model');
-const { populate } = require('dotenv');
 
 module.exports = {
   createCertificate: async (req, res) => {
     try {
       if (req.user.role !== 'pembina') {
-        return res.status(401).json({
-          message: [
-            'Not authorized to access this resource',
-          ],
+        return res.status(403).json({
+          errors: {
+            message: [
+              'Not allowed to access this resource',
+            ],
+          }
         });
       }
 
@@ -56,22 +57,27 @@ module.exports = {
 
       await certificate.save();
 
+      const internStatusUpdate = await Intern.findOneAndUpdate(
+        { _id: intern },
+        {
+          statusIntern: 'finish',
+        },
+        { new: true })
+
       res.status(201).json({
         data: certificate
       })
     } catch (err) {
       console.log(`ERRRR di createEvaluation >>> ${err}`);
       if (err && err.name === 'ValidationError') {
-        // const message = [];
-        // if (err.errors.intern) message.push(err.errors.title.message);
-        // if (err.errors.category) message.push(err.errors.category.message);
-
-        return res.status(422).json({
-          message: err.message,
-          fields: err.errors,
+        return res.status(400).json({
+          errors: {
+            message: [err.message],
+            fields: err.errors,
+          }
         });
       }
-      res.status(500).json({
+      res.status(400).json({
         errors: {
           message: [
             err.message || 'Terjadi masalah pada server',

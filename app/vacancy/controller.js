@@ -121,13 +121,13 @@ module.exports = {
         .sort({ start_an_intern: -1 })
         .limit(3)
       res.status(200).json({
-        data: {
-          vacancy
-        }
+        data: vacancy,
       })
     } catch (err) {
       return res.status(500).json({
-        message: err.message || 'Terjadi kesalahan pada server'
+        errors: {
+          message: [err.message || 'Terjadi kesalahan pada server']
+        }
       })
     }
   },
@@ -139,13 +139,13 @@ module.exports = {
       }).sort({ start_an_intern: -1 })
 
       res.status(200).json({
-        data: {
-          vacancy
-        }
+        data: vacancy
       })
     } catch (err) {
-      return res.status(422).json({
-        errors: err.errors,
+      return res.status(500).json({
+        errors: {
+          message: [err.message || 'Terjadi kesalahan pada server']
+        }
       })
     }
   },
@@ -156,15 +156,19 @@ module.exports = {
 
       if (!vacancy) return res.status(404)
         .json({
-          erros: {
-            message: 'data tidak ditemukan'
+          errors: {
+            message: ['data tidak ditemukan']
           }
         })
 
-      res.status(201).json({ data: vacancy })
+      res.status(201).json({
+        data: vacancy
+      })
     } catch (err) {
-      return res.status(422).json({
-        errors: err.errors,
+      return res.status(500).json({
+        errors: {
+          message: [err.message || 'Terjadi kesalahan pada server']
+        }
       })
     }
   }

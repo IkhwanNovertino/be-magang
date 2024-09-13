@@ -36,12 +36,13 @@ module.exports = {
           message.push(err.errors.institute.message)
         }
         if (err.errors.password) {
-          message.push(err.errors.password.message)
+          message.push(err.errors.institute.message)
         }
 
         return res.status(422).json({
-          message: message,
-          fields: err.errors
+          errors: {
+            message: message
+          },
         })
       }
       next()
@@ -77,14 +78,16 @@ module.exports = {
             })
           } else {
             return res.status(403).json({
-              message: ['Akun telah di non aktifkan.'],
-              fields: 'status'
+              errors: {
+                message: ['Akun telah di non aktifkan']
+              }
             })
           }
         } else {
-          return res.status(403).json({
-            message: ['password salah, isi kembali.'],
-            fields: 'password',
+          return res.status(400).json({
+            errors: {
+              message: ['Password salah, isi kembali!']
+            }
           })
         }
       } else if (authPembina) {
@@ -106,14 +109,16 @@ module.exports = {
             })
           } else {
             return res.status(403).json({
-              message: ['Akun telah di non aktifkan.'],
-              fields: 'status'
+              errors: {
+                message: ['Akun telah di non aktifkan']
+              }
             })
           }
         } else {
-          return res.status(403).json({
-            message: ['password salah, isi kembali.'],
-            fields: 'password',
+          return res.status(400).json({
+            errors: {
+              message: ['Password salah, isi kembali!']
+            }
           })
         }
       } else if (authSupervisor) {
@@ -136,14 +141,16 @@ module.exports = {
             })
           } else {
             return res.status(403).json({
-              message: ['Akun telah di non aktifkan.'],
-              fields: 'status'
+              errors: {
+                message: ['Akun telah di non aktifkan']
+              }
             })
           }
         } else {
-          return res.status(403).json({
-            message: ['password salah, isi kembali.'],
-            fields: 'password',
+          return res.status(400).json({
+            errors: {
+              message: ['Password salah, isi kembali!']
+            }
           })
         }
       } else if (authUmpeg) {
@@ -165,14 +172,16 @@ module.exports = {
             })
           } else {
             return res.status(403).json({
-              message: ['Akun telah di non aktifkan.'],
-              fields: 'status'
+              errors: {
+                message: ['Akun telah di non aktifkan']
+              }
             })
           }
         } else {
-          return res.status(403).json({
-            message: ['password salah, isi kembali.'],
-            fields: 'password',
+          return res.status(400).json({
+            errors: {
+              message: ['Password salah, isi kembali!']
+            }
           })
         }
       } else if (authIntern) {
@@ -194,20 +203,23 @@ module.exports = {
             })
           } else {
             return res.status(403).json({
-              message: ['Akun telah di non aktifkan.'],
-              fields: 'status'
+              errors: {
+                message: ['Akun telah di non aktifkan']
+              }
             })
           }
         } else {
-          return res.status(403).json({
-            message: ['password salah, isi kembali.'],
-            fields: 'password',
+          return res.status(400).json({
+            errors: {
+              message: ['Password salah, isi kembali!']
+            }
           })
         }
       } else {
-        return res.status(403).json({
-          message: ['user tidak ditemukan'],
-          fields: 'username'
+        return res.status(404).json({
+          errors: {
+            message: ['user tidak ditemukan']
+          }
         })
       }
     } catch (err) {
