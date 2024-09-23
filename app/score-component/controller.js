@@ -1,6 +1,109 @@
 const ScoreComponent = require('./model')
 
+const path = 'admin/score-component';
+
 module.exports = {
+  index: async (req, res) => {
+    try {
+      const alertMessage = req.flash('alertMessage');
+      const alertStatus = req.flash('alertStatus');
+      const alert = { message: alertMessage, status: alertStatus };
+
+      const score = await ScoreComponent.find().sort({ category: 1 });
+
+      res.render(`${path}/view_score`, {
+        title: 'Komponen Nilai',
+        score,
+        alert
+      })
+    } catch (err) {
+      req.flash('alertMessage', `${err.message}`);
+      req.flash('alertStatus', 'danger');
+      res.redirect('/score')
+    }
+  },
+  viewCreate: async (req, res) => {
+    try {
+      res.render(`${path}/create`, {
+        title: 'Tambah Komponen Nilai'
+      })
+    } catch (err) {
+      req.flash('alertMessage', `${err.message}`);
+      req.flash('alertStatus', 'danger');
+      res.redirect('/score')
+    }
+  },
+  actionCreate: async (req, res) => {
+    try {
+      const { title, category } = req.body;
+      console.log(req.body);
+
+      const scoreComponent = new ScoreComponent({
+        title: title.toLowerCase(),
+        category
+      });
+      await scoreComponent.save();
+
+      req.flash('alertMessage', 'Berhasil Menambah Komponen Nilai');
+      req.flash('alertStatus', 'success');
+      res.redirect('/score');
+    } catch (err) {
+      req.flash('alertMessage', `${err.message}`);
+      req.flash('alertStatus', 'danger');
+      res.redirect('/score')
+    }
+  },
+  viewEdit: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const score = await ScoreComponent.findById(id);
+
+      res.render(`${path}/edit`, {
+        title: 'Ubah Komponen Nilai',
+        score
+      })
+    } catch (err) {
+      req.flash('alertMessage', `${err.message}`);
+      req.flash('alertStatus', 'danger');
+      res.redirect('/score')
+    }
+  },
+  actionEdit: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { title, category } = req.body;
+
+      await ScoreComponent.findOneAndUpdate(
+        { _id: id },
+        {
+          title: title.toLowerCase(),
+          category
+        }
+      );
+
+      req.flash('alertMessage', 'Berhasil Mengubah Komponen Nilai');
+      req.flash('alertStatus', 'success');
+      res.redirect('/score');
+    } catch (err) {
+      req.flash('alertMessage', `${err.message}`);
+      req.flash('alertStatus', 'danger');
+      res.redirect('/score')
+    }
+  },
+  actionDelete: async (req, res) => {
+    try {
+      const { id } = req.params;
+      await ScoreComponent.findOneAndRemove({ _id: id });
+
+      req.flash('alertMessage', 'Berhasil Menghapus Komponen Nilai');
+      req.flash('alertStatus', 'success');
+      res.redirect('/score');
+    } catch (err) {
+      req.flash('alertMessage', `${err.message}`);
+      req.flash('alertStatus', 'danger');
+      res.redirect('/score')
+    }
+  },
   createScoreComponent: async (req, res) => {
     try {
       const { title, category } = req.body;
