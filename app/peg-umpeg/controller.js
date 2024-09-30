@@ -2,6 +2,9 @@ const Peg_umpeg = require('./model');
 const path = require('path');
 const fs = require('fs');
 const config = require('../../config');
+const Intern = require('../intern/model');
+const Placement = require('../placement/model');
+const Biro = require('../biro/model');
 
 const urlpath = 'admin/peg-umpeg';
 
@@ -156,6 +159,164 @@ module.exports = {
       req.flash('alertMessage', `${err.message}`);
       req.flash('alertStatus', 'danger');
       res.redirect('/pegumpeg')
+    }
+  },
+  dashboard: async (req, res) => {
+    try {
+      const toDay = new Date();
+      const getFullYear = toDay.getFullYear();
+
+      const internActive = await Intern.countDocuments({ statusIntern: 'active' });
+      const internSum = await Intern.countDocuments({ start_an_internship: { $gte: Date.parse(getFullYear) } });
+      const biro = await Biro.find();
+      const placementInternStatus = await Placement.aggregate([
+        {
+          $group: {
+            _id: '$biro',
+            intern: { $push: '$intern' }
+          }
+        }, {
+          $lookup: {
+            from: "interns",
+            localField: "intern",
+            foreignField: "_id",
+            pipeline: [
+              {
+                $match: {
+                  $expr: {
+                    $and: [
+                      {
+                        $gte: [
+                          "$start_an_internship",
+                          1725148800000
+                        ]
+                      },
+                      {
+                        $eq: [
+                          "$statusIntern",
+                          "pending"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            ],
+            as: "internPending"
+          }
+        }, {
+          $lookup: {
+            from: "interns",
+            localField: "intern",
+            foreignField: "_id",
+            pipeline: [
+              {
+                $match: {
+                  $expr: {
+                    $and: [
+                      {
+                        $gte: [
+                          "$start_an_internship",
+                          1725148800000
+                        ]
+                      },
+                      {
+                        $eq: [
+                          "$statusIntern",
+                          "active"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            ],
+            as: "internActive"
+          }
+        }, {
+          $lookup: {
+            from: "interns",
+            localField: "intern",
+            foreignField: "_id",
+            pipeline: [
+              {
+                $match: {
+                  $expr: {
+                    $and: [
+                      {
+                        $gte: [
+                          "$start_an_internship",
+                          1725148800000
+                        ]
+                      },
+                      {
+                        $eq: [
+                          "$statusIntern",
+                          "finish"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            ],
+            as: "internFinish"
+          }
+        }
+      ])
+
+
+      // console.log(biro);
+
+
+      const dataInternStatus = [];
+      // placementInternStatus.forEach(item => {
+      //   biro.forEach(element => {
+      //     if (item._id.toString() === element._id.toString()) {
+      //       dataInternStatus.push({
+      //         name: element.name,
+      //         count: [
+      //           (item.internPending.length || 0),
+      //           (item.internActive.length || 0),
+      //           (item.internFinish.length || 0),
+      //         ],
+      //       })
+      //     } else if (!item._id.toString()) {
+      //       dataInternStatus.push({
+      //         name: element.name,
+      //         count: [0, 0, 0],
+      //       })
+      //     }
+      //   });
+      // });
+      for (const item of biro) {
+        placementInternStatus.forEach(element => {
+          if (item._id.toString() === element._id.toString()) {
+            dataInternStatus.push({
+              name: item.name,
+              count: [
+                (element.internPending.length || 0),
+                (element.internActive.length || 0),
+                (element.internFinish.length || 0),
+              ],
+            })
+          }
+        });
+      }
+
+      // console.log(placementInternStatus);
+      console.log(dataInternStatus);
+
+      return res.status(200).json({
+        data: {
+          card: {
+            activeIntern: internActive,
+            total: internSum,
+          }
+        }
+      })
+    } catch (err) {
+      return res.status(400).json({ message: err.message })
     }
   }
 }

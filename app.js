@@ -18,6 +18,7 @@ const submissionRouter = require('./app/submission/router.js');
 const internRouter = require('./app/intern/router.js');
 const placementRouter = require('./app/placement/router.js');
 const logbookRouter = require('./app/logbook/router.js');
+const scoreRouter = require('./app/score-component/router.js');
 
 // API
 const authRouter = require('./app/authenticate/router.js');
@@ -28,6 +29,8 @@ const logbookRouterAPI = require('./app/logbook/routerAPI.js');
 const scoreComponentRouterAPI = require('./app/score-component/routerAPI.js');
 const evaluationRouterAPI = require('./app/evaluation/routerAPI.js');
 const certificateRouterAPI = require('./app/certificate/routerAPI.js');
+
+const umpegRouterAPI = require('./app/peg-umpeg/routerAPI.js');
 
 const app = express();
 const urlAPI = `/api/v1`
@@ -67,6 +70,7 @@ app.use('/intern', internRouter);
 app.use('/submission', submissionRouter);
 app.use('/placement', placementRouter);
 app.use('/logbook', logbookRouter);
+app.use('/score', scoreRouter);
 
 
 // APIs
@@ -78,6 +82,7 @@ app.use(`${urlAPI}/logbook`, logbookRouterAPI);
 app.use(`${urlAPI}/score-component`, scoreComponentRouterAPI);
 app.use(`${urlAPI}/evaluation`, evaluationRouterAPI);
 app.use(`${urlAPI}/certificate`, certificateRouterAPI);
+app.use(`${urlAPI}/umpeg`, umpegRouterAPI);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
