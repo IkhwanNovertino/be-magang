@@ -150,8 +150,7 @@ module.exports = {
   },
   getScoreComponent: async (req, res) => {
     try {
-      const { category } = req.query;
-      const scoreComponent = await ScoreComponent.find({ category: category });
+      const scoreComponent = await ScoreComponent.find();
 
       res.status(200).json({
         data: scoreComponent,
