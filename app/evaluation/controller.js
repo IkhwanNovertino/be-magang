@@ -4,6 +4,8 @@ module.exports = {
   createEvaluation: async (req, res) => {
     try {
       const { intern, score } = req.body;
+      const res_score = typeof score === 'string' ? JSON.parse(score) : score;
+
       if (req.user.role !== 'supervisor') {
         return res.status(401).json({
           errors: {
@@ -13,18 +15,31 @@ module.exports = {
           }
         })
       }
-      const res_score = typeof score === 'string' ? JSON.parse(score) : score;
+      const res_evaluation = await Evaluation.findOne({ intern: intern })
+      if (!res_evaluation) {
+        const evaluation = new Evaluation({
+          intern: intern,
+          supervisor: req.user.id,
+          score: res_score,
+        });
+        await evaluation.save();
 
-      const evaluation = new Evaluation({
-        intern: intern,
-        supervisor: req.user.id,
-        score: res_score,
-      });
-      await evaluation.save();
+        res.status(201).json({
+          data: evaluation,
+        });
+      } else {
+        res_evaluation.score.push(res_score);
 
-      res.status(201).json({
-        data: evaluation,
-      });
+        await res_evaluation.save();
+
+        res.status(201).json({
+          data: res_evaluation,
+        });
+      }
+
+
+
+
     } catch (err) {
       console.log(`ERRRR di createEvaluation >>> ${err}`);
       // if (err && err.name === 'ValidationError') {
