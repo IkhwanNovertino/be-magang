@@ -93,20 +93,25 @@ module.exports = {
       })
     }
   },
-  updateEvaluation: async (req, res) => {
+  deleteScoreEvaluation: async (req, res) => {
     try {
       const { id } = req.params;
       const { score } = req.body;
 
-      const res_score = typeof score === 'string' ? JSON.parse(score) : score;
+      // const res_score = typeof score === 'string' ? JSON.parse(score) : score;
 
-      const evaluate = await Evaluation.findOneAndUpdate({ _id: id }, { score: res_score }, { new: true });
+      const evaluate = await Evaluation.findOneAndUpdate(
+        { _id: id },
+        { $pull: { score: { _id: score } } },
+        { new: true });
 
       res.status(201).json({
         data: evaluate,
       });
     } catch (err) {
+      console.log(err);
       res.status(500).json({
+
         errors: {
           message: [
             err.message || 'Terjadi masalah pada server',
