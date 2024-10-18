@@ -188,7 +188,7 @@ module.exports = {
                       {
                         $gte: [
                           "$start_an_internship",
-                          1725148800000
+                          Date.parse(getFullYear)
                         ]
                       },
                       {
@@ -217,7 +217,7 @@ module.exports = {
                       {
                         $gte: [
                           "$start_an_internship",
-                          1725148800000
+                          Date.parse(getFullYear)
                         ]
                       },
                       {
@@ -246,7 +246,7 @@ module.exports = {
                       {
                         $gte: [
                           "$start_an_internship",
-                          1725148800000
+                          Date.parse(getFullYear)
                         ]
                       },
                       {

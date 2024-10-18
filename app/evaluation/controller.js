@@ -42,6 +42,7 @@ module.exports = {
 
     } catch (err) {
       console.log(`ERRRR di createEvaluation >>> ${err}`);
+
       // if (err && err.name === 'ValidationError') {
       //   const message = [];
       //   if (err.errors.intern) message.push(err.errors.title.message);

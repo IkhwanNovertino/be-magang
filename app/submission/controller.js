@@ -4,6 +4,8 @@ const config = require('../../config');
 const Submission = require('./model');
 const Vacancy = require('../vacancy/model');
 const Intern = require('../intern/model');
+const Biro = require('../biro/model');
+const Supervisor = require('../supervisor/model');
 const { dateFormat } = require('../../utils')
 
 const urlpath = 'admin/submission';
@@ -15,7 +17,7 @@ module.exports = {
       const alertStatus = req.flash('alertStatus');
       const alert = { message: alertMessage, status: alertStatus };
 
-      const submission = await Submission.find().populate('applicant');
+      const submission = await Submission.find().populate('applicant').sort({ createdAt: -1 });
       res.render(`${urlpath}/view_submission`, {
         title: 'Pengajuan Magang',
         submission,
@@ -35,10 +37,14 @@ module.exports = {
 
       const { id } = req.params;
       const submission = await Submission.findById(id).populate('applicant');
+      const biro = await Biro.find();
+      const supervisor = await Supervisor.find();
 
       res.render(`${urlpath}/detail`, {
         title: 'Detail Pengajuan Magang',
         submission,
+        biro,
+        supervisor,
         dateFormat,
         alert
       })
