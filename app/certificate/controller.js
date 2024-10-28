@@ -31,7 +31,7 @@ module.exports = {
         ],
       });
 
-      console.log(res_evaluation);
+      // console.log(res_evaluation);
 
       const payload = {
         intern: intern,
@@ -44,7 +44,7 @@ module.exports = {
       } else {
         payload.certif_num = `13/0${res_evaluation.evaluateId}/SRT/INFO/KOMINFO`
       }
-      console.log(payload);
+      // console.log(payload);
       const evaluate = await Evaluation.findOneAndUpdate(
         { _id: evaluation },
         {
@@ -53,7 +53,7 @@ module.exports = {
       );
 
       const certificate = new Certificate({ ...payload });
-      console.log(certificate);
+      // console.log(certificate);
 
       await certificate.save();
 

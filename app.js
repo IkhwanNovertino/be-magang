@@ -29,6 +29,7 @@ const logbookRouterAPI = require('./app/logbook/routerAPI.js');
 const scoreComponentRouterAPI = require('./app/score-component/routerAPI.js');
 const evaluationRouterAPI = require('./app/evaluation/routerAPI.js');
 const certificateRouterAPI = require('./app/certificate/routerAPI.js');
+const documentRouterAPI = require('./app/document/routerAPI.js');
 
 const umpegRouterAPI = require('./app/peg-umpeg/routerAPI.js');
 
@@ -83,6 +84,7 @@ app.use(`${urlAPI}/score-component`, scoreComponentRouterAPI);
 app.use(`${urlAPI}/evaluation`, evaluationRouterAPI);
 app.use(`${urlAPI}/certificate`, certificateRouterAPI);
 app.use(`${urlAPI}/umpeg`, umpegRouterAPI);
+app.use(`${urlAPI}/download`, documentRouterAPI);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

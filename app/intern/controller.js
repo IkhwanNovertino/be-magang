@@ -81,7 +81,7 @@ module.exports = {
         const intern = await Placement.find({ supervisor: req.user.id })
           .populate('intern')
           .populate('biro')
-          .sort({ createdAt: -1 })
+          .sort({ start_an_internship: -1 })
 
         intern.forEach((item, index) => {
           data.push({
@@ -101,7 +101,7 @@ module.exports = {
           data: data
         })
       } else {
-        const intern = await Intern.find().sort({ createdAt: -1 });
+        const intern = await Intern.find().sort({ start_an_internship: -1 });
         res.status(200).json({
           data: intern,
         });

@@ -6,6 +6,7 @@ const Vacancy = require('../vacancy/model');
 const Intern = require('../intern/model');
 const Biro = require('../biro/model');
 const Supervisor = require('../supervisor/model');
+const Placement = require('../placement/model');
 const { dateFormat } = require('../../utils')
 
 const urlpath = 'admin/submission';
@@ -57,7 +58,7 @@ module.exports = {
   },
   createIntern: async (req, res) => {
     try {
-      const { idSubmission, name, nim, major, levels } = req.body;
+      const { idSubmission, name, nim, major, levels, biro, supervisor } = req.body;
       const submission = await Submission.findOne({ _id: idSubmission });
 
       const payload = {
@@ -73,7 +74,18 @@ module.exports = {
       };
 
       const intern = new Intern({ ...payload });
+      console.log(intern);
+
+      const placement = new Placement({
+        intern: intern._id,
+        supervisor,
+        biro
+      })
+      console.log(placement);
+
       await intern.save()
+      await placement.save();
+
 
       req.flash('alertMessage', 'Berhasil Menambah Peserta Magang');
       req.flash('alertStatus', 'success');
@@ -87,6 +99,12 @@ module.exports = {
   },
   downloadFile: async (req, res) => {
     try {
+      let url = req.url;
+      const check = url.includes('offering')
+      console.log(url);
+      console.log(check);
+
+
       const { id } = req.params
       const file = await Submission.findById(id);
       if (req.query.letter === 'offering') {
