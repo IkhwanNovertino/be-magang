@@ -4,6 +4,9 @@ const config = require('../../config');
 const Submission = require('./model');
 const Vacancy = require('../vacancy/model');
 const Intern = require('../intern/model');
+const Biro = require('../biro/model');
+const Supervisor = require('../supervisor/model');
+const Placement = require('../placement/model');
 const { dateFormat } = require('../../utils')
 
 const urlpath = 'admin/submission';
@@ -15,7 +18,7 @@ module.exports = {
       const alertStatus = req.flash('alertStatus');
       const alert = { message: alertMessage, status: alertStatus };
 
-      const submission = await Submission.find().populate('applicant');
+      const submission = await Submission.find().populate('applicant').sort({ createdAt: -1 });
       res.render(`${urlpath}/view_submission`, {
         title: 'Pengajuan Magang',
         submission,
@@ -35,10 +38,14 @@ module.exports = {
 
       const { id } = req.params;
       const submission = await Submission.findById(id).populate('applicant');
+      const biro = await Biro.find();
+      const supervisor = await Supervisor.find();
 
       res.render(`${urlpath}/detail`, {
         title: 'Detail Pengajuan Magang',
         submission,
+        biro,
+        supervisor,
         dateFormat,
         alert
       })
@@ -51,7 +58,7 @@ module.exports = {
   },
   createIntern: async (req, res) => {
     try {
-      const { idSubmission, name, nim, major, levels } = req.body;
+      const { idSubmission, name, nim, major, levels, biro, supervisor } = req.body;
       const submission = await Submission.findOne({ _id: idSubmission });
 
       const payload = {
@@ -67,7 +74,18 @@ module.exports = {
       };
 
       const intern = new Intern({ ...payload });
+      console.log(intern);
+
+      const placement = new Placement({
+        intern: intern._id,
+        supervisor,
+        biro
+      })
+      console.log(placement);
+
       await intern.save()
+      await placement.save();
+
 
       req.flash('alertMessage', 'Berhasil Menambah Peserta Magang');
       req.flash('alertStatus', 'success');
@@ -81,6 +99,12 @@ module.exports = {
   },
   downloadFile: async (req, res) => {
     try {
+      let url = req.url;
+      const check = url.includes('offering')
+      console.log(url);
+      console.log(check);
+
+
       const { id } = req.params
       const file = await Submission.findById(id);
       if (req.query.letter === 'offering') {

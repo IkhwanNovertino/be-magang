@@ -93,7 +93,7 @@
                       readonly 
                       class="form-control-plaintext border-bottom" 
                       id="job_title" 
-                      value="<%= placement.intern.start_an_internship %>"
+                      value="<%= dateFormat(placement.intern.start_an_internship)  %>"
                     >
                   </div>
                 </div>
@@ -105,7 +105,7 @@
                       readonly 
                       class="form-control-plaintext border-bottom" 
                       id="job_title" 
-                      value="<%= placement.intern.end_an_internship %>"
+                      value="<%= dateFormat(placement.intern.end_an_internship) %>"
                     >
                   </div>
                 </div>
@@ -136,7 +136,7 @@
                 </div>
                 <hr>
                 <div class="form-group row">
-                  <label for="email" class="col-sm-4 col-form-label">Nama Bidang Kegiatan</label>
+                  <label for="email" class="col-sm-4 col-form-label">Bidang Penempatan</label>
                   <div class="col-sm-8">
                     <input 
                       type="text" 
