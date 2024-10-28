@@ -2,6 +2,8 @@ const Placement = require('./model');
 const Biro = require('../biro/model');
 const Supervisor = require('../supervisor/model');
 const Intern = require('../intern/model');
+const { dateFormat } = require('../../utils');
+
 
 const urlpath = 'admin/placement';
 
@@ -69,6 +71,7 @@ module.exports = {
       res.render(`${urlpath}/detail`, {
         title: 'Detail Penempatan Magang',
         placement,
+        dateFormat,
       })
     } catch (err) {
       req.flash('alertMessage', `${err.message}`);

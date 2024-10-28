@@ -13,12 +13,17 @@ module.exports = {
       const alertStatus = req.flash('alertStatus');
       const alert = { message: alertMessage, status: alertStatus };
 
-      const intern = await Intern.find().sort({ createdAt: -1 });
+      const internPending = await Intern.find({ statusIntern: 'pending' }).sort({ createdAt: -1 });
+      const internActive = await Intern.find({ statusIntern: 'active' }).sort({ createdAt: -1 });
+      const internFinish = await Intern.find({ statusIntern: 'finish' }).sort({ createdAt: -1 });
+
+      const intern = [...internPending, ...internActive, ...internFinish]
 
       res.render(`${urlpath}/view_interns`, {
         title: 'Peserta Magang',
         intern,
-        alert
+        alert,
+        dateFormat
       })
     } catch (err) {
       req.flash('alertMessage', `${err.message}`);
@@ -76,7 +81,7 @@ module.exports = {
         const intern = await Placement.find({ supervisor: req.user.id })
           .populate('intern')
           .populate('biro')
-          .sort({ createdAt: -1 })
+          .sort({ start_an_internship: -1 })
 
         intern.forEach((item, index) => {
           data.push({
@@ -96,7 +101,7 @@ module.exports = {
           data: data
         })
       } else {
-        const intern = await Intern.find().sort({ createdAt: -1 });
+        const intern = await Intern.find().sort({ start_an_internship: -1 });
         res.status(200).json({
           data: intern,
         });

@@ -6,6 +6,7 @@
       <th>NIS/NIM</th>
       <th>Asal Sekolah</th>
       <th>Jurusan</th>
+      <th>Waktu Magang</th>
       <th>status</th>
       <th>Aksi</th>
     </tr>
@@ -18,6 +19,7 @@
         <td><%= el.id_num %></td>
         <td><%= el.institute %></td>
         <td><%= el.major %></td>
+        <td><%= dateFormat(el.start_an_internship) %> - <%= dateFormat(el.end_an_internship) %></td>
         <td>
           <% if (el.statusIntern === 'pending') { %>
             <span class="badge badge-warning">

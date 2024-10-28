@@ -220,20 +220,38 @@
               <input type="text" class="form-control" id="idSubmission" name="idSubmission" hidden>
             </div>
             <div class="form-group">
-              <label for="recipient-name" class="col-form-label">Nama Lengkap</label>
+              <label for="name" class="col-form-label">Nama Lengkap</label>
               <input type="text" class="form-control" id="name" name="name" readonly>
             </div>
             <div class="form-group">
-              <label for="recipient-name" class="col-form-label">NIS/NIM</label>
+              <label for="nim" class="col-form-label">NIS/NIM</label>
               <input type="text" class="form-control" id="nim" name="nim" readonly>
             </div>
             <div class="form-group">
-              <label for="recipient-name" class="col-form-label">NIS/NIM</label>
+              <label for="major" class="col-form-label">Jurusan</label>
               <input type="text" class="form-control" id="major" name="major" readonly>
             </div>
             <div class="form-group">
-              <label for="recipient-name" class="col-form-label">NIS/NIM</label>
-              <input type="text" class="form-control" id="levels" name="levels" readonly>
+              <!-- <label for="levels" class="col-form-label">Kategori Peserta</label> -->
+              <input type="text" class="form-control" id="levels" name="levels" hidden>
+            </div>
+            <div class="form-group">
+              <label>Pembimbing Lapangan/Supervisor</label>
+              <select class="form-control select2bs4" data-placeholder="Pilih pembimbing/supervisor" name="supervisor" id="supervisor" required style="width: 100%;">
+                <option></option>
+                <% supervisor.forEach(el => { %>
+                  <option value="<%= el.id %>"><%= el.name.toUpperCase() %></option>
+                <% }) %>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Bidang Penempatan</label>
+              <select class="form-control select2bs4" data-placeholder="Pilih bidang kegiatan" name="biro" id="biro" required style="width: 100%;">
+                <option></option>
+                <% biro.forEach(el => { %>
+                  <option value="<%= el.id %>"><%= el.name.toUpperCase() %></option>
+                <% }) %>
+              </select>
             </div>
         </div>
         <div class="modal-footer">
