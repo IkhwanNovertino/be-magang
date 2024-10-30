@@ -132,7 +132,7 @@ module.exports = {
       let data = [];
       if (role === 'applicant') {
         const { id } = req.user;
-        const submission = await Submission.find({ applicant: id });
+        const submission = await Submission.find({ applicant: id }).sort({ createdAt: -1 });
         submission.forEach(el => {
           data.push({
             id: el._id,
@@ -144,7 +144,7 @@ module.exports = {
           })
         });
       } else {
-        const submission = await Submission.find();
+        const submission = await Submission.find().sort({ createdAt: -1 });
         submission.forEach(el => {
           data.push({
             id: el._id,
