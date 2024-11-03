@@ -151,7 +151,7 @@ module.exports = {
             status: el.status,
             doc_institute: el.doc_institute,
             type_of_submission: el.type_of_submission,
-            candidates: el.candidates,
+            candidates: el.candidates.length,
             createdAt: el.createdAt,
           })
         });
