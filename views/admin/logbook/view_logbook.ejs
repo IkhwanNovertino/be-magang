@@ -5,7 +5,7 @@
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
   <!-- Content Header (Page header) -->
-  <%- include('../../partials/message.ejs') %>
+  <%#- include('../../partials/message.ejs') %>
   <section class="content-header">
     <div class="container-fluid">
       <div class="row mb-2">
@@ -51,20 +51,22 @@
           <!-- /.card -->
           <section class="content">
             <!-- <div class="container-fluid"> -->
-              <div class="row">
-                <div class="col-12">
-                  <div class="card">
-                    <div class="card-header">
-                      <%- include('../../partials/profile_intern.ejs') %>
+              <% if (status) { %>
+                <div class="row">
+                  <div class="col-12">
+                    <div class="card">
+                      <div class="card-header">
+                        <%- include('../../partials/profile_intern.ejs') %>
+                      </div>
+                      <!-- /.card-header -->
+                      <div class="card-body">
+                        <% include('./tables.ejs') %>
+                      </div>
+                      <!-- /.card-body -->
                     </div>
-                    <!-- /.card-header -->
-                    <div class="card-body">
-                      <%- include('./tables.ejs') %>
-                    </div>
-                    <!-- /.card-body -->
                   </div>
                 </div>
-              </div>
+              <% } %>
             <!-- </div> -->
           </section>
         </div>

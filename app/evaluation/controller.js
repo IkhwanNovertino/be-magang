@@ -1,4 +1,5 @@
 const Evaluation = require('./model');
+const Intern = require('../intern/model');
 
 module.exports = {
   createEvaluation: async (req, res) => {
@@ -15,6 +16,19 @@ module.exports = {
           }
         })
       }
+
+      const res_intern = await Intern.findOne({ _id: intern });
+
+      if (!res_intern) {
+        return res.status(404).json({
+          errors: {
+            message: [
+              'Data peserta magang tidak ditemukan',
+            ],
+          }
+        })
+      }
+
       const res_evaluation = await Evaluation.findOne({ intern: intern })
       if (!res_evaluation) {
         const evaluation = new Evaluation({
@@ -42,17 +56,6 @@ module.exports = {
 
     } catch (err) {
       console.log(`ERRRR di createEvaluation >>> ${err}`);
-
-      // if (err && err.name === 'ValidationError') {
-      //   const message = [];
-      //   if (err.errors.intern) message.push(err.errors.title.message);
-      //   if (err.errors.category) message.push(err.errors.category.message);
-
-      //   return res.status(422).json({
-      //     message: message,
-      //     fields: err.errors,
-      //   });
-      // }
       res.status(500).json({
         errors: {
           message: [

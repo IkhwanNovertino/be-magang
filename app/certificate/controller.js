@@ -2,7 +2,19 @@ const Certificate = require('./model');
 const Evaluation = require('../evaluation/model');
 const Intern = require('../intern/model');
 
+const urlpath = 'admin/certificate';
+
 module.exports = {
+  index: async (req, res) => {
+    try {
+      res.render(`${urlpath}/template`, {
+        title: 'Sertifikat',
+      })
+    } catch (error) {
+      console.log(error);
+      res.redirect('/')
+    }
+  },
   createCertificate: async (req, res) => {
     try {
       if (req.user.role !== 'pembina') {
@@ -30,8 +42,6 @@ module.exports = {
           'data nilai peserta magang tidak ditemukan',
         ],
       });
-
-      // console.log(res_evaluation);
 
       const payload = {
         intern: intern,

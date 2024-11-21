@@ -1,8 +1,237 @@
+/* CSS RESET */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
 }
 
-a {
-  color: #00B7FF;
+
+.league-gothic {
+  font-family: "League Gothic", serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  color: #1E686F;
+  font-variation-settings:
+    "wdth" 100;
+}
+
+.certificate{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 2px solid red;
+  
+  font-family: "Arvo", serif;
+  font-size: 16px;
+  
+  width: 1122.5px;
+  height: 793.7px;
+  margin-inline: auto;
+  margin-block: 14px;
+
+  background-image: url('/images/background-sertif.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.certificate.first-page .certificate-header {
+  margin-top: 16px;
+  margin-bottom: 32px;
+}
+
+.certificate.first-page .certificate-header .img-logo-pemko {
+  margin: auto;
+  text-align: center;
+}
+
+.certificate.first-page .certificate-header .img-logo-pemko > img {
+  width: 68px;
+}
+
+.certificate.first-page .certificate-header .title-header .title-header-text {
+  margin-top: 4px;
+  font-size: 22px;
+  font-weight: 400;
+  text-align: center;
+}
+
+.certificate.first-page .certificate-header .title-header .title-header-text span {
+  font-size: 20px;
+}
+
+.certificate.first-page .certificate-number {
+  text-align: center;
+  margin-bottom: 38px;
+}
+
+.certificate.first-page .certificate-number .certificate-number-title {
+  font-size: 44px;
+}
+
+.certificate.first-page .certificate-name {
+  text-align: center;
+  margin-bottom: 24px;
+  font-size: 22px;
+}
+
+.certificate.first-page .certificate-name > h1 {
+  font-size: 78px;
+  margin-top: 10px;
+  text-transform: uppercase;
+}
+
+.certificate.first-page .certificate-description {
+  margin-bottom: 80px;
+}
+
+.certificate.first-page .certificate-description > p {
+  text-align: center;
+  line-height: 20px;
+}
+
+.certificate.first-page .certificate-description>p>strong {
+  font-weight: 700;
+}
+
+.certificate.first-page .certificate-footer {
+  position: relative;
+  width: 70%;
+  color: #1E686F;
+}
+
+.certificate.first-page .certificate-sign-top {
+  margin-bottom: 64px;
+  text-align: center;
+}
+
+.certificate.first-page .certificate-sign-top > p {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.certificate.first-page .certificate-sign-down {
+  text-align: center;
+}
+
+.certificate.first-page .certificate-sign-down > p {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.certificate.first-page .certificate-sign-down #pembina-name {
+  font-weight: bolder;
+}
+
+.certificate.first-page .certificate-footer .certificate-qrcode {
+  width: 120px;
+  height: 120px;
+  background-color: blue;
+  position: absolute;
+  top: 11px;
+  right: 32px;
+}
+
+.certificate.second-page .certificate-header {
+  margin-top: 84px;
+  margin-bottom: 32px;
+}
+
+.certificate.second-page .certificate-header .d-grid {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: 140px 4px auto;
+}
+
+.certificate.second-page .certificate-header .d-grid span {
+  padding-block: 4px;
+}
+
+.certificate-table-evaluation table, th, td {
+  border: 1px solid black;
+}
+
+th {
+  font-weight: 600;
+  font-size: 14px;
+  padding-inline: 40px;
+  padding-block: 2px;
+  vertical-align: middle;
+}
+
+th.table-number {
+  padding-inline: 16px;
+}
+
+th.table-component {
+  padding-inline: 64px;
+}
+
+td {
+  font-size: 14px;
+  padding-block: 4px;
+  text-align: center;
+  border-block: 0px;
+}
+
+td.component-title {
+  text-align: left;
+  width: 320px;
+  padding-inline: 4px;
+}
+
+tr.total > td {
+  border: 1px solid black;
+  font-weight: 600;
+  text-align: center;
+  padding-inline: 4px;
+  padding-bottom: 18px;
+}
+
+tr.total > td.total-title {
+  text-align: left;
+}
+
+tr.title-category > td {
+  text-align: left;
+  font-weight: 600;
+  padding-inline: 4px;
 }

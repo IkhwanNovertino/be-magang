@@ -16,6 +16,7 @@ module.exports = {
 
       res.render(`${urlpath}/view_logbook`, {
         title: 'Laporan Kegiatan',
+        status: false,
         intern,
         alert
       })
@@ -27,8 +28,14 @@ module.exports = {
   },
   viewLogbook: async (req, res) => {
     try {
-      const { intern } = req.body;
-      const logbook = await Logbook.findOne({ intern: intern }).populate('intern');
+      const { intern } = req.query;
+      console.log(intern);
+
+      const logbook = await Logbook.find({ intern: intern }).populate('intern');
+      console.log(logbook);
+
+      // req.flash('alertMessage', 'Berhasil Menambah Bidang Kegiatan');
+      // req.flash('alertStatus', 'success');
 
       res.render(`${urlpath}/view_logbook`, {
         title: 'Laporan Kegiatan',
