@@ -130,7 +130,7 @@ module.exports = {
                     foreignField: 'intern',
                     pipeline: [
                       { $sort: { date: -1 } },
-                      { $match: { status: 'pending' } }
+                      // { $match: { status: 'pending' } }
                     ],
                     as: 'logbook'
                   }
