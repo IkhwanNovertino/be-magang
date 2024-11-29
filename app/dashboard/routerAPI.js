@@ -4,9 +4,8 @@ const { dashboardUmpeg, dashboardSupervisor, dashboardIntern } = require('./cont
 const { isLoginUser } = require('../middleware/auth');
 
 /* GET home page. */
-router.get('/umpeg', dashboardUmpeg);
+router.get('/umpeg', isLoginUser, dashboardUmpeg);
 router.get('/supervisor', isLoginUser, dashboardSupervisor);
 router.get('/intern', isLoginUser, dashboardIntern);
-
 
 module.exports = router;

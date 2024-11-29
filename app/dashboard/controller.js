@@ -3,7 +3,7 @@ const Placement = require('../placement/model');
 const Biro = require('../biro/model');
 const Submission = require('../submission/model');
 const Logbook = require('../logbook/model');
-const Evaluation = require('../evaluation/model');
+const Certificate = require('../certificate/model');
 
 // Function count
 const aggInternActive = async () => {
@@ -218,10 +218,8 @@ module.exports = {
         .populate('intern')
         .populate('biro')
         .populate('supervisor');
-      const logbook = await logbook.find({ intern: req.user.id }).sort({ createdAt: -1 }).limit(5);
-      const evaluation = await Evaluation.findOne({ intern: req.user.id })
-        .populate('intern')
-        .populate('score.title');
+      const logbook = await Logbook.find({ intern: req.user.id }).sort({ createdAt: -1 }).limit(5);
+      const certificate = await Certificate.findOne({ intern: req.user.id });
 
       return res.status(200).json({
         data: {
@@ -233,7 +231,7 @@ module.exports = {
             end_an_internship: placement.intern.end_an_internship,
           },
           logbooks: logbook,
-          evaluation: evaluation,
+          certificate: certificate,
         }
       })
     } catch (err) {
