@@ -1,7 +1,8 @@
 const Intern = require('./model');
 const Placement = require('../placement/model');
 const Logbook = require('../logbook/model');
-const Evaluate = require('../evaluation/model');
+const Certificate = require('../certificate/model');
+const Pembina = require('../pembina/model');
 
 const { dateFormat } = require('../../utils/index');
 const urlpath = 'admin/intern';
@@ -117,7 +118,7 @@ module.exports = {
       const intern = await Intern.findOne({ _id: id }).populate('submissionID');
       const placement = await Placement.find({ intern: id }).populate('supervisor').populate('biro');
       const logbook = await Logbook.find({ intern: id }).sort({ createdAt: -1 }).limit(5)
-      const evaluate = await Evaluate.findOne({ intern: id }).populate('score.title');
+      const certificate = await Certificate.findOne({ intern: id });
 
       let data = {
         _id: intern._id,
@@ -134,8 +135,19 @@ module.exports = {
         statusIntern: intern.statusIntern,
         logbook: logbook,
         placement: placement,
-        evaluate: !evaluate ? null : evaluate,
+        certificate: !certificate ? null : certificate,
       };
+
+      if (req.user.role === 'pembina') {
+        if (certificate && certificate?.historyPembina?.name === '') {
+          const pembina = await Pembina.findOne({ _id: req.user.id });
+
+          data.certificate.historyPembina.name = pembina.name;
+          data.certificate.historyPembina.nip = pembina.nip;
+          data.certificate.historyPembina.position = pembina.job_title;
+          data.certificate.historyPembina.pangkat = pembina.pangkat;
+        }
+      }
 
       return res.status(200).json({
         data
