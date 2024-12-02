@@ -162,7 +162,7 @@ module.exports = {
       })
     }
   },
-  acceptanceCertificate: async (req, res) => {
+  approveCertificate: async (req, res) => {
     try {
       if (req.user.role !== 'pembina') {
         return res.status(403).json({
@@ -174,44 +174,37 @@ module.exports = {
         });
       }
 
-      const { intern, evaluation } = req.body;
+      const { intern } = req.query;
 
       const res_intern = await Intern.findOne({ _id: intern })
-      if (!res_intern) return res.status(404).json({
-        message: [
-          'data peserta magang tidak ditemukan',
-        ],
-      });
+      if (!res_intern) throw new Error('data peserta magang tidak ditemukan')
 
-      const res_evaluation = await Evaluation.findOne({ _id: evaluation });
-      if (!res_evaluation) return res.status(404).json({
-        message: [
-          'data nilai peserta magang tidak ditemukan',
-        ],
-      });
+      const res_evaluation = await Evaluation.findOne({ intern: intern });
+      if (!res_evaluation) throw new Error('data nilai peserta magang tidak ditemukan')
 
-      const payload = {
-        intern: intern,
-        evaluation: evaluation,
-        pembina: req.user.id,
-        publish_date: Date.now(),
-      };
-      if (res_evaluation.evaluateId < 10) {
-        payload.certif_num = `13/00${res_evaluation.evaluateId}/SRT/INFO/KOMINFO`
-      } else {
-        payload.certif_num = `13/0${res_evaluation.evaluateId}/SRT/INFO/KOMINFO`
-      }
-
-      const evaluate = await Evaluation.findOneAndUpdate(
-        { _id: evaluation },
+      // update historyPembina && update status certificate
+      const pembina = await Pembina.findOne({ _id: req.user.id });
+      const certificate = await Certificate.findOneAndUpdate(
+        { intern: intern },
         {
-          status: 'accept'
-        }, { new: true }
+          historyPembina: {
+            name: pembina.name,
+            nip: pembina.nip,
+            position: pembina.job_title,
+            pangkat: pembina.pangkat,
+          },
+          status: 'success',
+        },
+        { new: true }
       );
 
-      const certificate = new Certificate({ ...payload });
-      await certificate.save();
 
+
+      // buat func generate-certificate dan generate qrcode;
+      // qrcode
+      
+
+      // update statusIntern di intern
       const internStatusUpdate = await Intern.findOneAndUpdate(
         { _id: intern },
         {
