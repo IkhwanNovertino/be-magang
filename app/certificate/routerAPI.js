@@ -5,7 +5,7 @@ const { createCertificate, getCertificateById, approveCertificate } = require('.
 const { isLoginUser } = require('../middleware/auth');
 /* GET home page. */
 router.post('/', isLoginUser, createCertificate);
-router.put('/:id', isLoginUser, approveCertificate);
+router.put('/:intern', isLoginUser, approveCertificate);
 router.get('/:id', getCertificateById);
 // router.put('/:id', isLoginUser, updateEvaluation);
 

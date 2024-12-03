@@ -58,7 +58,6 @@ table {
   display: flex;
   flex-direction: column;
   align-items: center;
-  border: 2px solid red;
   
   font-family: "Arvo", serif;
   font-size: 16px;
@@ -66,7 +65,7 @@ table {
   width: 1122.5px;
   height: 793.7px;
   margin-inline: auto;
-  margin-block: 14px;
+  /* margin-block: 14px; */
 
   background-image: url('/images/background-sertif.png');
   background-size: cover;
@@ -128,7 +127,8 @@ table {
   line-height: 20px;
 }
 
-.certificate.first-page .certificate-description>p>strong {
+.certificate.first-page .certificate-description>p>strong,
+.certificate.first-page .certificate-description>p>span#result {
   font-weight: 700;
 }
 
@@ -148,6 +148,10 @@ table {
   font-weight: 600;
 }
 
+.certificate.first-page .certificate-sign-top #pembina-position {
+  text-transform: capitalize;
+}
+
 .certificate.first-page .certificate-sign-down {
   text-align: center;
 }
@@ -159,12 +163,16 @@ table {
 
 .certificate.first-page .certificate-sign-down #pembina-name {
   font-weight: bolder;
+  text-transform: uppercase;
+}
+
+.certificate.first-page .certificate-sign-down #pembina-pangkat {
+  text-transform: capitalize;
 }
 
 .certificate.first-page .certificate-footer .certificate-qrcode {
   width: 120px;
   height: 120px;
-  background-color: blue;
   position: absolute;
   top: 11px;
   right: 32px;
@@ -216,6 +224,7 @@ td.component-title {
   text-align: left;
   width: 320px;
   padding-inline: 4px;
+  padding-left: 8px;
 }
 
 tr.total > td {

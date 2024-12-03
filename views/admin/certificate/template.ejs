@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>sertifikat</title>
+  <title><%= title %></title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -28,30 +28,30 @@
       </div>
       <div class="certificate-number">
         <h2 class="certificate-number-title league-gothic">SERTIFIKAT</h2>
-        <p>Nomor: <span id="certif-number">13/11/INFO/SRT/2024</span></p>
+        <p>Nomor: <span id="certif-number"><%= certif_num %></span></p>
       </div>
       <div class="certificate-name">
         <p class="certificate-name-title">DIBERIKAN KEPADA</p>
-        <h1 id="certif-name" class="league-gothic">Muhammad Fajar Razatillah</h1>
+        <h1 id="certif-name" class="certif-name league-gothic"><%= intern.name %></h1>
       </div>
       <div class="certificate-description">
         <p>
-          Telah mengikuti Praktik Kerja Lapangan (PKL) selama <span id="duration-desc">2 bulan</span><br>
-          Dari tanggal <span id="start-date-desc">8 November 2024</span> sampai dengan <span id="end-date-desc">15 November 2024</span><br>
-          Di <strong>Dinas Komunikasi dan Informatika Kota Banjarbaru</strong> <br>
-          dengan hasil <strong>Sangat Baik</strong>
+          Telah mengikuti Praktik Kerja Lapangan (PKL) selama <span id="duration-desc"><%= intern.duration_internship %></span><br>
+          Dari tanggal <span id="start-date-desc"><%= dateFormatCertificate(intern.start_an_internship) %></span> sampai dengan <span id="end-date-desc"><%= dateFormatCertificate(intern.end_an_internship) %></span><br>
+          Di <strong>Dinas Komunikasi dan Informatika Kota Banjarbaru</strong><br>
+          dengan hasil <span id="result"><%= result %></span>
         </p>
       </div>
       <div class="certificate-footer">
         <div class="certificate-sign-top">
-          <p id="publish-date">Banjarbaru, 1 Desember 2024</p>
-          <p>Kepala Dinas Komunikasi dan Informatika</p>
+          <p>Banjarbaru, <span id="publish-date"><%= dateFormatCertificate(publish_date) %></span></p>
+          <p id="pembina-position"><%= pembina.position %></p>
           <p>Kota Banjarbaru</p>
         </div>
         <div class="certificate-sign-down">
-          <p id="pembina-name">Muhammad Ikhwan, M.M</p>
-          <p>Pembina Tk.I</p>
-          <p>NIP. <span id="pembina-nip">20001121 202202 1 079</span></p>
+          <p id="pembina-name"><%= pembina.name %></p>
+          <p id="pembina-pangkat"><%= pembina.pangkat %></p>
+          <p>NIP. <span id="pembina-nip"><%= pembina.nip %></span></p>
         </div>
         <div class="certificate-qrcode" id="certificate-qrcode"></div>
       </div>
@@ -61,12 +61,12 @@
         <div class="d-grid">
           <span>Nama</span>
           <span>:</span>
-          <span id="certif-name">Muhammad Fajar Razatillah</span>
+          <span id="certif-name-nd" class="certif-name"><%= intern.name %></span>
         </div>
         <div class="d-grid">
           <span>Jurusan</span>
           <span>:</span>
-          <span id="major">Sistem Informasi</span>
+          <span id="major"><%= intern.major %></span>
         </div>
       </div>
       <div class="certificate-table-evaluation">
@@ -83,83 +83,43 @@
             </tr>
           </thead>
           <tbody>
-            <tr class="title-category">
-              <td></td>
-              <td>A. Keahlian Teknis</td>
-              <td></td>
-              <td></td>
-            </tr>
-            <tr>
-              <td scope="row" class="table-number-items">1</td>
-              <td class="component-title">Pengenalan Surat Masuk ke Aplikasi Simaya</td>
-              <td>85</td>
-              <td>B</td>
-            </tr>
-            <tr>
-              <td scope="row">2</td>
-              <td class="component-title">Menginput Surat Masuk ke Aplikasi Simaya</td>
-              <td>85</td>
-              <td>B</td>
-            </tr>
-            <tr>
-              <td scope="row">3</td>
-              <td class="component-title">Menginput Surat Keluar Manual</td>
-              <td>85</td>
-              <td>B</td>
-            </tr>
-            <tr>
-              <td scope="row">4</td>
-              <td class="component-title">Memilah Surat Masuk sesuai Disposisi Kepala Dinas</td>
-              <td>85</td>
-              <td>B</td>
-            </tr>
+            <% if (score[1].score.length > 0) { %>
+              <tr class="title-category">
+                <td></td>
+                <td class="component-title">Keahlian Teknis</td>
+                <td></td>
+                <td></td>
+              </tr>
+              <% score[1].score.forEach((items, index) => {index++ %>
+                <tr>
+                  <td scope="row" class="table-number-items"><%= index %></td>
+                  <td class="component-title"><%= items.title %></td>
+                  <td><%= items.grade_number %></td>
+                  <td><%= items.grade_string %></td>
+                </tr>
+              <% }) %>
+            <% } %>
+            <% if (score[0].score.length > 0) { %>
+              <tr class="title-category">
+                <td></td>
+                <td class="component-title">Keahlian Non-Teknis</td>
+                <td></td>
+                <td></td>
+              </tr>
+              <% score[0].score.forEach((items, index) => {index++ %>
+                <tr>
+                  <td scope="row" class="table-number-items"><%= index %></td>
+                  <td class="component-title"><%= items.title %></td>
+                  <td><%= items.grade_number %></td>
+                  <td><%= items.grade_string %></td>
+                </tr>
+              <% }) %>
+            <% } %>
             <tr class="total">
               <td scope="row"></td>
               <td class="total-title">Jumlah</td>
-              <td>85</td>
-              <td>B</td>
-            </tr>
-            <tr class="title-category">
-              <td></td>
-              <td>A. Keahlian Non-Teknis</td>
-              <td></td>
-              <td></td>
-            </tr>
-            <tr>
-              <td scope="row" class="table-number-items">1</td>
-              <td class="component-title">Disiplin Waktu</td>
-              <td>85</td>
-              <td>B</td>
-            </tr>
-            <tr>
-              <td scope="row">2</td>
-              <td class="component-title">Kemauan Kerja & Motivasi</td>
-              <td>85</td>
-              <td>B</td>
-            </tr>
-            <tr>
-              <td scope="row">3</td>
-              <td class="component-title">Kualitas Kerja</td>
-              <td>85</td>
-              <td>B</td>
-            </tr>
-            <tr>
-              <td scope="row">4</td>
-              <td class="component-title">Inisiatif & Kreativitas</td>
-              <td>85</td>
-              <td>B</td>
-            </tr>
-            <tr>
-              <td scope="row">4</td>
-              <td class="component-title">Perilaku</td>
-              <td>85</td>
-              <td>B</td>
-            </tr>
-            <tr class="total">
-              <td scope="row"></td>
-              <td class="total-title">Jumlah</td>
-              <td>85</td>
-              <td>B</td>
+              <td><%= scoreTotal.total_number %></td>
+              <td><%= scoreTotal.total_string %></td>
             </tr>
           </tbody>
         </table>

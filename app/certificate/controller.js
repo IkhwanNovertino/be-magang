@@ -3,6 +3,10 @@ const Evaluation = require('../evaluation/model');
 const Intern = require('../intern/model');
 const Pembina = require('../pembina/model');
 const moment = require('moment');
+const path = require('path');
+
+const { generateCertificate, dateFormatCertificate } = require('../../utils');
+const { config } = require('dotenv');
 
 const urlpath = 'admin/certificate';
 
@@ -20,6 +24,8 @@ const duration = (a, b) => {
 module.exports = {
   index: async (req, res) => {
     try {
+      console.log(req.hostname);
+
       res.render(`${urlpath}/template`, {
         title: 'Sertifikat',
       })
@@ -28,6 +34,29 @@ module.exports = {
       res.redirect('/')
     }
   },
+  template: async (req, res) => {
+    try {
+      const { uid } = req.query;
+      const certificate = await Certificate.findOne({ _id: uid });
+
+      res.render(`${urlpath}/template`, {
+        title: 'Format Sertifikat',
+        intern: certificate.historyIntern,
+        certif_num: certificate.certif_num,
+        pembina: certificate.historyPembina,
+        result: certificate.result,
+        publish_date: certificate.publish_date,
+        scoreTotal: certificate.historyEvaluation.total,
+        score: certificate.historyEvaluation.category_score,
+        dateFormatCertificate,
+      })
+
+    } catch (err) {
+      
+    }
+  },
+
+  // APIs
   createCertificate: async (req, res) => {
     try {
       // if (req.user.role !== 'supervisor') {
@@ -174,7 +203,7 @@ module.exports = {
         });
       }
 
-      const { intern } = req.query;
+      const { intern } = req.params;
 
       const res_intern = await Intern.findOne({ _id: intern })
       if (!res_intern) throw new Error('data peserta magang tidak ditemukan')
@@ -202,10 +231,17 @@ module.exports = {
 
       // buat func generate-certificate dan generate qrcode;
       // qrcode
-      
+
+      // const pathTemplate = path.resolve(config.rootPath, `/views/admin/certificate/template.ejs`);
+      // const outputPath = path.resolve(config.rootPath, `/${config.urlUploads}/${certificate._id}`);
+      console.log('start generate certificate from approveCertificate');
+
+      const generate = await generateCertificate(certificate);
+
+      console.log(generate);
 
       // update statusIntern di intern
-      const internStatusUpdate = await Intern.findOneAndUpdate(
+      await Intern.findOneAndUpdate(
         { _id: intern },
         {
           statusIntern: 'finish',
