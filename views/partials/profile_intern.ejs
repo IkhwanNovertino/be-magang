@@ -10,24 +10,34 @@
     <div class="row">
       <div class="col-sm-12 col-md-8">
         <div class="profile-intern">
-          <h5 class="font-weight-bold text-uppercase p-0 m-0">Muhammad Ikhwan</h5>
-          <div class="font-weight-normal font-italic text-secondary">310118012620</div>
+          <h5 class="font-weight-bold text-uppercase p-0 m-0"><%= profile.intern.name%></h5>
+          <div class="font-weight-normal font-italic text-secondary"><%= profile.intern.id_num %></div>
         </div>
         <div class="placement-intern mt-1">
           <p class="text-sm m-0">Penempatan:<br>
-            <span class="text-uppercase font-weight-bold">KOMUNIKASI DAN INFORMASI PUBLIK</span>
+            <span class="text-uppercase font-weight-bold"><%= profile.biro.name %></span>
           </p>
           <p class="text-sm mt-1">Pembimbing Lapangan:<br>
-            <span class="text-uppercase font-weight-bold">Wijaya Kusuma, M.Kom</span>
+            <span class="text-uppercase font-weight-bold"><%= profile.supervisor.name %></span>
           </p>
         </div>
       </div>
       <div class="col-sm-12 col-md-4 d-flex justify-content-end">
         <div class="d-flex flex-column">
-          <p class="text-sm font-weight-bold">1 Maret 2024 - 1 Juni 2024</p>
-          <span class="badge badge-pill badge-primary py-2 text-md">
-            Selesai
-          </span>
+          <p class="text-sm font-weight-bold"><%= dateFormatCertificate(profile.intern.start_an_internship) %> - <%= dateFormatCertificate(profile.intern.end_an_internship) %></p>
+          <% if (profile.intern.statusIntern === 'pending') { %>
+            <span class="badge badge-pill badge-warning py-2 text-md">
+              Pending
+            </span>
+          <% } else if (profile.intern.statusIntern === 'active') { %>
+            <span class="badge badge-pill badge-primary py-2 text-md">
+              Aktif
+            </span>
+          <% } else { %>
+            <span class="badge badge-pill badge-success py-2 text-md">
+              Selesai
+            </span>
+          <% } %>
         </div>
       </div>
     </div>
