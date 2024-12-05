@@ -3,7 +3,11 @@ const Placement = require('../placement/model');
 const Biro = require('../biro/model');
 const Submission = require('../submission/model');
 const Logbook = require('../logbook/model');
-const Evaluation = require('../evaluation/model');
+const Certificate = require('../certificate/model');
+
+// var date
+const toDay = new Date();
+const getFullYear = toDay.getFullYear();
 
 // Function count
 const aggInternActive = async () => {
@@ -12,16 +16,11 @@ const aggInternActive = async () => {
 }
 
 const totalIntern = async () => {
-  const toDay = new Date();
-  const getFullYear = toDay.getFullYear();
   const intern = await Intern.countDocuments({ start_an_internship: { $gte: Date.parse(getFullYear) } });
   return intern;
 }
 
 const aggInternByBiro = async () => {
-  const toDay = new Date();
-  const getFullYear = toDay.getFullYear();
-
   const biro = await Biro.find();
   const placementInternStatus = await Placement.aggregate([
     {
@@ -218,10 +217,8 @@ module.exports = {
         .populate('intern')
         .populate('biro')
         .populate('supervisor');
-      const logbook = await logbook.find({ intern: req.user.id }).sort({ createdAt: -1 }).limit(5);
-      const evaluation = await Evaluation.findOne({ intern: req.user.id })
-        .populate('intern')
-        .populate('score.title');
+      const logbook = await Logbook.find({ intern: req.user.id }).sort({ createdAt: -1 }).limit(5);
+      const certificate = await Certificate.findOne({ intern: req.user.id });
 
       return res.status(200).json({
         data: {
@@ -233,7 +230,28 @@ module.exports = {
             end_an_internship: placement.intern.end_an_internship,
           },
           logbooks: logbook,
-          evaluation: evaluation,
+          certificate: certificate,
+        }
+      })
+    } catch (err) {
+      return res.status(400).json({ message: err.message })
+    }
+  },
+  dashboardPembina: async (req, res) => {
+    try {
+
+      const submissionTotal = await Submission.countDocuments();
+      const submissionInthisYear = await Submission.countDocuments({ createdAt: { $gte: Date.parse(getFullYear) } });
+
+      return res.status(200).json({
+        data: {
+          card: {
+            activeIntern: await aggInternActive(),
+            total: await totalIntern(),
+            submissionTotal: submissionTotal,
+            submissionInthisYear: submissionInthisYear,
+          },
+          bar: await aggInternByBiro(),
         }
       })
     } catch (err) {

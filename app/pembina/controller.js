@@ -1,5 +1,4 @@
 const Pembina = require('./model');
-const authModel = require('../authenticate/model');
 const path = require('path');
 const fs = require('fs');
 const config = require('../../config');
@@ -39,7 +38,7 @@ module.exports = {
   },
   actionCreate: async (req, res) => {
     try {
-      const { name, nip, job_title } = req.body;
+      const { name, nip, job_title, pangkat, golongan } = req.body;
 
       const noInduk = nip.replace(/ /gi, '');
 
@@ -59,6 +58,8 @@ module.exports = {
               name: name.trim().toLowerCase(),
               nip: noInduk,
               job_title: job_title.trim().toLowerCase(),
+              pangkat: pangkat.trim().toLowerCase(),
+              golongan: golongan.trim().toLowerCase(),
               password: noInduk,
               avatar: filename
             });
@@ -80,6 +81,8 @@ module.exports = {
           nip: noInduk,
           password: noInduk,
           job_title: job_title.trim().toLowerCase(),
+          pangkat: pangkat.trim().toLowerCase(),
+          golongan: golongan.trim().toLowerCase(),
         });
         await pembina.save();
         delete pembina._doc.password;
@@ -121,7 +124,7 @@ module.exports = {
         _id: id
       });
 
-      let currentImage = `${config.rootPath}/public/uploads/${pembina.avatar}`;
+      let currentImage = `${config.rootPath}/${config.urlUploads}/${pembina.avatar}`;
       if (fs.existsSync(currentImage)) {
         fs.unlinkSync(currentImage)
       }
@@ -139,8 +142,19 @@ module.exports = {
     try {
       const { id } = req.params;
       let pembina = await Pembina.findOne({ _id: id })
+      let allPembina = await Pembina.countDocuments({ status: 'Y' });
+      let status;
+      if (pembina.status === 'N') {
+        if (allPembina === 1) {
+          throw Error('Tidak bisa ada 2 Akun pembina yang aktif')
+        } else {
+          status = "Y";
+        }
+      } else {
+        status = "N";
+      }
 
-      let status = pembina.status === 'Y' ? 'N' : 'Y';
+      // status = pembina.status === 'Y' ? 'N' : 'Y';
       let message = status === 'Y' ? 'Akun user telah aktif' : 'Akun user telah di non-aktif';
 
       await Pembina.findOneAndUpdate({ _id: id }, { status })

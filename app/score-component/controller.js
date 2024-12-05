@@ -150,7 +150,7 @@ module.exports = {
   },
   getScoreComponent: async (req, res) => {
     try {
-      const scoreComponent = await ScoreComponent.find();
+      const scoreComponent = await ScoreComponent.find().sort({ category: 1 });
 
       res.status(200).json({
         data: scoreComponent,

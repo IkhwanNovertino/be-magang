@@ -10,6 +10,8 @@ module.exports = {
     try {
       const { file } = req.params;
       let file_path;
+      console.log(req.url);
+
 
       if (req.url.includes('offering')) {
         const res_doc = await Submission.findOne({ offering_letter: file });
@@ -46,4 +48,21 @@ module.exports = {
       });
     }
   },
+  downloadFileCertificate: async (req, res) => {
+    try {
+      const { file } = req.params;
+      const file_path = path.resolve(config.rootPath, config.urlUploads, `${file}.pdf`);
+
+      res.set('Content-Disposition', `attachment; filename="${file}.pdf"`);
+      res.download(file_path, `${file}.pdf`)
+    } catch (err) {
+      console.log(err);
+      return res.status(400).json({
+        errors: {
+          message: message,
+          fields: err.errors,
+        }
+      });
+    }
+  }
 }

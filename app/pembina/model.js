@@ -15,6 +15,14 @@ let pembinaSchema = mongoose.Schema({
     type: String,
     require: [true, 'Jabatan harus diisi']
   },
+  pangkat: {
+    type: String,
+    require: [true, 'Pangkat harus diisi']
+  },
+  golongan: {
+    type: String,
+    require: [true, 'Golongan harus diisi']
+  },
   avatar: {
     type: String,
     default: "none"
@@ -26,7 +34,7 @@ let pembinaSchema = mongoose.Schema({
   status: {
     type: String,
     enum: ['Y', 'N'],
-    default: 'Y'
+    default: 'N'
   },
 }, { timestamps: true })
 

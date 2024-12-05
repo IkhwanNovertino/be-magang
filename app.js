@@ -19,6 +19,7 @@ const internRouter = require('./app/intern/router.js');
 const placementRouter = require('./app/placement/router.js');
 const logbookRouter = require('./app/logbook/router.js');
 const scoreRouter = require('./app/score-component/router.js');
+const certificateRouter = require('./app/certificate/router.js');
 
 // API
 const authRouter = require('./app/authenticate/router.js');
@@ -70,6 +71,7 @@ app.use('/intern', internRouter);
 app.use('/submission', submissionRouter);
 app.use('/placement', placementRouter);
 app.use('/logbook', logbookRouter);
+app.use('/certificate', certificateRouter);
 app.use('/score', scoreRouter);
 
 
