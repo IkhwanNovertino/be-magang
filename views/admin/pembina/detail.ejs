@@ -73,6 +73,30 @@
                     >
                   </div>
                 </div>
+                <div class="form-group row">
+                  <label for="pangkat" class="col-sm-2 col-form-label">Pangkat</label>
+                  <div class="col-sm-10">
+                    <input 
+                      type="text" 
+                      readonly 
+                      class="form-control-plaintext border-bottom" 
+                      id="pangkat" 
+                      value="<%= pembina.pangkat.toUpperCase() %>"
+                    >
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="golongan" class="col-sm-2 col-form-label">Golongan</label>
+                  <div class="col-sm-10">
+                    <input 
+                      type="text" 
+                      readonly 
+                      class="form-control-plaintext border-bottom" 
+                      id="golongan" 
+                      value="<%= pembina.golongan %>"
+                    >
+                  </div>
+                </div>
                 <div class="form-group">
                   <% if (pembina.avatar === 'none') { %>
                     <img class="img-fluid img-circle img-lg" src="<%= imgURL %>/images/person-circle.svg" alt="foto profil">

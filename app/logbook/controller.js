@@ -1,7 +1,8 @@
 const Logbook = require('./model');
 const Intern = require('../intern/model');
 const Placement = require('../placement/model');
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
+const { dateFormatCertificate } = require('../../utils');
 
 const urlpath = 'admin/logbook';
 
@@ -16,6 +17,7 @@ module.exports = {
 
       res.render(`${urlpath}/view_logbook`, {
         title: 'Laporan Kegiatan',
+        status: false,
         intern,
         alert
       })
@@ -27,13 +29,23 @@ module.exports = {
   },
   viewLogbook: async (req, res) => {
     try {
-      const { intern } = req.body;
-      const logbook = await Logbook.findOne({ intern: intern }).populate('intern');
+      const { id } = req.query;
+
+      const logbook = await Logbook.find({ intern: id }).populate('intern');
+      const intern = await Intern.find().sort({ createdAt: -1 });
+      const profile = await Placement.findOne({ intern: id }).populate('biro').populate('intern').populate('supervisor');
+
+
+      // req.flash('alertMessage', 'Berhasil Menambah Bidang Kegiatan');
+      // req.flash('alertStatus', 'success');
 
       res.render(`${urlpath}/view_logbook`, {
         title: 'Laporan Kegiatan',
+        intern,
         logbook,
+        profile,
         status: true,
+        dateFormatCertificate,
       });
     } catch (err) {
       req.flash('alertMessage', `${err.message}`);
@@ -123,7 +135,7 @@ module.exports = {
                     foreignField: 'intern',
                     pipeline: [
                       { $sort: { date: -1 } },
-                      { $match: { status: 'pending' } }
+                      // { $match: { status: 'pending' } }
                     ],
                     as: 'logbook'
                   }
