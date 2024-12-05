@@ -52,23 +52,13 @@ module.exports = {
       })
 
     } catch (err) {
-      
+
     }
   },
 
   // APIs
   createCertificate: async (req, res) => {
     try {
-      // if (req.user.role !== 'supervisor') {
-      //   return res.status(403).json({
-      //     errors: {
-      //       message: [
-      //         'Not allowed to access this resource',
-      //       ],
-      //     }
-      //   });
-      // }
-
       const { intern, evaluation } = req.body;
 
       const res_intern = await Intern.findOne({ _id: intern })
@@ -223,6 +213,7 @@ module.exports = {
             pangkat: pembina.pangkat,
           },
           status: 'success',
+          publish_date: Date.now(),
         },
         { new: true }
       );
