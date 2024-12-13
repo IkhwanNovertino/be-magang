@@ -240,7 +240,7 @@
               <select class="form-control select2bs4" data-placeholder="Pilih pembimbing/supervisor" name="supervisor" id="supervisor" required style="width: 100%;">
                 <option></option>
                 <% supervisor.forEach(el => { %>
-                  <option value="<%= el.id %>"><%= el.name.toUpperCase() %></option>
+                  <option value="<%= el.id %>"><%= el.name.toUpperCase() %> (<%= el.job_title %>)</option>
                 <% }) %>
               </select>
             </div>
