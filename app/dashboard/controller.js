@@ -4,6 +4,7 @@ const Biro = require('../biro/model');
 const Submission = require('../submission/model');
 const Logbook = require('../logbook/model');
 const Certificate = require('../certificate/model');
+const { dateFormatCertificate } = require('../../utils')
 
 // var date
 const toDay = new Date();
@@ -140,8 +141,45 @@ const aggInternByBiro = async () => {
 module.exports = {
   index: async (req, res) => {
     try {
+      const allIntern = await Intern.countDocuments();
+      const InternInYear = await totalIntern();
+      const allSubmission = await Submission.countDocuments();
+      const submissionInYear = await Submission.countDocuments({ createdAt: { $gte: Date.parse(getFullYear) } });
+
+      const currIntern = await Intern.find().sort({ createdAt: -1 }).limit(5);
+      const currSubmission = await Submission.find().sort({ createdAt: -1 }).limit(5).populate('applicant');
+
+      const internByBiro = await Placement.aggregate([
+        {
+          $lookup: {
+            from: "biros",
+            localField: "biro",
+            foreignField: "_id",
+            as: "biro"
+          }
+        },
+        {
+          $group: {
+            _id: '$biro.name',
+            count: { $count: {} },
+          },
+        },
+        {
+          $sort: { _id: 1 }
+        }
+      ])
+      console.log(internByBiro);
+
       res.render('index', {
         title: 'Dashboard',
+        allIntern,
+        InternInYear,
+        allSubmission,
+        submissionInYear,
+        currSubmission,
+        currIntern,
+        internByBiro,
+        dateFormatCertificate,
       })
     } catch (err) {
       console.log(`error di index controller biro >>${err}`);

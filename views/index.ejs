@@ -29,7 +29,7 @@
             <!-- small box -->
             <div class="small-box bg-info">
               <div class="inner">
-                <h3>150</h3>
+                <h3><%= allIntern %></h3>
 
                 <p>Total <br> Peserta Magang</p>
               </div>
@@ -44,14 +44,14 @@
             <!-- small box -->
             <div class="small-box bg-indigo">
               <div class="inner">
-                <h3>53<sup style="font-size: 20px">%</sup></h3>
+                <h3><%= InternInYear %></h3>
 
                 <p>Total <br> Peserta Tahun Ini</p>
               </div>
               <div class="icon">
                 <i class="ion ion-stats-bars"></i>
               </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="/intern" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -59,14 +59,14 @@
             <!-- small box -->
             <div class="small-box bg-teal">
               <div class="inner">
-                <h3>44</h3>
+                <h3><%= allSubmission %></h3>
 
                 <p>Total <br> Pengajuan Magang</p>
               </div>
               <div class="icon">
                 <i class="ion ion-person-add"></i>
               </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="/submission" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -74,14 +74,14 @@
             <!-- small box -->
             <div class="small-box bg-olive">
               <div class="inner">
-                <h3>65</h3>
+                <h3><%= submissionInYear %></h3>
 
                 <p>Total <br> Pengajuan Tahun Ini</p>
               </div>
               <div class="icon">
                 <i class="ion ion-pie-graph"></i>
               </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="/submission" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -102,37 +102,39 @@
               <!-- /.card-header -->
               <div class="card-body">
                 <div class="row">
+                  <% internByBiro.forEach(items => { %>
+                    <div class="col-6 col-md-3 text-center">
+                      <input type="text" class="knob" value="<%= items.count %>" data-skin="tron" data-thickness="0.2"
+                        data-angleArc="250" data-angleOffset="-125" data-width="120" data-height="120"
+                        data-fgColor="#ff851b" readonly="true">
+                      <div class="knob-label"><%= items._id %></div>
+                    </div>
+                  <% }) %>
                   <!-- ./col -->
-                  <div class="col-6 col-md-3 text-center">
-                    <input type="text" class="knob" value="80" data-skin="tron" data-thickness="0.2"
-                      data-angleArc="250" data-angleOffset="-125" data-width="120" data-height="120"
-                      data-fgColor="#ff851b" readonly="true">
-                    <div class="knob-label">Informatika</div>
-                  </div>
                   <!-- ./col -->
                   <!-- ./col -->
-                  <div class="col-6 col-md-3 text-center">
+                  <!-- <div class="col-6 col-md-3 text-center">
                     <input type="text" class="knob" value="80" data-skin="tron" data-thickness="0.2"
                       data-angleArc="250" data-angleOffset="-125" data-width="120" data-height="120"
                       data-fgColor="#ff851b" readonly="true">
                     <div class="knob-label">Umum dan Kepegawaian</div>
-                  </div>
+                  </div> -->
                   <!-- ./col -->
                   <!-- ./col -->
-                  <div class="col-6 col-md-3 text-center">
+                  <!-- <div class="col-6 col-md-3 text-center">
                     <input type="text" class="knob" value="80" data-skin="tron" data-thickness="0.2"
                       data-angleArc="250" data-angleOffset="-125" data-width="120" data-height="120"
                       data-fgColor="#ff851b" readonly="true">
                     <div class="knob-label">Komunikasi dan Informasi Publik</div>
-                  </div>
+                  </div> -->
                   <!-- ./col -->
                   <!-- ./col -->
-                  <div class="col-6 col-md-3 text-center">
+                  <!-- <div class="col-6 col-md-3 text-center">
                     <input type="text" class="knob" value="80" data-skin="tron" data-thickness="0.2"
                       data-angleArc="250" data-angleOffset="-125" data-width="120" data-height="120"
                       data-fgColor="#ff851b" readonly="true">
                     <div class="knob-label">Statistik dan Persandian</div>
-                  </div>
+                  </div> -->
                   <!-- ./col -->
                 </div>
                 <!-- /.row -->
@@ -160,42 +162,32 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>Nama pemohon</td>
-                      <td>Instansi Pemohon</td>
-                      <td>21/11/2024</td>
-                      <td><span class="badge bg-danger">failed</span></td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <!-- /.card-body -->
-            </div>
-            <!-- /.card -->
-            <!-- card -->
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">
-                  <i class="far fa-chart-bar"></i>
-                  Daftar Peserta Magang
-                </h3>
-              </div>
-              <!-- /.card-header -->
-              <div class="card-body p-0">
-                <table class="table table-striped">
-                  <thead>
-                    <tr>
-                      <th>Nama Peserta</th>
-                      <th>Asal Sekolah/Kampus</th>
-                      <th>Penempatan</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>Update software</td>
-                      <td>Update software</td>
-                      <td>Update software</td>
-                    </tr>
+                    <% currSubmission.forEach(items => { %>
+                      <tr>
+                        <td><%= items.applicant.name.toUpperCase() ?? '' %></td>
+                        <td><%= items.applicant.institute.toUpperCase() ?? '' %></td>
+                        <td><%= dateFormatCertificate(items.createdAt) ?? '' %></td>
+                        <td>
+                          <% if (items.status === 'pending') { %>
+                            <span class="badge badge-warning">
+                              pending
+                            </span>
+                          <% } else if(items.status === 'success') { %>
+                            <span class="badge badge-success">
+                              success
+                            </span>
+                          <% } else if(items.status === 'confirmed') { %>
+                            <span class="badge badge-info">
+                              confirm
+                            </span>
+                          <% } else { %>
+                            <span class="badge badge-danger">
+                              failed
+                            </span>
+                          <% } %>
+                        </td>
+                      </tr>
+                    <% }) %>
                   </tbody>
                 </table>
               </div>
