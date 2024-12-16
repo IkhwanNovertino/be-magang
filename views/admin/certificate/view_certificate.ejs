@@ -1,0 +1,98 @@
+<%- include('../../partials/header.ejs') %>
+<%- include('../../partials/navbar.ejs') %>
+<%- include('../../partials/sidebar.ejs') %>
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <%#- include('../../partials/message.ejs') %>
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1>Sertifikat Peserta Magang</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+            <li class="breadcrumb-item active">Sertifikat</li>
+          </ol>
+        </div>
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header">
+              <form action="/certificate/create" method="get">
+                <div class="d-flex flex-row mt-3">
+                  <div class="col-10 form-group">
+                    <div class="input-group">
+                      <select class="form-control select2bs4" data-placeholder="Pilih peserta magang" name="id" id="id" required style="width: 100%;">
+                        <% interns.forEach(el => { %>
+                          <option></option>
+                          <option value="<%= el.id %>"><%= el.name %></option>
+                        <% }) %>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-2">
+                    <button type="submit" class=" btn btn-primary">Cari Serifikat</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+          <!-- /.card -->
+          <section class="content">
+            <!-- <div class="container-fluid"> -->
+              <% if (status) { %>
+                <div class="row">
+                  <div class="col-12">
+                    <div class="card">
+                      <div class="card-header">
+                        <%- include('../../partials/profile_intern.ejs') %>
+                      </div>
+                      <!-- /.card-header -->
+                      <% if (certificate) { %>
+                        <div class="card-body">
+                          <%- include('./template_admin.ejs') %>
+                        </div>
+                      <% } else { %>
+                        <div class="card-body bg-gray-light text-center">
+                          <p class="font-weight-bold">Belum dilakukan penilaian oleh pembimbing</p>
+                        </div>
+                      <% } %>
+                      <!-- /.card-body -->
+                      <div class="card-footer">
+                        <a
+                          href="/certificate/download/<%= certificate._id %>"
+                          class="btn btn-primary"
+                        >
+                          Unduh Sertifikat
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              <% } %>
+            <!-- </div> -->
+          </section>
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+  </section>
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+<%- include('../../partials/footer.ejs') %>
+<%- include('../../partials/js.ejs') %>

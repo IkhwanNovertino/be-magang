@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= `sertifikat_${intern.name}` %></title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Arvo:wght@400;700&family=League+Gothic&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="/stylesheets/style.css">
+</head>
+<body>
+  <section class="certificate-wrapper">
+    <section class="certificate admin first-page">
+      <div class="certificate-header">
+        <div class="img-logo-pemko">
+          <img src="/images/logo.png" alt="logo pemko" class="logo">
+        </div>
+        <div class="title-header">
+          <h3 class="title-header-text">
+            <span>PEMERINTAH KOTA BANJARBARU</span>
+            <br>
+            DINAS KOMUNIKASI DAN INFORMATIKA
+          </h3>
+        </div>
+      </div>
+      <div class="certificate-number">
+        <h2 class="certificate-number-title league-gothic">SERTIFIKAT</h2>
+        <p>Nomor: <span id="certif-number"><%= certif_num %></span></p>
+      </div>
+      <div class="certificate-name">
+        <p class="certificate-name-title">DIBERIKAN KEPADA</p>
+        <h1 id="certif-name" class="certif-name league-gothic"><%= intern.name %></h1>
+      </div>
+      <div class="certificate-description">
+        <p>
+          Telah mengikuti Praktik Kerja Lapangan (PKL) selama <span id="duration-desc"><%= intern.duration_internship %></span><br>
+          Dari tanggal <span id="start-date-desc"><%= dateFormatCertificate(intern.start_an_internship) %></span> sampai dengan <span id="end-date-desc"><%= dateFormatCertificate(intern.end_an_internship) %></span><br>
+          Di <strong>Dinas Komunikasi dan Informatika Kota Banjarbaru</strong><br>
+          dengan hasil <span id="result"><%= result %></span>
+        </p>
+      </div>
+      <div class="certificate-footer">
+        <div class="certificate-sign-top">
+          <p>Banjarbaru, <span id="publish-date"><%= dateFormatCertificate(publish_date) %></span></p>
+          <p id="pembina-position"><%= pembina.position %></p>
+          <p>Kota Banjarbaru</p>
+        </div>
+        <div class="certificate-sign-down">
+          <p id="pembina-name"><%= pembina.name %></p>
+          <p id="pembina-pangkat"><%= pembina.pangkat %></p>
+          <p>NIP. <span id="pembina-nip"><%= pembina.nip %></span></p>
+        </div>
+        <div class="certificate-qrcode" id="certificate-qrcode"></div>
+      </div>
+    </section>
+    <section class="certificate admin second-page">
+      <div class="certificate-header">
+        <div class="d-grid">
+          <span>Nama</span>
+          <span>:</span>
+          <span id="certif-name-nd" class="certif-name"><%= intern.name %></span>
+        </div>
+        <div class="d-grid">
+          <span>Jurusan</span>
+          <span>:</span>
+          <span id="major"><%= intern.major %></span>
+        </div>
+      </div>
+      <div class="certificate-table-evaluation">
+        <table>
+          <thead>
+            <tr>
+              <th rowspan="2" class="table-number" scope="col">No</th>
+              <th rowspan="2" class="table-component" scope="col">Komponen Yang Dinilai</th>
+              <th colspan="2">Nilai</th>
+            </tr> 
+            <tr>
+              <th>Angka</th>
+              <th>Huruf</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if (score[1].score.length > 0) { %>
+              <tr class="title-category">
+                <td></td>
+                <td class="component-title">Keahlian Teknis</td>
+                <td></td>
+                <td></td>
+              </tr>
+              <% score[1].score.forEach((items, index) => {index++ %>
+                <tr>
+                  <td scope="row" class="table-number-items"><%= index %></td>
+                  <td class="component-title"><%= items.title %></td>
+                  <td><%= items.grade_number %></td>
+                  <td><%= items.grade_string %></td>
+                </tr>
+              <% }) %>
+            <% } %>
+            <% if (score[0].score.length > 0) { %>
+              <tr class="title-category">
+                <td></td>
+                <td class="component-title">Keahlian Non-Teknis</td>
+                <td></td>
+                <td></td>
+              </tr>
+              <% score[0].score.forEach((items, index) => {index++ %>
+                <tr>
+                  <td scope="row" class="table-number-items"><%= index %></td>
+                  <td class="component-title"><%= items.title %></td>
+                  <td><%= items.grade_number %></td>
+                  <td><%= items.grade_string %></td>
+                </tr>
+              <% }) %>
+            <% } %>
+            <tr class="total">
+              <td scope="row"></td>
+              <td class="total-title">Jumlah</td>
+              <td><%= scoreTotal.total_number %></td>
+              <td><%= scoreTotal.total_string %></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </section>
+</body>
+</html>

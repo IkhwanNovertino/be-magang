@@ -54,6 +54,24 @@ table {
     "wdth" 100;
 }
 
+.certificate.admin {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  
+  font-family: "Arvo", serif;
+  font-size: 16px;
+  
+  width: 100%;
+  min-height: fit-content;
+  /* margin-inline: auto; */
+  /* margin-block: 14px; */
+
+  background-image: url('/images/background-sertif.png');
+  background-size: 105%;
+  background-repeat: no-repeat;
+}
+
 .certificate{
   display: flex;
   flex-direction: column;
@@ -72,6 +90,10 @@ table {
   background-repeat: no-repeat;
 }
 
+.certificate.admin.first-page .certificate-header {
+  margin-top: 16px;
+  margin-bottom: 24px;
+}
 .certificate.first-page .certificate-header {
   margin-top: 16px;
   margin-bottom: 32px;
@@ -82,6 +104,9 @@ table {
   text-align: center;
 }
 
+.certificate.admin.first-page .certificate-header .img-logo-pemko > img {
+  width: 60px;
+}
 .certificate.first-page .certificate-header .img-logo-pemko > img {
   width: 68px;
 }
@@ -118,6 +143,9 @@ table {
   text-transform: uppercase;
 }
 
+.certificate.admin.first-page .certificate-description {
+  margin-bottom: 40px;
+}
 .certificate.first-page .certificate-description {
   margin-bottom: 80px;
 }
