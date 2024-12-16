@@ -2,7 +2,7 @@ const Logbook = require('./model');
 const Intern = require('../intern/model');
 const Placement = require('../placement/model');
 const mongoose = require('mongoose');
-const { dateFormatCertificate } = require('../../utils');
+const { dateFormatCertificate, dateFormatLogbook } = require('../../utils');
 
 const urlpath = 'admin/logbook';
 
@@ -34,6 +34,7 @@ module.exports = {
       const logbook = await Logbook.find({ intern: id }).populate('intern');
       const intern = await Intern.find().sort({ createdAt: -1 });
       const profile = await Placement.findOne({ intern: id }).populate('biro').populate('intern').populate('supervisor');
+      console.log(logbook);
 
 
       // req.flash('alertMessage', 'Berhasil Menambah Bidang Kegiatan');
@@ -46,6 +47,7 @@ module.exports = {
         profile,
         status: true,
         dateFormatCertificate,
+        dateFormatLogbook,
       });
     } catch (err) {
       req.flash('alertMessage', `${err.message}`);
