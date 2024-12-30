@@ -12,7 +12,13 @@
     <tr>
       <td><%= i %></td>
       <td><%= e.title %></td>
-      <td><%= e.category %></td>
+      <td>
+        <% if (e.category === 'NT') { %>
+          Non-Teknis
+        <% } else { %>
+          Teknis
+        <% } %>
+      </td>
       <td>
         <form action="/score/delete/<%= e.id %>?_method=DELETE" method="post">
           <a href="/score/edit/<%= e.id %>" class="btn btn-warning btn-sm">

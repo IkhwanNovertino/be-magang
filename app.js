@@ -20,6 +20,7 @@ const placementRouter = require('./app/placement/router.js');
 const logbookRouter = require('./app/logbook/router.js');
 const scoreRouter = require('./app/score-component/router.js');
 const certificateRouter = require('./app/certificate/router.js');
+const recapitulationRouter = require('./app/recapitulation/router.js');
 
 // API
 const authRouter = require('./app/authenticate/router.js');
@@ -73,6 +74,7 @@ app.use('/placement', placementRouter);
 app.use('/logbook', logbookRouter);
 app.use('/certificate', certificateRouter);
 app.use('/score', scoreRouter);
+app.use('/recap', recapitulationRouter);
 
 
 // APIs

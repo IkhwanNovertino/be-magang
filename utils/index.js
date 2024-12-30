@@ -17,6 +17,12 @@ const dateFormatCertificate = (value) => {
   return tgl;
 }
 
+const dateFormatLogbook = (value) => {
+  moment.locale('id');
+  const tgl = moment(value).format("dddd, D MMMM YYYY")
+  return tgl;
+}
+
 const dateForm = value => {
   const tgl = moment(value).format('ll')
   return tgl
@@ -63,4 +69,4 @@ const generateCertificate = async (certificate) => {
   }
 }
 
-module.exports = { dateFormat, dateForm, generateCertificate, dateFormatCertificate }
+module.exports = { dateFormat, dateForm, generateCertificate, dateFormatCertificate, dateFormatLogbook }

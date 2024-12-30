@@ -10,12 +10,12 @@
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1>Laporan Kegiatan Magang Peserta</h1>
+          <h1>Laporan Rekapitulasi Magang</h1>
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
-            <li class="breadcrumb-item active">Laporan Kegiatan</li>
+            <li class="breadcrumb-item active">Laporan Rekapitulasi</li>
           </ol>
         </div>
       </div>
@@ -28,21 +28,28 @@
       <div class="row">
         <div class="col-12">
           <div class="card">
+
+            
+
             <div class="card-header">
-              <form action="/logbook/create" method="get">
+              <form action="/recap/create" method="get">
                 <div class="d-flex flex-row mt-3">
+
+                  <!-- Date range -->
                   <div class="col-10 form-group">
+                    <!-- <label>Periode:</label> -->
                     <div class="input-group">
-                      <select class="form-control select2bs4" data-placeholder="Pilih peserta magang" name="id" id="id" required style="width: 100%;">
-                        <% intern.forEach(el => { %>
-                          <option></option>
-                          <option value="<%= el.id %>"><%= el.name %></option>
-                        <% }) %>
-                      </select>
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">
+                          <i class="far fa-calendar-alt"></i>
+                        </span>
+                      </div>
+                      <input type="text" name="date" value="<%= tanggal %>" class="form-control float-right" id="reservation" placeholder="Pilih tanggal">
                     </div>
                   </div>
+                  <!-- /.form group -->
                   <div class="col-2">
-                    <button type="submit" class=" btn btn-primary">Cari laporan</button>
+                    <button type="submit" class=" btn btn-primary">Buat Laporan</button>
                   </div>
                 </div>
               </form>
@@ -55,14 +62,19 @@
                 <div class="row">
                   <div class="col-12">
                     <div class="card">
-                      <div class="card-header">
-                        <%- include('../../partials/profile_intern.ejs') %>
-                      </div>
-                      <!-- /.card-header -->
                       <div class="card-body">
-                        <%- include('./tables.ejs') %>
+                        <%- include('./template_recapitulation.ejs') %>
                       </div>
                       <!-- /.card-body -->
+                      <div class="card-footer">
+                          <a
+                          target="_blank"
+                            type="button" class="btn btn-primary"
+                            href="<%= `/recap/print?date=${tanggal}` %>"
+                            >
+                            Unduh Laporan
+                          </a>
+                      </div>
                     </div>
                   </div>
                 </div>
