@@ -63,9 +63,18 @@
                   <div class="col-12">
                     <div class="card">
                       <div class="card-body">
-                        <%- include('./tables.ejs') %>
+                        <%- include('./template_recapitulation.ejs') %>
                       </div>
                       <!-- /.card-body -->
+                      <div class="card-footer">
+                          <a
+                          target="_blank"
+                            type="button" class="btn btn-primary"
+                            href="<%= `/recap/print?date=${tanggal}` %>"
+                            >
+                            Unduh Laporan
+                          </a>
+                      </div>
                     </div>
                   </div>
                 </div>

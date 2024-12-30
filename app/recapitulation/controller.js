@@ -1,6 +1,8 @@
 const Intern = require("../intern/model");
 const Placement = require("../placement/model");
 const Biro = require("../biro/model");
+const Pembina = require("../pembina/model")
+const { dateFormatCertificate } = require("../../utils");
 
 const path = 'admin/recapitulation';
 
@@ -66,6 +68,7 @@ const recapitulasiFunc = async (date) => {
     college: collegeIntern.length,
     etc: etcIntern.length,
     dataInternByPlacemet,
+    date: [dateStart, dateEnd, Date.now()],
   }
 
   return result;
@@ -98,13 +101,16 @@ module.exports = {
       const { date } = req.query;
 
       const data = await recapitulasiFunc(date);
+      const pembina = await Pembina.findOne({ status: 'Y' });
 
-      console.log(data);
 
       res.render(`${path}/view_recapitulation`, {
         title: 'Laporan Kegiatan',
-        status: false,
+        status: true,
         tanggal: date,
+        data,
+        pembina,
+        dateFormatCertificate,
       })
     } catch (err) {
       console.log(err);
@@ -114,20 +120,27 @@ module.exports = {
       res.redirect('/')
     }
   },
-  actionCreate: async (req, res) => {
+  actionPrint: async (req, res) => {
     try {
-      const { name } = req.body;
+      const { date } = req.query;
+      console.log(date);
 
-      let biro = await Biro({ name: name.toUpperCase() });
-      await biro.save();
+      const data = await recapitulasiFunc(date);
+      const pembina = await Pembina.findOne({ status: 'Y' });
 
-      req.flash('alertMessage', 'Berhasil Menambah Bidang Kegiatan');
-      req.flash('alertStatus', 'success');
-      res.redirect('/biro');
+      res.render(`${path}/template_print`, {
+        title: 'Laporan Kegiatan',
+        status: true,
+        data,
+        pembina,
+        dateFormatCertificate,
+      })
     } catch (err) {
+      console.log(err);
+
       req.flash('alertMessage', `${err.message}`);
       req.flash('alertStatus', 'danger');
-      res.redirect('/biro')
+      res.redirect('/')
     }
   },
   viewEdit: async (req, res) => {

@@ -18,8 +18,9 @@
   
   width: 100%;
   min-height: fit-content;
+  padding-bottom: 32px;
   /* margin-inline: auto; */
-  /* margin-block: 14px; */
+  margin-block: 14px;
 
   background-image: url('/images/background-sertif.png');
   background-size: 105%;
