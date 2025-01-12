@@ -51,7 +51,6 @@ module.exports = {
   signin: async (req, res) => {
     try {
       const { username, password } = req.body;
-      let checkPassword = false;
 
       const authApplicant = await applicantModel.findOne({ email: username });
       const authPembina = await pembinaModel.findOne({ nip: username });
@@ -59,173 +58,59 @@ module.exports = {
       const authUmpeg = await umpegModel.findOne({ nip: username });
       const authIntern = await internModel.findOne({ id_num: username });
 
-      if (authApplicant) {
-        checkPassword = bcrypt.compareSync(password, authApplicant.password);
-        if (checkPassword) {
-          if (authApplicant.status === 'Y') {
-            const token = jwt.sign({
-              user: {
-                id: authApplicant.id,
-                name: authApplicant.name,
-                role: 'applicant',
-                avatar: authApplicant.avatar,
-              }
-            }, config.jwtKey);
-            return res.status(200).json({
-              data: {
-                token: token,
-              }
-            })
-          } else {
-            return res.status(403).json({
-              errors: {
-                message: ['Akun telah di non aktifkan']
-              }
-            })
-          }
-        } else {
-          return res.status(400).json({
-            errors: {
-              message: ['Password salah, isi kembali!']
-            }
-          })
+      const auth = authApplicant || authPembina || authSupervisor || authUmpeg || authIntern;
+      const roleUser = (authApplicant && 'applicant') || (authPembina && 'pembina') ||
+        (authSupervisor && 'supervisor') || (authUmpeg && 'umpeg') || (authIntern && 'intern') || null;
+
+      if (!auth) {
+        const error = new Error('User tidak ditemukan');
+        error.name = 'LoginError'
+        throw error;
+      }
+
+      const checkPassword = await bcrypt.compare(password, auth.password);
+
+      if (!checkPassword) {
+        const error = new Error('Kata kunci salah');
+        error.name = 'LoginError'
+        throw error;
+      }
+
+      const isActiveUser = auth.status === 'Y' ? true : null;
+
+      if (!isActiveUser) {
+        const error = new Error('Akun telah di non aktifkan');
+        error.name = 'LoginError'
+        throw error;
+      }
+
+      const token = jwt.sign({
+        user: {
+          id: auth.id,
+          name: auth.name,
+          role: roleUser,
+          avatar: auth.avatar,
         }
-      } else if (authPembina) {
-        checkPassword = bcrypt.compareSync(password, authPembina.password)
-        if (checkPassword) {
-          if (authPembina.status === 'Y') {
-            const token = jwt.sign({
-              user: {
-                id: authPembina.id,
-                name: authPembina.name,
-                role: 'pembina',
-                avatar: authPembina.avatar,
-              }
-            }, config.jwtKey);
-            return res.status(200).json({
-              data: {
-                token: token,
-              }
-            })
-          } else {
-            return res.status(403).json({
-              errors: {
-                message: ['Akun telah di non aktifkan']
-              }
-            })
-          }
-        } else {
-          return res.status(400).json({
-            errors: {
-              message: ['Password salah, isi kembali!']
-            }
-          })
+      }, config.jwtKey);
+
+
+      return res.status(200).json({
+        data: {
+          token: token,
         }
-      } else if (authSupervisor) {
-        checkPassword = bcrypt.compareSync(password, authSupervisor.password);
-        console.log(checkPassword);
-        if (checkPassword) {
-          if (authSupervisor.status === 'Y') {
-            const token = jwt.sign({
-              user: {
-                id: authSupervisor.id,
-                name: authSupervisor.name,
-                role: 'supervisor',
-                avatar: authSupervisor.avatar,
-              }
-            }, config.jwtKey);
-            return res.status(200).json({
-              data: {
-                token: token,
-              }
-            })
-          } else {
-            return res.status(403).json({
-              errors: {
-                message: ['Akun telah di non aktifkan']
-              }
-            })
-          }
-        } else {
-          return res.status(400).json({
-            errors: {
-              message: ['Password salah, isi kembali!']
-            }
-          })
-        }
-      } else if (authUmpeg) {
-        checkPassword = bcrypt.compareSync(password, authUmpeg.password)
-        if (checkPassword) {
-          if (authUmpeg.status === 'Y') {
-            const token = jwt.sign({
-              user: {
-                id: authUmpeg.id,
-                name: authUmpeg.name,
-                role: 'umpeg',
-                avatar: authUmpeg.avatar,
-              }
-            }, config.jwtKey);
-            return res.status(200).json({
-              data: {
-                token: token,
-              }
-            })
-          } else {
-            return res.status(403).json({
-              errors: {
-                message: ['Akun telah di non aktifkan']
-              }
-            })
-          }
-        } else {
-          return res.status(400).json({
-            errors: {
-              message: ['Password salah, isi kembali!']
-            }
-          })
-        }
-      } else if (authIntern) {
-        checkPassword = bcrypt.compareSync(password, authIntern.password)
-        if (checkPassword) {
-          if (authIntern.status === 'Y') {
-            const token = jwt.sign({
-              user: {
-                id: authIntern.id,
-                name: authIntern.name,
-                role: 'intern',
-                avatar: authIntern.avatar,
-              }
-            }, config.jwtKey);
-            return res.status(200).json({
-              data: {
-                token: token,
-              }
-            })
-          } else {
-            return res.status(403).json({
-              errors: {
-                message: ['Akun telah di non aktifkan']
-              }
-            })
-          }
-        } else {
-          return res.status(400).json({
-            errors: {
-              message: ['Password salah, isi kembali!']
-            }
-          })
-        }
-      } else {
-        return res.status(404).json({
+      })
+    } catch (err) {
+      if (err.name === 'LoginError') {
+        return res.status(400).json({
           errors: {
-            message: ['user tidak ditemukan']
-          }
+            message: [err.message]
+          },
         })
       }
-    } catch (err) {
-      console.log(err);
-      return res.status(422).json({
-        errors: err.errors,
+      return res.status(500).json({
+        errors: {
+          message: [err.message || 'Terjadi masalah dengan server']
+        },
       })
     }
   },

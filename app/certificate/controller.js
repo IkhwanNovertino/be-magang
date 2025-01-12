@@ -2,11 +2,13 @@ const Certificate = require('./model');
 const Evaluation = require('../evaluation/model');
 const Intern = require('../intern/model');
 const Pembina = require('../pembina/model');
+const Placement = require('../placement/model');
 const moment = require('moment');
 const path = require('path');
+const config = require('../../config');
 
 const { generateCertificate, dateFormatCertificate } = require('../../utils');
-const { config } = require('dotenv');
+// const { config } = require('dotenv');
 
 const urlpath = 'admin/certificate';
 
@@ -24,13 +26,55 @@ const duration = (a, b) => {
 module.exports = {
   index: async (req, res) => {
     try {
-      console.log(req.hostname);
+      console.log(req.url);
+      const interns = await Intern.find().sort({ createdAt: -1 });
 
-      res.render(`${urlpath}/template`, {
+      res.render(`${urlpath}/view_certificate`, {
         title: 'Sertifikat',
+        interns,
+        status: false
       })
     } catch (error) {
       console.log(error);
+      res.redirect('/')
+    }
+  },
+  viewCertificate: async (req, res) => {
+    try {
+      const { id } = req.query;
+      const profile = await Placement.findOne({ intern: id }).populate('biro').populate('intern').populate('supervisor');
+      const interns = await Intern.find().sort({ createdAt: -1 });
+      const certificate = await Certificate.findOne({ intern: id });
+
+      res.render(`${urlpath}/view_certificate`, {
+        title: 'Sertifikat',
+        interns,
+        profile,
+        certificate,
+        intern: certificate.historyIntern,
+        certif_num: certificate.certif_num,
+        pembina: certificate.historyPembina,
+        result: certificate.result,
+        publish_date: certificate.publish_date,
+        scoreTotal: certificate.historyEvaluation.total,
+        score: certificate.historyEvaluation.category_score,
+        status: true,
+        dateFormatCertificate,
+      });
+    } catch (err) {
+      console.log(err);
+      res.redirect('/')
+    }
+  },
+  downloadFileCertificate: async (req, res) => {
+    try {
+      const { file } = req.params;
+      const file_path = path.resolve(config.rootPath, config.urlUploads, `${file}.pdf`);
+
+      res.set('Content-Disposition', `attachment; filename="${file}.pdf"`);
+      res.download(file_path, `${file}.pdf`)
+    } catch (err) {
+      console.log(err);
       res.redirect('/')
     }
   },

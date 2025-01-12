@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= `rekapitulasi_${data.date[0]}_${data.date[1]}` %></title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Arvo:wght@400;700&family=League+Gothic&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="/stylesheets/style.css">
+  <link rel="stylesheet" href="/stylesheets/recapitulation.css">
+</head>
+<body>
+  <section class="recapitulation-wrapper">
+    <section class="recapitulation admin">
+      <div class="recapitulation-header">
+        <div class="img-logo-pemko">
+          <img src="/images/detail-logo.png" alt="logo pemko" class="logo" width="64">
+        </div>
+        <div class="title-header">
+          <h5>PEMERINTAH KOTA BANJARBARU</h5>
+          <h2>DINAS KOMUNIKASI DAN INFORMATIKA</h2>
+          <h6>Jl. Pangeran Suriansyah Nomor 5 Banjarbaru - Kalimantan Selatan</h6>
+          <h6>Telp./Fax (0511) 6749126 Email : kominfobjb@banjarbarukota.go.id</h6>
+        </div>
+      </div>
+      <div class="recapitulation-heading">
+        <h3>
+          LAPORAN REKAPITULASI DATA MAGANG <br>
+          DINAS KOMUNIKASI DAN INFORMATIKA <br>
+          KOTA BANJARBARU
+        </h3>
+        <p>Periode: <%= dateFormatCertificate(data.date[0]) %> s.d. <%= dateFormatCertificate(data.date[1]) %></p>
+      </div>
+      <div class="recapitulation-content">
+        <article>
+          <header>
+            <h4>A. Data jumlah peserta magang</h4>
+          </header>
+          <table>
+            <thead>
+              <tr>
+                <th>Kategori Peserta Magang</th>
+                <th class="th-sum-title">Jumlah Peserta Magang</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>SLTA/SMA/SMK</td>
+                <td class="data-num"><%= data.slta %></td>
+              </tr>
+              <tr>
+                <td>Perguruan Tinggi</td>
+                <td  class="data-num"><%= data.college %></td>
+              </tr>
+              <tr>
+                <td>dan lain-lainnya</td>
+                <td class="data-num"><%= data.etc %></td>
+              </tr>
+              <tr>
+                <td class="data-sum">TOTAL</td>
+                <td class="data-num"><%= data.total %></td>
+              </tr>
+            </tbody>
+          </table>
+        </article>
+        
+        <article>
+          <header>
+            <h4>B. Data jumlah peserta magang di setiap bidang kegiatan</h4>
+          </header>
+          <table>
+            <thead>
+              <tr>
+                <th>Bidang Kegiatan</th>
+                <th class="th-sum-title">Jumlah Peserta Magang</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% data.dataInternByPlacemet.forEach(items => { %>
+                <tr>
+                  <td>BIDANG <%= items.name %></td>
+                  <td  class="data-num"><%= items.count %></td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </article>
+      </div>
+      <footer class="recapitulation-footer">
+        <p class="footer-date">Banjarbaru, <%= dateFormatCertificate(data.date[2]) %></p>
+        <div class="footer-position">
+          <p class="footer-position-title"><%= pembina.job_title %></p>
+          <p class="footer-position">Kota Banjarbaru</p>
+        </div>
+        <div class="footer-name">
+          <p class="footer-name-pembina"><%= pembina.name %></p>
+          <p class="footer-pangkat-pembina"><%= pembina.pangkat %> <%= pembina.golongan %></p>
+          <p class="footer-nip-pembina">NIP. <%= pembina.nip %></p>
+        </div>
+      </footer>
+    </section>
+  </section>
+
+  <script>
+    window.addEventListener("load", window.print());
+  </script>
+
+</body>
+</html>

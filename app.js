@@ -20,6 +20,7 @@ const placementRouter = require('./app/placement/router.js');
 const logbookRouter = require('./app/logbook/router.js');
 const scoreRouter = require('./app/score-component/router.js');
 const certificateRouter = require('./app/certificate/router.js');
+const recapitulationRouter = require('./app/recapitulation/router.js');
 
 // API
 const authRouter = require('./app/authenticate/router.js');
@@ -32,6 +33,7 @@ const evaluationRouterAPI = require('./app/evaluation/routerAPI.js');
 const certificateRouterAPI = require('./app/certificate/routerAPI.js');
 const documentRouterAPI = require('./app/document/routerAPI.js');
 const dashboardRouterAPI = require('./app/dashboard/routerAPI.js');
+const recapitulationRouterAPI = require('./app/recapitulation/routerAPI.js');
 
 const app = express();
 const urlAPI = `/api/v1`
@@ -73,6 +75,7 @@ app.use('/placement', placementRouter);
 app.use('/logbook', logbookRouter);
 app.use('/certificate', certificateRouter);
 app.use('/score', scoreRouter);
+app.use('/recap', recapitulationRouter);
 
 
 // APIs
@@ -86,6 +89,7 @@ app.use(`${urlAPI}/evaluation`, evaluationRouterAPI);
 app.use(`${urlAPI}/certificate`, certificateRouterAPI);
 app.use(`${urlAPI}/dashboard`, dashboardRouterAPI);
 app.use(`${urlAPI}/download`, documentRouterAPI);
+app.use(`${urlAPI}/report`, recapitulationRouterAPI);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
