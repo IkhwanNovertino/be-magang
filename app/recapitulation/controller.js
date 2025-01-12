@@ -8,6 +8,8 @@ const path = 'admin/recapitulation';
 
 const recapitulasiFunc = async (date) => {
   const tgl = date.split(" - ");
+  console.log(tgl);
+
   const dateStart = new Date(tgl[0]);
   const dateEnd = new Date(tgl[1]);
   const biro = await Biro.find().sort({ name: 1 });
@@ -44,7 +46,6 @@ const recapitulasiFunc = async (date) => {
       }
     }
   ])
-
 
   const dataInternByPlacemet = [];
   for (const item of biro) {
@@ -99,10 +100,14 @@ module.exports = {
   viewCreate: async (req, res) => {
     try {
       const { date } = req.query;
+      console.log(date);
+
+      // tanggal/bulan/tahun - tanggal/bulan/tahun
+
 
       const data = await recapitulasiFunc(date);
       const pembina = await Pembina.findOne({ status: 'Y' });
-
+      console.log(data);
 
       res.render(`${path}/view_recapitulation`, {
         title: 'Laporan Kegiatan',
@@ -143,49 +148,39 @@ module.exports = {
       res.redirect('/')
     }
   },
-  viewEdit: async (req, res) => {
+  getRecapitulation: async (req, res) => {
     try {
-      const { id } = req.params;
-      const biro = await Biro.findById(id);
+      const { date } = req.query;
 
-      res.render(`${path}/edit`, {
-        title: 'Ubah Bidang Kegiatan',
-        biro
+      const data = await recapitulasiFunc(date);
+      const pembina = await Pembina.findOne({ status: 'Y' });
+
+      delete pembina._doc.avatar;
+      delete pembina._doc.password;
+
+      if (req?.params?.download) {
+        return res.render(`${path}/template_print`, {
+          title: 'Laporan Kegiatan',
+          status: true,
+          data,
+          pembina,
+          dateFormatCertificate,
+        })
+      } else {
+        return res.status(200).json({
+          data: {
+            data,
+            pembina
+          }
+        })
+      }
+    } catch (error) {
+      return res.status(500).json({
+        errors: {
+          error
+        }
       })
-    } catch (err) {
-      req.flash('alertMessage', `${err.message}`);
-      req.flash('alertStatus', 'danger');
-      res.redirect('/biro')
     }
-  },
-  actionEdit: async (req, res) => {
-    try {
-      const { id } = req.params;
-      const { name } = req.body;
 
-      await Biro.findOneAndUpdate({ _id: id }, { name: name.toUpperCase() });
-
-      req.flash('alertMessage', 'Berhasil Mengubah Bidang Kegiatan');
-      req.flash('alertStatus', 'success');
-      res.redirect('/biro');
-    } catch (err) {
-      req.flash('alertMessage', `${err.message}`);
-      req.flash('alertStatus', 'danger');
-      res.redirect('/biro')
-    }
-  },
-  actionDelete: async (req, res) => {
-    try {
-      const { id } = req.params;
-      await Biro.findOneAndRemove({ _id: id });
-
-      req.flash('alertMessage', 'Berhasil Menghapus Bidang Kegiatan');
-      req.flash('alertStatus', 'success');
-      res.redirect('/biro');
-    } catch (err) {
-      req.flash('alertMessage', `${err.message}`);
-      req.flash('alertStatus', 'danger');
-      res.redirect('/biro')
-    }
   },
 }
